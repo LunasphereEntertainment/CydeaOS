@@ -1,0 +1,10 @@
+{
+  "name": "cydeaos",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "Multiplayer hacking simulator game. (A-Level Project revamp)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lunasphere Entertainment",
+  "license": "UNLICENSED"
+}
