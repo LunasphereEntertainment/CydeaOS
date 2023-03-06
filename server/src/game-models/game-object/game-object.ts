@@ -5,6 +5,8 @@ import { DnsServer } from "../dns-server/dns-server";
 export class GameObject implements DnsService {
     id: string;
 
+    type: GameType = GameType.Elimination;
+
     dns: DnsServiceImpl
 
     nodesByIP: Map<string, Computer>
@@ -33,4 +35,10 @@ export class GameObject implements DnsService {
     findNodeByHostname(hostname: string): Computer {
         return this.getNodeByIP(this.dns.lookup(hostname));
     }
+}
+
+export enum GameType {
+    Elimination = "Elimination",
+    TeamDeathMatch = "TeamDeathMatch",
+    FreePlay = "FreePlay"
 }

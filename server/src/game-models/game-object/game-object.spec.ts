@@ -8,6 +8,7 @@ describe('GameObject', () => {
         expect(testGameObject.id).toBeDefined();
         expect(testGameObject.dns).toBeDefined();
         expect(testGameObject.nodesByIP).toBeDefined();
+        expect(testGameObject.type).toBe('Elimination');
     });
 
     it('should register a node', () => {

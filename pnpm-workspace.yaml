@@ -1,5 +1,2 @@
 packages:
-  # the game server
-  - 'server/*'
-  # frontend application
-  - 'client/*'
+  - './server'

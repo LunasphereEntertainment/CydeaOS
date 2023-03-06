@@ -1,18 +1,25 @@
-import { Computer } from "../computer/computer";
+import { Computer } from '../computer/computer';
 
 export class Player {
     id: number;
-    name: string;
-    computer: Computer;
+    displayName: string;
     state: PlayerState;
+    private computer: Computer;
 
     private socket: string;
 
-    constructor(id: number, name: string, home: Computer, state: PlayerState = PlayerState.InGame) {
+    constructor(id: number, displayName: string, state: PlayerState = PlayerState.InGame) {
         this.id = id;
-        this.name = name;
-        this.computer = home;
+        this.displayName = displayName;
         this.state = state;
+    }
+
+    setComputer(computer: Computer) {
+        this.computer = computer;
+    }
+
+    getComputer() {
+        return this.computer;
     }
 
     setSocket(socket: string) {
