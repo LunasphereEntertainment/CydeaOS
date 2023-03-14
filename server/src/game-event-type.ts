@@ -1,15 +1,16 @@
 export const enum GameChannels {
     GAME = 'game',
+    NODES = 'nodes',
     MUSIC = 'music',
     CHAT = 'chat'
 }
 
-export class EventMessagePayload {
-    type: GameEvents;
+export class GameEventPayload {
+    type: GameEventType;
     data: any;
 }
 
-export const enum GameEvents {
+export const enum GameEventType {
     GAME_CREATED = 'game-creation',
     GAME_JOINED = 'game-joined',
     GAME_STARTED = 'game-started',

@@ -4,8 +4,8 @@ import { DnsServiceImpl } from "./dns-service-impl";
 export class DnsServer extends Computer {
     dns: DnsServiceImpl;
 
-    constructor(hostname: string, ip: string, dns?: DnsServiceImpl) {
-        super(hostname, ip);
+    constructor(hostname: string, dns?: DnsServiceImpl) {
+        super(hostname);
         this.dns = dns || new DnsServiceImpl();
     }
 

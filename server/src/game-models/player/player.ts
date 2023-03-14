@@ -1,25 +1,33 @@
 import { Computer } from '../computer/computer';
+import { Account } from '../../luna-models/account';
 
 export class Player {
     id: number;
     displayName: string;
     state: PlayerState;
-    private computer: Computer;
+    private ip: string;
 
     private socket: string;
 
-    constructor(id: number, displayName: string, state: PlayerState = PlayerState.InGame) {
+    constructor(id: number, displayName: string, state: PlayerState = PlayerState.InGame, ip?: string) {
         this.id = id;
         this.displayName = displayName;
         this.state = state;
+
+        if (ip)
+            this.ip = ip;
     }
 
-    setComputer(computer: Computer) {
-        this.computer = computer;
+    static fromAccount(account: Account) {
+        return new Player(account.id, account.username);
     }
 
-    getComputer() {
-        return this.computer;
+    setIP(ip: string) {
+        this.ip = ip;
+    }
+
+    getIP() {
+        return this.ip;
     }
 
     setSocket(socket: string) {

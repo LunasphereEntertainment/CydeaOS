@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CydeaOS.iml" filepath="$PROJECT_DIR$/.idea/CydeaOS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../CydeaOS-Backend/.idea/CydeaOS-Backend.iml" filepath="$PROJECT_DIR$/../CydeaOS-Backend/.idea/CydeaOS-Backend.iml" />
     </modules>
   </component>
 </project>

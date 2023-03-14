@@ -16,9 +16,8 @@ export class Computer {
     owner: string;
 
 
-    constructor(hostname: string, ip: string, files: IFileEntry[] = [], ports: NetworkPort[] = [], owner: string = "System") {
+    constructor(hostname: string, files: IFileEntry[] = [], ports: NetworkPort[] = [], owner: string = "System") {
         this.hostname = hostname;
-        this.ip = ip;
         this.files = files || [];
         this.ports = ports || [];
         this.owner = owner;

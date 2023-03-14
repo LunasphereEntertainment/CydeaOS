@@ -1,20 +1,41 @@
-import { Computer } from "../computer/computer";
+import { Computer } from '../computer/computer';
 import { v4 as uuidv4 } from 'uuid'
-import { DnsService, DnsServiceImpl } from "../dns-server/dns-service-impl";
-import { DnsServer } from "../dns-server/dns-server";
+import { DnsService, DnsServiceImpl } from '../dns-server/dns-service-impl';
+import { Player } from '../player/player';
+import { IPGenerator, IPType } from '../../game/ip-generator/ip-generator';
+import { MediaGenre } from '../../media/media.entry/media.entry';
+import { MediaQueue } from '../../media/media-library';
+import { GameConfiguration } from '../game-configuration/game-configuration';
+
 export class GameObject implements DnsService {
     id: string;
 
-    type: GameType = GameType.Elimination;
+    config: GameConfiguration;
 
     dns: DnsServiceImpl
 
     nodesByIP: Map<string, Computer>
 
-    constructor(dns?: DnsServiceImpl, nodesByIP?: Map<string, Computer>) {
+    players: Player[] = [];
+
+    public readonly ipGenerator: IPGenerator;
+
+    constructor(dns?: DnsServiceImpl, nodesByIP?: Map<string, Computer>, ipType?: IPType) {
         this.id = uuidv4();
         this.dns = dns || new DnsServiceImpl();
         this.nodesByIP = nodesByIP || new Map();
+
+        this.ipGenerator = new IPGenerator(ipType);
+    }
+
+    static fromConfig(config: GameConfiguration): GameObject {
+        const gameObject = new GameObject(null, null, config.ipType);
+        gameObject.config = config;
+        return gameObject;
+    }
+
+    join(player: Player) {
+        this.players.push(player);
     }
 
     registerNode(node: Computer) {
@@ -37,8 +58,3 @@ export class GameObject implements DnsService {
     }
 }
 
-export enum GameType {
-    Elimination = "Elimination",
-    TeamDeathMatch = "TeamDeathMatch",
-    FreePlay = "FreePlay"
-}

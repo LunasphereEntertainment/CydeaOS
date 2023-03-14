@@ -120,3 +120,7 @@ Icon
 ._*
 
 # Files that might appear in
+
+# Media files
+server/dist
+server/media
