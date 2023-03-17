@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { GameObject } from "../game-models/game-object/game-object";
+import { GameConfiguration } from '../game-models/game-configuration/game-configuration';
 
 @Injectable()
 export class GameService {
-    activeGames: Map<string, GameObject> = new Map();
+    private activeGames: Map<string, GameObject> = new Map();
 
-    createGame(): GameObject {
-        const game = new GameObject();
-        this.activeGames.set(game.id, game);
+    createGame(config: GameConfiguration): GameObject {
+        const game = new GameObject(config);
+
+        this.registerGame(game);
+
         return game;
     }
 

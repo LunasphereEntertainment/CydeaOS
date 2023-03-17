@@ -1,15 +1,15 @@
-import { MediaEntry, MediaGenre } from './media.entry';
+import { MediaEntry, MediaMood } from './media.entry';
 
 describe('MediaEntry', () => {
     it('should be defined', () => {
         expect(new MediaEntry('media/chill/test1.mp3')).toBeDefined();
-        expect(new MediaEntry('media/chill/test2.mp3', MediaGenre.Chill)).toBeDefined();
-        expect(new MediaEntry('media/chill/test3.mp3', MediaGenre.Chill, '1234')).toBeDefined();
+        expect(new MediaEntry('media/chill/test2.mp3', MediaMood.Chill)).toBeDefined();
+        expect(new MediaEntry('media/chill/test3.mp3', MediaMood.Chill, '1234')).toBeDefined();
     });
 
     it('should have a uuid', () => {
         expect(new MediaEntry('media/chill/test1.mp3').uuid).toBeDefined();
-        expect(new MediaEntry('media/chill/test2.mp3', MediaGenre.Chill).uuid).toBeDefined();
+        expect(new MediaEntry('media/chill/test2.mp3', MediaMood.Chill).uuid).toBeDefined();
     });
 
     it('should have a path', () => {
@@ -17,7 +17,7 @@ describe('MediaEntry', () => {
     });
 
     it('should be able to copy itself', () => {
-        const mediaEntry = new MediaEntry('media/chill/test1.mp3', MediaGenre.Chill);
+        const mediaEntry = new MediaEntry('media/chill/test1.mp3', MediaMood.Chill);
         const copy = MediaEntry.copy(mediaEntry);
         expect(copy).toBeDefined();
         expect(copy.uuid).toEqual(mediaEntry.uuid);

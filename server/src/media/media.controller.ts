@@ -15,7 +15,7 @@ import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.int
 import { JwtAuthGuard } from '../jwt/guard/jwt-auth.guard';
 import { MediaEventType, MusicPlaybackMode } from './media-event/media-event';
 import { GameObject } from '../game-models/game-object/game-object';
-import { MediaGenre } from './media.entry/media.entry';
+import { MediaMood } from './media.entry/media.entry';
 
 @Controller('media')
 @WebSocketGateway()
@@ -37,7 +37,7 @@ export class MediaController {
     getTrack(
         @ConnectedSocket() client,
         // @MessageBody('type', new ParseEnumPipe(MediaEventType)) eventType: MediaEventType
-        @MessageBody('genre', new ParseEnumPipe(MediaGenre)) requestedGenre: MediaGenre
+        @MessageBody('genre', new ParseEnumPipe(MediaMood)) requestedGenre: MediaMood
     ): any {
         const game: GameObject = client.game,
             config = game.config;

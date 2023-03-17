@@ -1,12 +1,14 @@
 import { v4 as UUID } from 'uuid';
 import { sep } from 'path';
+import { MediaMood } from '../../game-models/media/media-mood/media-mood';
+
 export class MediaEntry {
     uuid: string;
     path: string;
     name: string;
-    genre: MediaGenre;
+    genre: MediaMood;
 
-    constructor(filePath: string, genre: MediaGenre = MediaGenre.Chill, uuid?: string) {
+    constructor(filePath: string, genre: MediaMood = MediaMood.Chill, uuid?: string) {
         this.uuid = uuid || UUID().toString();
         this.path = filePath;
         this.name = filePath.substring(filePath.lastIndexOf(sep), filePath.lastIndexOf('.'))
@@ -18,9 +20,3 @@ export class MediaEntry {
     }
 }
 
-export enum MediaGenre {
-    Chill = "Chill",
-    Dramatic = "Dramatic",
-    Upbeat = "Upbeat",
-    Sad = "Sad",
-}

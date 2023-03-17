@@ -1,9 +1,9 @@
-import { MediaGenre } from '../media.entry/media.entry';
+import { MediaMood } from '../media.entry/media.entry';
 
 export class MediaEvent {
     constructor(
         public readonly type: MediaEventType,
-        public readonly data: { genre: MediaGenre }
+        public readonly data: { genre: MediaMood }
     ) {}
 }
 

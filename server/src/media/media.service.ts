@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MediaEntry, MediaGenre } from './media.entry/media.entry';
+import { MediaEntry, MediaMood } from './media.entry/media.entry';
 import { readdirSync } from 'fs'
 import { join } from 'path';
 import { MediaLibrary, MediaQueue, MediaUuid } from './media-library';
@@ -8,13 +8,13 @@ import { GameNotFoundError } from '../game/game.service';
 
 class GameMediaInstance {
     currentTrack: MediaUuid;
-    queues: Map<MediaGenre, MediaQueue>;
+    queues: Map<MediaMood, MediaQueue>;
 
-    constructor(queues: [MediaGenre, MediaQueue][]) {
+    constructor(queues: [MediaMood, MediaQueue][]) {
         this.queues = new Map(queues);
     }
 
-    nextTrack(genre: MediaGenre): MediaUuid {
+    nextTrack(genre: MediaMood): MediaUuid {
         if (!this.queues.has(genre)) {
             throw new Error(`No queue for genre ${ genre }`);
         }
@@ -46,17 +46,17 @@ export class MediaService {
 
         readdirSync(chillDir)
             .filter((file) => isSupportedAudioFile(file))
-            .map((file) => new MediaEntry(join(chillDir, file), MediaGenre.Chill))
+            .map((file) => new MediaEntry(join(chillDir, file), MediaMood.Chill))
             .forEach((mediaEntry) => this.globalMediaLibrary.addMediaEntry(mediaEntry));
 
         readdirSync(dramaticDir)
             .filter((file) => isSupportedAudioFile(file))
-            .map((file) => new MediaEntry(join(dramaticDir, file), MediaGenre.Dramatic))
+            .map((file) => new MediaEntry(join(dramaticDir, file), MediaMood.Dramatic))
             .forEach((mediaEntry) => this.globalMediaLibrary.addMediaEntry(mediaEntry));
 
         readdirSync(upbeatDir)
             .filter((file) => isSupportedAudioFile(file))
-            .map((file) => new MediaEntry(join(upbeatDir, file), MediaGenre.Upbeat))
+            .map((file) => new MediaEntry(join(upbeatDir, file), MediaMood.Upbeat))
             .forEach((mediaEntry) => this.globalMediaLibrary.addMediaEntry(mediaEntry));
     }
 
@@ -82,7 +82,7 @@ export class MediaService {
         return this.gameMediaLibraries.get(gameId).currentTrack;
     }
 
-    nextTrack(gameId: string, genre: MediaGenre): MediaUuid {
+    nextTrack(gameId: string, genre: MediaMood): MediaUuid {
         if (!this.gameMediaLibraries.has(gameId)) {
             throw new GameNotFoundError(gameId);
         }

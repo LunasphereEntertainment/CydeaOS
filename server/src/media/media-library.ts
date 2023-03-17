@@ -1,11 +1,12 @@
-import { MediaEntry, MediaGenre } from './media.entry/media.entry';
+import { MediaEntry } from './media.entry/media.entry';
+import { MediaMood } from '../game-models/media/media-mood/media-mood';
 
 export type MediaUuid = string;
 export class MediaQueue {
-    private readonly genre: MediaGenre;
+    private readonly genre: MediaMood;
     queue: Array<MediaUuid> = new Array();
 
-    constructor(genre: MediaGenre) {
+    constructor(genre: MediaMood) {
         this.genre = genre;
     }
 
@@ -35,7 +36,7 @@ export class MediaQueue {
 
 export class MediaLibrary {
     private mediaById: Map<MediaUuid, MediaEntry> = new Map();
-    private mediaByGenre: Map<MediaGenre, Array<MediaEntry>> = new Map();
+    private mediaByGenre: Map<MediaMood, Array<MediaEntry>> = new Map();
 
     constructor() {}
     addMediaEntry(mediaEntry: MediaEntry) {
@@ -50,7 +51,7 @@ export class MediaLibrary {
             this.mediaByGenre.set(mediaEntry.genre, new Array(mediaEntry));
     }
 
-    getGenres(): Array<MediaGenre> {
+    getGenres(): Array<MediaMood> {
         return Array.from(this.mediaByGenre.keys());
     }
     getTrack(uuid: MediaUuid): MediaEntry {
@@ -59,7 +60,7 @@ export class MediaLibrary {
         }
         return this.mediaById.get(uuid);
     }
-    newMediaQueue(genre: MediaGenre): MediaQueue {
+    newMediaQueue(genre: MediaMood): MediaQueue {
         if (!this.mediaByGenre.has(genre)) {
             throw MediaError.genreNotFound(genre);
         }
@@ -79,11 +80,11 @@ export class MediaError extends Error {
         return new MediaError(`MediaEntry with ${uuid} not found`);
     }
 
-    static genreNotFound(genre: MediaGenre): MediaError {
-        return new MediaError(`MediaGenre ${genre} not found`);
+    static genreNotFound(genre: MediaMood): MediaError {
+        return new MediaError(`MediaMood ${genre} not found`);
     }
 
-    static queueEmpty(genre: MediaGenre): MediaError {
+    static queueEmpty(genre: MediaMood): MediaError {
         return new MediaError(`MediaQueue for genre ${genre} is empty`);
     }
 

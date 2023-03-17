@@ -3,43 +3,34 @@ import { Account } from '../../luna-models/account';
 
 export class Player {
     id: number;
-    displayName: string;
+    username: string;
     state: PlayerState;
-    private ip: string;
+    private socketId: string;
 
-    private socket: string;
-
-    constructor(id: number, displayName: string, state: PlayerState = PlayerState.InGame, ip?: string) {
+    constructor(id: number, username: string, state: PlayerState = PlayerState.InGame) {
         this.id = id;
-        this.displayName = displayName;
+        this.username = username;
         this.state = state;
-
-        if (ip)
-            this.ip = ip;
     }
 
     static fromAccount(account: Account) {
         return new Player(account.id, account.username);
     }
 
-    setIP(ip: string) {
-        this.ip = ip;
+    getSocketId(): string {
+        return this.socketId;
     }
 
-    getIP() {
-        return this.ip;
-    }
-
-    setSocket(socket: string) {
-        this.socket = socket;
-    }
-
-    getSocket() {
-        return this.socket;
+    // only allow setting the socket id once
+    setSocketId(socketId: string) {
+        if (this.socketId) {
+            throw new Error('Socket id already set');
+        }
+        this.socketId = socketId;
     }
 
     isOnline() {
-        return this.state === PlayerState.Online || this.state === PlayerState.InGame;
+        return this.state !== PlayerState.Offline;
     }
 }
 
