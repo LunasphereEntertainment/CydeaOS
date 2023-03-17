@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Account } from '../luna-models/account';
-import { sign, decode, Secret } from 'jsonwebtoken';
-import * as process from 'process';
+import { Account } from '../../luna-models/account';
+import { sign, decode } from 'jsonwebtoken';
 
 const JwtSecret = process.env.JWT_SECRET || 'secret'
 
@@ -15,15 +14,6 @@ export class JwtService {
             username: account.username,
         }, JwtSecret, { algorithm: 'HS512', expiresIn: '4h' })
     }
-
-/*    validateToken(token: string): boolean {
-        try {
-            decode(token, { complete: true });
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }*/
 
     decodeToken(token: string): Account {
         try {

@@ -12,10 +12,11 @@ import { MediaService } from './media.service';
 import { createReadStream } from 'fs';
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
-import { JwtAuthGuard } from '../jwt/guard/jwt-auth.guard';
 import { MediaEventType, MusicPlaybackMode } from './media-event/media-event';
 import { GameObject } from '../game-models/game-object/game-object';
-import { MediaMood } from './media.entry/media.entry';
+import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
+import { MediaMood } from "../game-models/media/media-mood/media-mood";
+import { MediaError } from "./media-library";
 
 @Controller('media')
 @WebSocketGateway()
@@ -26,9 +27,18 @@ export class MediaController {
 
     @Get('/:uuid')
     streamTrack(@Res() res, @Param('uuid', new ParseUUIDPipe({version: "4"})) uuid: string) {
-        const trackInfo = this.mediaService.getTrack(uuid);
-        createReadStream(trackInfo.path)
-            .pipe(res);
+        try {
+            const trackInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
+
+            createReadStream(trackInfo.path)
+                .pipe(res);
+        } catch (e) {
+            if (e instanceof MediaError) {
+                res.status(404).send(e.message);
+                return;
+            }
+        }
+
     }
 
 

@@ -3,10 +3,11 @@ import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { GameEventPayload, GameChannels, GameEventType } from '../game-event-type';
 import { GameService } from './game.service';
 import { GameObject } from '../game-models/game-object/game-object';
-import { JwtAuthGuard } from '../jwt/guard/jwt-auth.guard';
 import { Player } from '../game-models/player/player';
 import { NodeGeneratorService } from './node-generator/node-generator.service';
 import { Socket } from 'socket.io'
+import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
+import { GameConfiguration } from "../game-models/game-configuration/game-configuration";
 
 @WebSocketGateway()
 @UseGuards(JwtAuthGuard)
@@ -18,7 +19,8 @@ export class GameController {
 
     @SubscribeMessage(GameEventType.GAME_CREATED)
     handleGameCreated(client, msg: GameEventPayload): GameObject | void {
-        return this.gameService.createGame();
+        // TODO: Validate game configuration value(s)
+        return this.gameService.newGame(<GameConfiguration>msg.data);
     }
 
     @SubscribeMessage(GameEventType.GAME_JOINED)
@@ -31,8 +33,8 @@ export class GameController {
         const playerComputer = this.nodeGenerator.generatePlayerNode(player);
         playerComputer.ip = targetGame.ipGenerator.generate();
 
-        targetGame.registerNode(playerComputer);
-        player.setIP(playerComputer.ip);
+        // targetGame.registerNode(playerComputer);
+        // player.setIP(playerComputer.ip);
     }
 
     @SubscribeMessage(GameEventType.GAME_STARTED)

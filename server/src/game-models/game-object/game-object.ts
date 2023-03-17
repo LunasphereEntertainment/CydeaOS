@@ -1,15 +1,16 @@
-import { Computer } from '../computer/computer';
 import { v4 as uuidv4 } from 'uuid'
 import { Player } from '../player/player';
-import { IPGenerator, IPType } from '../../game/ip-generator/ip-generator';
+import { IPGenerator } from '../../game/ip-generator/ip-generator';
 import { GameConfiguration } from '../game-configuration/game-configuration';
 
 export class GameObject {
     id: string;
 
-    config: GameConfiguration;
+    readonly config: GameConfiguration;
 
     players: Player[] = [];
+
+    state: GameState = GameState.WaitingForPlayers;
 
     public readonly ipGenerator: IPGenerator;
 
@@ -17,6 +18,8 @@ export class GameObject {
         this.id = uuidv4();
 
         this.ipGenerator = new IPGenerator(config.ipType);
+
+        this.config = config
     }
 
     join(player: Player) {
@@ -30,5 +33,27 @@ export class GameObject {
     findPlayerBySocketId(socketId: string): Player | undefined {
         return this.players.find(player => player.getSocketId() === socketId);
     }
+
+    start() {
+        if (this.state !== GameState.WaitingForPlayers) {
+            throw new Error(`Game(id: ${this.id}) is already running/finished.`);
+        }
+
+        this.state = GameState.Running;
+    }
+
+    stop() {
+        if (this.state === GameState.Stopped) {
+            throw new Error(`Game(id: ${this.id}) is already stopped`);
+        }
+
+        this.state = GameState.Stopped;
+    }
 }
 
+
+export enum GameState {
+    WaitingForPlayers,
+    Running,
+    Stopped
+}

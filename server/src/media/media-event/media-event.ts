@@ -1,4 +1,4 @@
-import { MediaMood } from '../media.entry/media.entry';
+import { MediaMood } from "../../game-models/media/media-mood/media-mood";
 
 export class MediaEvent {
     constructor(

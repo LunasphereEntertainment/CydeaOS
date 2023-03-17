@@ -1,6 +1,6 @@
 import { v4 as UUID } from 'uuid';
 import { sep } from 'path';
-import { MediaMood } from '../../game-models/media/media-mood/media-mood';
+import { MediaMood } from "../../game-models/media/media-mood/media-mood";
 
 export class MediaEntry {
     uuid: string;

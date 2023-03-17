@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { MediaEntry, MediaMood } from './media.entry/media.entry';
+import { MediaEntry } from './media.entry/media.entry';
 import { readdirSync } from 'fs'
 import { join } from 'path';
 import { MediaLibrary, MediaQueue, MediaUuid } from './media-library';
-import { GameNotFoundError } from '../game/game.service';
+import { MediaMood } from "../game-models/media/media-mood/media-mood";
+import { MediaManager } from "../game-models/media/media-manager/media-manager";
+import { GameNotFoundError } from "../game/game.errors";
 
 
+/*
 class GameMediaInstance {
     currentTrack: MediaUuid;
     queues: Map<MediaMood, MediaQueue>;
@@ -26,12 +29,13 @@ class GameMediaInstance {
         return this.currentTrack;
     }
 }
+*/
 
 @Injectable()
 export class MediaService {
     private globalMediaLibrary = new MediaLibrary();
 
-    private gameMediaLibraries = new Map<string, GameMediaInstance>();
+    private mediaServicesByGame: Map<string, MediaManager> = new Map();
 
     constructor() {
         this.initGlobalMediaLibrary()
@@ -44,50 +48,65 @@ export class MediaService {
             dramaticDir = join(mediaDir, 'dramatic'),
             upbeatDir = join(mediaDir, 'upbeat');
 
-        readdirSync(chillDir)
-            .filter((file) => isSupportedAudioFile(file))
-            .map((file) => new MediaEntry(join(chillDir, file), MediaMood.Chill))
-            .forEach((mediaEntry) => this.globalMediaLibrary.addMediaEntry(mediaEntry));
+        let importCount = 0;
+        importCount += this.importDirectory(chillDir, MediaMood.Chill);
+        importCount += this.importDirectory(dramaticDir, MediaMood.Dramatic);
+        importCount += this.importDirectory(upbeatDir, MediaMood.Upbeat);
+        // this.importDirectory(sadDir, MediaMood.Sad);
 
-        readdirSync(dramaticDir)
-            .filter((file) => isSupportedAudioFile(file))
-            .map((file) => new MediaEntry(join(dramaticDir, file), MediaMood.Dramatic))
-            .forEach((mediaEntry) => this.globalMediaLibrary.addMediaEntry(mediaEntry));
-
-        readdirSync(upbeatDir)
-            .filter((file) => isSupportedAudioFile(file))
-            .map((file) => new MediaEntry(join(upbeatDir, file), MediaMood.Upbeat))
-            .forEach((mediaEntry) => this.globalMediaLibrary.addMediaEntry(mediaEntry));
+        console.log(`Imported ${ importCount } tracks from ${ mediaDir }`);
     }
 
-    generateGameMediaLibrary(gameId: string): GameMediaInstance {
-        const gameMediaLibrary = new GameMediaInstance(
-            this.globalMediaLibrary.getGenres()
-                .map((genre) => [genre, this.globalMediaLibrary.newMediaQueue(genre)])
-        );
+    private importDirectory(dir: string, mood: MediaMood): number {
+        let importCount = 0;
 
-        this.gameMediaLibraries.set(gameId, gameMediaLibrary);
-        return gameMediaLibrary;
+        readdirSync(dir)
+            .filter((file) => isSupportedAudioFile(file))
+            .map((file) => new MediaEntry(join(dir, file), mood))
+            .forEach((mediaEntry) => {
+                importCount++;
+                this.globalMediaLibrary.addMediaEntry(mediaEntry)
+            });
+
+        return importCount;
     }
 
-    getTrack(uuid: string): MediaEntry {
+    getFromGlobalMediaLibrary(uuid: MediaUuid): MediaEntry {
         return this.globalMediaLibrary.getTrack(uuid);
     }
 
-    currentTrack(gameId: string): MediaUuid {
-        if (!this.gameMediaLibraries.has(gameId)) {
+    changeMood(gameId: string, newMood: MediaMood): MediaUuid {
+        if (!this.mediaServicesByGame.has(gameId)) {
             throw new GameNotFoundError(gameId);
         }
 
-        return this.gameMediaLibraries.get(gameId).currentTrack;
+        return this.mediaServicesByGame.get(gameId).nextTrack(newMood);
     }
 
-    nextTrack(gameId: string, genre: MediaMood): MediaUuid {
-        if (!this.gameMediaLibraries.has(gameId)) {
+    getCurrentSong(gameId: string): MediaUuid {
+        if (!this.mediaServicesByGame.has(gameId)) {
             throw new GameNotFoundError(gameId);
         }
 
-        return this.gameMediaLibraries.get(gameId).nextTrack(genre);
+        return this.mediaServicesByGame.get(gameId).getCurrentTrack();
+    }
+
+    createMediaServiceForGame(gameId: string): MediaManager {
+        if (this.mediaServicesByGame.has(gameId)) {
+            throw new Error(`Media service for game ${ gameId } already exists`);
+        }
+
+        const mediaService = new MediaManager(this.globalMediaLibrary);
+        this.mediaServicesByGame.set(gameId, mediaService);
+        return mediaService;
+    }
+
+    deleteMediaServiceForGame(gameId: string): void {
+        if (!this.mediaServicesByGame.has(gameId)) {
+            throw new GameNotFoundError(gameId);
+        }
+
+        this.mediaServicesByGame.delete(gameId);
     }
 }
 

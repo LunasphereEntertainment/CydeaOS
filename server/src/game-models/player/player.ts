@@ -1,4 +1,3 @@
-import { Computer } from '../computer/computer';
 import { Account } from '../../luna-models/account';
 
 export class Player {
@@ -7,7 +6,7 @@ export class Player {
     state: PlayerState;
     private socketId: string;
 
-    constructor(id: number, username: string, state: PlayerState = PlayerState.InGame) {
+    constructor(id: number, username: string, state: PlayerState = PlayerState.Online) {
         this.id = id;
         this.username = username;
         this.state = state;

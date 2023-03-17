@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Player } from '../../game-models/player/player';
-import { Computer } from '../../game-models/computer/computer';
-import { FileType, IFileEntry } from '../../game-models/file-system/file-system';
+import { FileType, IFileEntry } from "../../game-models/nodes/file-system/i-file-entries";
+import { Computer } from "../../game-models/nodes/computer/computer";
 
 @Injectable()
 export class NodeGeneratorService {
@@ -32,15 +32,13 @@ export class NodeGeneratorService {
 
     generatePlayerNode(player: Player): Computer {
         return new Computer(
-            `${player.displayName}'s Computer`,
-            this.emptyFileSystem(),
+            `${player.username}'s Computer`
         )
     }
 
     generateComputerNode(): Computer {
         return new Computer(
-            'computer',
-            this.emptyFileSystem(),
+            'computer'
         )
     }
 }

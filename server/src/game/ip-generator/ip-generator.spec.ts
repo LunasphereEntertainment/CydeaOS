@@ -1,7 +1,7 @@
-import { IpGenerator } from './ip-generator';
+import { IPGenerator } from './ip-generator';
 
 describe('IpGenerator', () => {
   it('should be defined', () => {
-    expect(new IpGenerator()).toBeDefined();
+    expect(new IPGenerator()).toBeDefined();
   });
 });

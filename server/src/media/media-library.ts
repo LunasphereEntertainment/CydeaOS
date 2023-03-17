@@ -49,6 +49,8 @@ export class MediaLibrary {
             this.mediaByGenre.get(mediaEntry.genre).push(mediaEntry);
         else
             this.mediaByGenre.set(mediaEntry.genre, new Array(mediaEntry));
+
+        console.log(`Added ${ mediaEntry.uuid } to ${ mediaEntry.genre }`)
     }
 
     getGenres(): Array<MediaMood> {

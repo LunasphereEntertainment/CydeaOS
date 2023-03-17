@@ -1,4 +1,5 @@
-import { MediaEntry, MediaMood } from './media.entry';
+import { MediaEntry } from './media.entry';
+import { MediaMood } from "../../game-models/media/media-mood/media-mood";
 
 describe('MediaEntry', () => {
     it('should be defined', () => {
@@ -27,7 +28,6 @@ describe('MediaEntry', () => {
 
         // Make sure the copy is a new object
         expect(copy).not.toBe(mediaEntry); // not the same reference
-        expect(copy).not.toEqual(mediaEntry); // not the same contents. This is a deep comparison
         mediaEntry.name = 'something else';
         expect(copy.name).not.toEqual(mediaEntry.name);
     });

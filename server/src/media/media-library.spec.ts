@@ -1,5 +1,6 @@
 import { MediaError, MediaLibrary } from './media-library';
-import { MediaEntry, MediaMood } from './media.entry/media.entry';
+import { MediaEntry } from './media.entry/media.entry';
+import { MediaMood } from "../game-models/media/media-mood/media-mood";
 
 describe('MediaLibrary', () => {
   it('should be defined', () => {
