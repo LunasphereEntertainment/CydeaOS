@@ -14,8 +14,8 @@ Multiplayer hacking simulation game for the web.
 5. Start the server: `cd client; npm start`
 
 ## Contributors
-- [**@LunaSphereEntertainment**]
-- [**@Leila-Codes**]
-- **GithubCopilot 💖**
+- [**@LunaSphereEntertainment**](https://github.com/LunasphereEntertainment)
+- [**@Leila-Codes**](https://github.com/Leila-Codes)
+- **[GithubCopilot](https://github.com/features/copilot) 💖**
 
 **&copy; All rights reserved LunaSphere Entertainment 2023**
