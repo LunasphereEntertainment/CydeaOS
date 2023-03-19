@@ -1,35 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { MediaEntry } from './media.entry/media.entry';
 import { readdirSync } from 'fs'
 import { join } from 'path';
-import { MediaLibrary, MediaQueue, MediaUuid } from './media-library';
-import { MediaMood } from "../game-models/media/media-mood/media-mood";
-import { MediaManager } from "../game-models/media/media-manager/media-manager";
-import { GameNotFoundError } from "../game/game.errors";
-
-
-/*
-class GameMediaInstance {
-    currentTrack: MediaUuid;
-    queues: Map<MediaMood, MediaQueue>;
-
-    constructor(queues: [MediaMood, MediaQueue][]) {
-        this.queues = new Map(queues);
-    }
-
-    nextTrack(genre: MediaMood): MediaUuid {
-        if (!this.queues.has(genre)) {
-            throw new Error(`No queue for genre ${ genre }`);
-        }
-        const queue = this.queues.get(genre);
-        if (!queue.hasNext()) {
-            throw new Error(`No more tracks in queue for genre ${ genre }`);
-        }
-        this.currentTrack = queue.dequeue();
-        return this.currentTrack;
-    }
-}
-*/
+import { MediaLibrary } from '../../../libs/media/media-library/media-library';
+import { MediaManager } from '../../../libs/media/media-manager/media-manager';
+import { MediaMood } from '../../../libs/media/media-mood/media-mood';
+import { MediaEntry } from '../../../libs/media/media-entry/media-entry';
+import { GameNotFoundError } from "../../../libs/errors/game-error/game.errors";
+import { MediaUuid } from "../../../libs/media/media.types";
 
 @Injectable()
 export class MediaService {
@@ -89,6 +66,22 @@ export class MediaService {
         }
 
         return this.mediaServicesByGame.get(gameId).getCurrentTrack();
+    }
+
+    getCurrentMood(gameId: string): MediaMood {
+        if (!this.mediaServicesByGame.has(gameId)) {
+            throw new GameNotFoundError(gameId);
+        }
+
+        return this.mediaServicesByGame.get(gameId).getCurrentMode();
+    }
+
+    nextSong(gameId: string): MediaUuid {
+        if (!this.mediaServicesByGame.has(gameId)) {
+            throw new GameNotFoundError(gameId);
+        }
+
+        return this.mediaServicesByGame.get(gameId).nextTrack();
     }
 
     createMediaServiceForGame(gameId: string): MediaManager {

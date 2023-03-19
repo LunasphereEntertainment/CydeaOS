@@ -1,13 +1,12 @@
 import { BadRequestException, CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { GameService } from '../game.service';
-import { GameNotFoundError } from "../game.errors";
+import { GameManagementService } from "../../game-management/game.management.service";
+import { GameNotFoundError } from "../../../../libs/errors/game-error/game.errors";
 
 @Injectable()
 export class GameResolverInterceptor implements NestInterceptor {
 
-    constructor(private gameService: GameService) {
-    }
+    constructor(private gameService: GameManagementService) {    }
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         let code: string,

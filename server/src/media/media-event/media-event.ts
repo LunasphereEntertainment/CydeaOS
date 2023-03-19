@@ -1,4 +1,4 @@
-import { MediaMood } from "../../game-models/media/media-mood/media-mood";
+import { MediaMood } from "../../../../libs/media/media-mood/media-mood";
 
 export class MediaEvent {
     constructor(
@@ -8,11 +8,10 @@ export class MediaEvent {
 }
 
 export enum MediaEventType {
-    GET_TRACK = "getTrack",
-    CHANGE_TRACK = "changeTrack",
+    GetCurrentTrack = "getCurrentTrack",
+    GetCurrentMood = "getCurrentMood",
+    SwitchMood = "switchMood",
+    NextTrack = "nextTrack"
 }
 
-export enum MusicPlaybackMode {
-    Server = "server",
-    Client = "client",
-}
+

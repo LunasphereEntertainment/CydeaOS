@@ -10,15 +10,27 @@ export class JwtAuthGuard implements CanActivate {
     canActivate(
         context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
-        const client = context.switchToWs().getClient(),
-            request = client.handshake;
+        let client,
+            token;
 
-        // console.log(request);
+        switch(context.getType()) {
+            case 'http':
+                client = context.switchToHttp().getRequest();
+                token = client.headers.authorization;
+                break;
+            case 'ws':
+                client = context.switchToWs().getClient();
+                token = client.handshake.headers.authorization;
+                break;
+            default:
+                console.error('Unknown context type: ' + context.getType());
+                return false;
+        }
 
-        const token = request.headers.authorization;
         if (!token) {
             return false;
         }
+
         const decoded = this.jwtService.decodeToken(token);
         if (!decoded) {
             return false;

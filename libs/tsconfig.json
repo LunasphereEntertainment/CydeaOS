@@ -1,18 +1,7 @@
 {
-  "references": [
-    {
-      "path": "../libs"
-    }
-  ],
-  "include": [
-    "../libs/**/*",
-    "src/**/*"
-  ],
   "compilerOptions": {
     "module": "commonjs",
-    "lib": [
-      "es2017"
-    ],
+    "lib": ["es2017"],
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
