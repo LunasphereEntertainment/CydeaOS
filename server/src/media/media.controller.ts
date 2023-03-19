@@ -2,8 +2,8 @@ import { Controller, Get, Param, ParseUUIDPipe, Res, UseInterceptors } from '@ne
 import { MediaService } from './media.service';
 import { createReadStream } from 'fs';
 import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
-import { MediaError } from "../../../libs/errors/media-error/media.error"
-import { MediaUuid } from "../../dist/media/media-library";
+import { MediaError } from "../errors/media-error/media.error"
+import { MediaUuid } from "../../../libs/media/media.types"
 
 @Controller('media')
 @UseInterceptors(JwtAuthGuard)

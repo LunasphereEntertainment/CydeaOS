@@ -35,8 +35,12 @@ export class IPGenerator {
             switch (this.type) {
                 case IPType.IPv4:
                     ip = generateIPv4();
+                    break
                 case IPType.IPv6:
                     ip = generateIPv6();
+                    break;
+                default:
+                    throw new Error('Invalid IP type');
             }
 
             if (!this.generatedIPs.has(ip)) {
@@ -44,6 +48,8 @@ export class IPGenerator {
                 return ip;
             }
         }
+
+        throw new Error('Could not generate IP');
     }
 }
 

@@ -3,8 +3,8 @@ import { MediaEventType } from "./media-event/media-event";
 import { ParseEnumPipe, UseInterceptors } from "@nestjs/common";
 import { GameResolverInterceptor } from "../game/game-resolver/game-resolver.interceptor";
 import { MediaService } from "./media.service";
-import { MediaUuid } from "../../dist/media/media-library";
-import { MediaMood } from "../../dist/game-models/media/media-mood/media-mood";
+import { MediaUuid } from '../../../libs/media/media.types';
+import { MediaMood } from '../../../libs/media/media-mood/media-mood';
 
 @WebSocketGateway()
 @UseInterceptors(GameResolverInterceptor)

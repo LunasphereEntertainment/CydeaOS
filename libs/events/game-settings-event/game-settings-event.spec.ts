@@ -1,4 +1,4 @@
-import { GameSettingsEvent, GameSettingsEventType } from './game-settings-event-enums';
+import { GameSettingsEvent, GameSettingsEventType } from './game-settings-event';
 
 describe('GameSettingsEvent', () => {
   it('should be defined', () => {

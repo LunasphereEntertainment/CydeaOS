@@ -1,5 +1,5 @@
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { GameSettingsEvent, GameSettingsEventType } from "./game-settings-event-enums";
+import { GameSettingsEvent, GameSettingsEventType } from "../../../libs/events/game-settings-event/game-settings-event";
 import { UseInterceptors } from "@nestjs/common";
 import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
 import { GameSettingsService } from "./game-settings.service";

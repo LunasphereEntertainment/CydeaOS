@@ -5,4 +5,6 @@ export interface ComputerDaemon {
     ports: NetworkPort[];
 
     online: boolean;
+
+    handleRequest(data: any): any;
 }

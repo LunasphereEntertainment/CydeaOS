@@ -1,5 +1,5 @@
-import { GameConfiguration } from "../../../libs/game-configuration/game-configuration";
-import { GameObject } from "../../../libs/game-object/game-object";
+import { GameConfiguration } from "../../game-configuration/game-configuration";
+import { GameObject } from "../../game-object/game-object";
 
 export enum GameManagementEventType {
     GameCreated = 'game-created',

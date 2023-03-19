@@ -1,4 +1,4 @@
-import { ClientSettings } from "../../../libs/client-settings/client-settings";
+import { ClientSettings } from "../../client-settings/client-settings";
 
 export enum GameSettingsEventType {
     Save = 'save',

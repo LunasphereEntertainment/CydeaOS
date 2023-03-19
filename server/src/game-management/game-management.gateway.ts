@@ -1,10 +1,10 @@
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { GameManagementEvent, GameManagementEventType, GameManagementResponseEvent } from "./game-management-events";
+import { GameManagementEvent, GameManagementEventType, GameManagementResponseEvent } from "../../../libs/events/game-management-event/game-management-event";
 import { GameManagementService } from "./game.management.service";
 import { GameConfiguration } from "../../../libs/game-configuration/game-configuration";
 import { UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
-import { AuthSocket } from "../auth.socket.interface";
+import { AuthSocket } from "../auth-socket.interface";
 import { Player } from "../../../libs/player/player";
 
 @WebSocketGateway()

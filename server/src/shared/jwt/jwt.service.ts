@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Account } from '../../luna-models/account';
+import { Account } from '../../../../libs/luna/account';
 import { sign, decode } from 'jsonwebtoken';
 
 const JwtSecret = process.env.JWT_SECRET || 'secret'

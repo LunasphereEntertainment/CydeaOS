@@ -1,6 +1,7 @@
-import { MediaMood } from "../../media/media-mood/media-mood";
+import { MediaMood } from "../../../../libs/media/media-mood/media-mood";
+import { InternalServerErrorException } from '@nestjs/common';
 
-export class MediaError extends Error {
+export class MediaError extends InternalServerErrorException {
     constructor(message: string) {
         super(message);
     }

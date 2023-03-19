@@ -1,5 +1,5 @@
 import { Player, PlayerState } from './player';
-import { Account } from '../../server/src/luna-models/account';
+import { Account } from '../luna/account';
 
 describe('Player', () => {
     it('should be defined', () => {

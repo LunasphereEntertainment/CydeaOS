@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0; padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+
+  background: #111;
+  background: linear-gradient(to bottom right, #111 0%, #222 100%) no-repeat;
+  background-size: cover;
+}
+
+@keyframes entry-from-right-to-left {
+  from {
+    transform: translateX(25%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes exit-from-left-to-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-25%);
+    opacity: 0;
+  }
+}
+
+.anim-rtl {
+  animation: entry-from-right-to-left 0.5s ease-in-out;
+
+  .exit {
+    animation: exit-from-left-to-right 0.5s ease-in-out;
+  }
+}

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Computer } from "../../../libs/nodes/computer/computer";
-import { GameNotFoundError } from "../../../libs/errors/game-error/game.errors";
+import { GameNotFoundError } from "../errors/game-error/game.errors";
 
 @Injectable()
 export class NodeManagementService {
@@ -14,7 +14,7 @@ export class NodeManagementService {
         this.nodes.get(gameId).push(node);
     }
 
-    findNode(gameId: string, ipAddress: string): Computer | undefined {
+    findNode(gameId: string, ipAddress: string): (Computer | undefined) {
         if (!this.nodes.has(gameId)) {
             throw new GameNotFoundError(gameId);
         }

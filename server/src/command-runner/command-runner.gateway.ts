@@ -1,5 +1,5 @@
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { CommandRunnerEvent, CommandRunnerEventType } from "./command-runner-event/command-runner-event";
+import { CommandRunnerEvent, CommandRunnerEventType } from "../../../libs/events/command-runner-event/command-runner-event";
 import { UseInterceptors } from "@nestjs/common";
 import { GameResolverInterceptor } from "../game/game-resolver/game-resolver.interceptor";
 import { GameSocket } from "../game-socket.interface";
@@ -15,7 +15,7 @@ export class CommandRunnerGateway {
   }
 
   @SubscribeMessage(CommandRunnerEventType.ExecuteCommand)
-  async handleExecuteCommand(client: GameSocket, payload: CommandRunnerEvent): Promise<string> {
+  async handleExecuteCommand(client: GameSocket, payload: CommandRunnerEvent) {
     const game = client.game;
     let { command, targetIp } = payload,
       target: Computer | undefined = undefined;
@@ -25,9 +25,5 @@ export class CommandRunnerGateway {
 
     const result = await commandExecutor(command, target);
     client.emit(CommandRunnerEventType.ExecuteCommandResult, result);
-  }
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    return 'Hello world!';
   }
 }

@@ -1,6 +1,6 @@
 import { MediaLibrary } from './media-library';
 import { MediaMood } from "../media-mood/media-mood";
-import { MediaError } from "../../errors/media-error/media.error";
+import { MediaError } from "../../../server/src/errors/media-error/media.error";
 import { MediaEntry } from "../media-entry/media-entry";
 
 describe('MediaLibrary', () => {

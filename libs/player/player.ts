@@ -1,10 +1,11 @@
-import { Account } from '../../server/src/luna-models/account';
+import { Account } from '../luna/account';
 
 export class Player {
     id: number;
     username: string;
     state: PlayerState;
     private socketId: string;
+    private currentTarget: string;
 
     constructor(id: number, username: string, state: PlayerState = PlayerState.Online) {
         this.id = id;
@@ -26,6 +27,14 @@ export class Player {
         //     throw new Error('Socket id already set');
         // }
         this.socketId = socketId;
+    }
+
+    getCurrentTarget(): string {
+        return this.currentTarget;
+    }
+
+    setCurrentTarget(target: string) {
+        this.currentTarget = target;
     }
 
     isOnline() {

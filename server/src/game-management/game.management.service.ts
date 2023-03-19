@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GameObject } from "../../../libs/game-object/game-object";
 import { GameConfiguration } from '../../../libs/game-configuration/game-configuration';
-import { GameNotFoundError } from "../../../libs/errors/game-error/game.errors";
+import { GameNotFoundError } from "../errors/game-error/game.errors";
 
 @Injectable()
 export class GameManagementService {

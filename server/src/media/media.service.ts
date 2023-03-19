@@ -5,7 +5,7 @@ import { MediaLibrary } from '../../../libs/media/media-library/media-library';
 import { MediaManager } from '../../../libs/media/media-manager/media-manager';
 import { MediaMood } from '../../../libs/media/media-mood/media-mood';
 import { MediaEntry } from '../../../libs/media/media-entry/media-entry';
-import { GameNotFoundError } from "../../../libs/errors/game-error/game.errors";
+import { GameNotFoundError } from "../errors/game-error/game.errors";
 import { MediaUuid } from "../../../libs/media/media.types";
 
 @Injectable()

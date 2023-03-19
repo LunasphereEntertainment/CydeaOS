@@ -3,7 +3,7 @@ import { MediaLibrary } from '../media-library/media-library';
 import { MusicPlaybackMode } from '../media.playback.mode';
 import { MediaQueue } from "../media-queue/media.queue";
 import { MediaUuid } from "../media.types";
-import { MediaError } from "../../errors/media-error/media.error";
+import { MediaError } from "../../../server/src/errors/media-error/media.error";
 
 export class MediaManager {
     mediaPlaybackMode: MusicPlaybackMode = MusicPlaybackMode.Client;

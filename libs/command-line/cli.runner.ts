@@ -5,7 +5,7 @@ import { RmCommand } from "./rm-command/rm-command";
 import { LsCommand } from "./ls-command/ls-command";
 
 export interface CliRunner {
-    execute(command: CliCommand, target?: Computer): Promise<string>;
+    execute(command: CliCommand, target?: Computer | Computer[] ): Promise<string>;
 }
 
 const executors: Map<string, CliRunner> = new Map([

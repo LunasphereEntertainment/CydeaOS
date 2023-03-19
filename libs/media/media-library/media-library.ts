@@ -1,6 +1,6 @@
 import { MediaUuid } from "../media.types";
 import { MediaMood } from "../media-mood/media-mood";
-import { MediaError } from "../../errors/media-error/media.error";
+import { MediaError } from "../../../server/src/errors/media-error/media.error";
 import { MediaQueue } from "../media-queue/media.queue";
 import { MediaEntry } from "../media-entry/media-entry";
 

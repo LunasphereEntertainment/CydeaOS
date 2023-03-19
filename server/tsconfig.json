@@ -1,13 +1,4 @@
 {
-  "references": [
-    {
-      "path": "../libs"
-    }
-  ],
-  "include": [
-    "../libs/**/*",
-    "src/**/*"
-  ],
   "compilerOptions": {
     "module": "commonjs",
     "lib": [
@@ -28,6 +19,17 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@cydeaos/game-server": [
+        "game-server"
+      ],
+      "@cydeaos/libs": [
+        "libs"
+      ],
+      "@cydeaos/libs/*": [
+        "libs/*"
+      ]
+    }
   }
 }

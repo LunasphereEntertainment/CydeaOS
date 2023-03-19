@@ -35,6 +35,10 @@ export class DnsServer implements ComputerDaemon {
         return ip;
     }
 
+    handleRequest(data: any): any {
+        return this.lookupIP(data);
+    }
+
 }
 
 export class DnsNotFoundError extends Error {

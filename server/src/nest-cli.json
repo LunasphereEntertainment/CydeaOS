@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "cydeaos-models": {
+      "type": "library",
+      "root": "libs/cydeaos-models",
+      "entryFile": "index",
+      "sourceRoot": "libs/cydeaos-models/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cydeaos-models/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
+}
