@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Player } from '../player/player';
 import { IPGenerator } from '../ip-generator/ip-generator';
 import { GameConfiguration } from '../game-configuration/game-configuration';
@@ -12,10 +11,12 @@ export class GameObject {
 
     state: GameState = GameState.WaitingForPlayers;
 
+    private hostSocketId?: string;
+
     public readonly ipGenerator: IPGenerator;
 
-    constructor(config: GameConfiguration) {
-        this.id = uuidv4();
+    constructor(id: string, config: GameConfiguration) {
+        this.id = id;
 
         this.ipGenerator = new IPGenerator(config.ipType);
 
@@ -34,6 +35,14 @@ export class GameObject {
         return this.players.find(player => player.getSocketId() === socketId);
     }
 
+    getHostSocketId(): string {
+        return this.hostSocketId!;
+    }
+
+    setHostSocketId(socketId: string) {
+        this.hostSocketId = socketId;
+    }
+
     start() {
         if (this.state !== GameState.WaitingForPlayers) {
             throw new Error(`Game(id: ${this.id}) is already running/finished.`);
@@ -48,6 +57,15 @@ export class GameObject {
         }
 
         this.state = GameState.Stopped;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            config: this.config,
+            players: this.players,
+            state: this.state
+        }
     }
 }
 

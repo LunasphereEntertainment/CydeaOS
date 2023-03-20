@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Account } from '../../../../libs/luna/account';
-import { sign, decode } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 
 const JwtSecret = process.env.JWT_SECRET || 'secret'
 
@@ -12,17 +12,20 @@ export class JwtService {
         return sign({
             id: account.id,
             username: account.username,
-        }, JwtSecret, { algorithm: 'HS512', expiresIn: '4h' })
+        }, JwtSecret, { algorithm: 'HS512', expiresIn: '2 days' })
     }
 
-    decodeToken(token: string): Account {
+    decodeToken(authHeader: string): Account | null {
+        const token = authHeader.split(' ')[1];
+
         try {
-            const decoded = decode(token, { complete: true });
+            const decoded = verify(token, JwtSecret, { algorithms: ['HS512'] });
             return {
-                id: decoded.payload['id'],
-                username: decoded.payload['username']
+                id: decoded['id'],
+                username: decoded['username']
             }
         } catch (e) {
+            console.error(e);
             return null;
         }
     }

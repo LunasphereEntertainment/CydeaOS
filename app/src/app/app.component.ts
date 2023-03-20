@@ -1,14 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  ClarityIcons,
-  targetIcon,
-  cogIcon,
-  boltIcon,
-  plusIcon,
-  playIcon,
-  arrowIcon,
-  exclamationCircleIcon
-} from '@cds/core/icon'
+import { arrowIcon, boltIcon, ClarityIcons, cogIcon, exclamationTriangleIcon, playIcon, plusIcon, targetIcon, timesCircleIcon, userIcon } from '@cds/core/icon'
 
 @Component({
   selector: 'app-root',
@@ -27,6 +18,8 @@ export class AppComponent {
     ClarityIcons.addIcons(plusIcon);
     ClarityIcons.addIcons(playIcon);
     ClarityIcons.addIcons(arrowIcon);
-    ClarityIcons.addIcons(exclamationCircleIcon);
+    ClarityIcons.addIcons(userIcon);
+    ClarityIcons.addIcons(timesCircleIcon);
+    ClarityIcons.addIcons(exclamationTriangleIcon);
   }
 }

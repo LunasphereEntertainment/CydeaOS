@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { GameObject } from "../../../libs/game-object/game-object";
 import { GameConfiguration } from '../../../libs/game-configuration/game-configuration';
 import { GameNotFoundError } from "../errors/game-error/game.errors";
+import { v4 } from 'uuid';
 
 @Injectable()
 export class GameManagementService {
@@ -16,7 +17,7 @@ export class GameManagementService {
     }
 
     newGame(config: GameConfiguration): GameObject {
-        const game = new GameObject(config);
+        const game = new GameObject(v4(), config);
 
         this.activeGames.set(game.id, game);
 

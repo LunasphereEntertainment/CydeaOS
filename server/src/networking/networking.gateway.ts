@@ -5,7 +5,7 @@ import { GameSocket } from '../game-socket.interface';
 import { BadRequestException, UseInterceptors } from '@nestjs/common';
 import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
 export class NetworkingGateway {
 

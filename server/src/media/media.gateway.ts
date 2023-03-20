@@ -6,7 +6,7 @@ import { MediaService } from "./media.service";
 import { MediaUuid } from '../../../libs/media/media.types';
 import { MediaMood } from '../../../libs/media/media-mood/media-mood';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
 export class MediaGateway {
 

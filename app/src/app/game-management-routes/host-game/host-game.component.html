@@ -1,30 +1,54 @@
-<div class="main-container text-center">
-  <div class="clr-row clr-justify-content-center">
-    <div class="clr-col-lg-5 clr-col-m-6 clr-col-12">
-      <div class="card anim-rtl">
-        <h3 class="card-header">
-          <cds-icon shape="exclamation-circle" size="lg"></cds-icon>
-          Pre-Game Screen
-        </h3>
-        <div class="card-content">
-          <p>Game Type: Elimination</p>
+<div class="clr-row clr-justify-content-center text-center">
+  <div class="clr-col-lg-5 clr-col-m-6 clr-col-12">
+    <div class="card anim-rtl">
+      <h3 class="card-header">
+        <cds-icon shape="exclamation-circle" size="lg"></cds-icon>
+        Pre-Game Screen
+      </h3>
 
-          <h3>Waiting for players...</h3>
+      <div class="card-block">
+        <p>Game Type: {{ currentGame?.config!.type }}
           <br>
-          <span class="spinner spinner-md">Waiting for players...</span>
-        </div>
+          <small>IP Mode: {{ currentGame?.config!.ipType }}</small>
+          <br>
+          <small>Media Playback Mode: {{ currentGame?.config!.musicMode | titlecase }}</small>
+        </p>
 
-        <div class="card-footer">
-          <button class="btn primary btn-block" disabled>
-            Start Game
-          </button>
-        </div>
+        <h3>Waiting for players...</h3>
+        <br>
+        <span class="spinner spinner-md">Waiting for players...</span>
+      </div>
+
+      <div class="card-block text-left">
+        <p>
+          Players Connected:
+          <span class="label label-blue">{{ currentGame?.players!.length }}</span>
+        </p>
+        <ul class="player-list">
+          <li *ngIf="currentGame?.players!.length < 1">
+            <cds-icon size="md" shape="exclamation-triangle"></cds-icon>
+            No players connected
+          </li>
+          <li *ngFor="let player of currentGame?.players" class="anim-rtl">
+            <cds-icon size="md" shape="user"></cds-icon>
+            {{ player.username }}
+
+            <button type="button" class="btn btn-icon btn-outline-danger" aria-label="Kick User">
+              <cds-icon shape="times"></cds-icon>
+              Kick
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn primary btn-block" [disabled]="currentGame?.players!.length < 1">
+          Start Game
+        </button>
       </div>
     </div>
   </div>
-
-  <div class="content-area clr-flex-fill">
-
-  </div>
 </div>
+
+<button class="btn btn-outline-primary" style="margin: 5px 30px;" (click)="testJoinClicked()">Test Join</button>
 

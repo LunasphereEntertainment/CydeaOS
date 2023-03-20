@@ -6,7 +6,7 @@ import { GameSettingsService } from "./game-settings.service";
 import { ClientSettings } from "../../../libs/client-settings/client-settings";
 import { Socket } from "socket.io";
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(JwtAuthGuard)
 export class GameSettingsGateway {
 

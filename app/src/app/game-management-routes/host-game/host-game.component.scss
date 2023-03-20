@@ -1,0 +1,21 @@
+ul.player-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  li {
+    margin: 5px 1rem;
+
+    //transition: background-color 0.2s ease-in-out;
+
+    //cursor: pointer;
+
+    //&:hover {
+    //  background-color: #485764;
+    //}
+
+    button {
+      float: right;
+    }
+  }
+}

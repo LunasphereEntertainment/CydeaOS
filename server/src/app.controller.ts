@@ -1,18 +1,18 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { WebSocketGateway } from '@nestjs/websockets';
+import { Account } from "../../libs/luna/account";
+import { JwtService } from "./shared/jwt/jwt.service";
 
 @Controller()
-@WebSocketGateway()
+@WebSocketGateway({ cors: process.env.CORS === 'true' })
 // @UseGuards(JwtAuthGuard)
 export class AppController /*implements OnGatewayConnection, OnGatewayDisconnect*/ {
-    constructor() {}
+    constructor(private jwtService: JwtService) {}
 
-/*    handleConnection(client: any, ...args: any[]) {
-        console.log('Client connected');
+    @Get('test')
+    getTestJwt(): string {
+        const testAccount = <Account>{id: 1, username: "leila-codes"};
+        return this.jwtService.createToken(testAccount);
     }
-
-    handleDisconnect(client: any) {
-        console.log('Client disconnected');
-    }*/
 }
 

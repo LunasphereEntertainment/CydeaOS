@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConnectHandlerGateway } from './connect-handler.gateway';
+import { PlayerConnectionHandlerGateway } from './player-connection-handler.gateway';
 
 describe('ConnectHandlerGateway', () => {
-  let gateway: ConnectHandlerGateway;
+  let gateway: PlayerConnectionHandlerGateway;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ConnectHandlerGateway],
+      providers: [PlayerConnectionHandlerGateway],
     }).compile();
 
-    gateway = module.get<ConnectHandlerGateway>(ConnectHandlerGateway);
+    gateway = module.get<PlayerConnectionHandlerGateway>(PlayerConnectionHandlerGateway);
   });
 
   it('should be defined', () => {

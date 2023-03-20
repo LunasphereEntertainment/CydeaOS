@@ -5,18 +5,19 @@ import { NodeManagementService } from '../node-management/node-management.servic
 import { GameSocket } from '../game-socket.interface';
 import { Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
-export class ConnectHandlerGateway {
+export class PlayerConnectionHandlerGateway {
+    @WebSocketServer()
+    server: Server;
 
     constructor(private nodeManagementService: NodeManagementService) {
     }
 
-    @WebSocketServer()
-    server: Server;
 
-    @SubscribeMessage('connect')
-    handleConnection(client: GameSocket, payload: { target: string }) {
+
+    @SubscribeMessage('player-connect')
+    handlePlayerConnection(client: GameSocket, payload: { target: string }) {
         const { target: targetIp } = payload;
         const node = this.nodeManagementService.findNode(client.game.id, targetIp);
         if (node) {

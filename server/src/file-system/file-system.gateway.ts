@@ -9,7 +9,7 @@ import { IFileEntry } from '../../../libs/nodes/file-system/i-file-entries';
 import { IPNotFoundError } from '../errors/node-errors/node-errors';
 import { FileNotFound, FileType } from '../../../libs/nodes/file-system/i-file-entries';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
 export class FileSystemGateway {
 

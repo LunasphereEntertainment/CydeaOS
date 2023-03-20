@@ -2,6 +2,8 @@ import { GameConfiguration } from "../../game-configuration/game-configuration";
 import { GameObject } from "../../game-object/game-object";
 
 export enum GameManagementEventType {
+
+    GetGame = 'get-game',
     GameCreated = 'game-created',
     GameJoined = 'game-joined',
     GameStarted = 'game-started',
@@ -9,12 +11,12 @@ export enum GameManagementEventType {
     // GameDeleted = 'game-deleted',
 }
 
-export class GameManagementEvent {
+export interface GameManagementEvent {
     type: GameManagementEventType;
     data: { code: string } | GameConfiguration;
 }
 
-export class GameManagementResponseEvent {
+export interface GameManagementResponseEvent {
     type: GameManagementEventType;
     data: GameObject;
 }

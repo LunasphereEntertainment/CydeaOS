@@ -3,6 +3,7 @@ import { GameConfiguration, GameType } from "../game-configuration/game-configur
 import { Player } from "../player/player";
 import { IPType } from "../ip-generator/ip-generator";
 import { MusicPlaybackMode } from "../media/media.playback.mode";
+import { v4 } from 'uuid';
 
 describe('GameObject', () => {
 
@@ -17,7 +18,7 @@ describe('GameObject', () => {
     });
 
     it('should be defined', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         expect(testGameObject).toBeDefined();
         expect(testGameObject.id).toBeDefined();
         expect(testGameObject.config).toBeDefined();
@@ -25,7 +26,7 @@ describe('GameObject', () => {
     });
 
     it('should be joinable', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         let testPlayer = new Player(0, 'test');
 
         expect(testGameObject.players).toHaveLength(0);
@@ -35,14 +36,14 @@ describe('GameObject', () => {
     });
 
     it('should be startable', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         expect(testGameObject.state).toBe(GameState.WaitingForPlayers);
         testGameObject.start();
         expect(testGameObject.state).toBe(GameState.Running);
     });
 
     it('should be stoppable', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         testGameObject.start();
         expect(testGameObject.state).toBe(GameState.Running);
         testGameObject.stop();
@@ -50,14 +51,14 @@ describe('GameObject', () => {
     });
 
     it('should not be startable if already running', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         testGameObject.start();
         expect(testGameObject.state).toBe(GameState.Running);
         expect(() => testGameObject.start()).toThrowError();
     });
 
     it('should not be stoppable if already stopped', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         testGameObject.start();
         testGameObject.stop();
         expect(testGameObject.state).toBe(GameState.Stopped);
@@ -65,14 +66,14 @@ describe('GameObject', () => {
     });
 
     it('should allow finding a player by username', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         let testPlayer = new Player(0, 'test');
         testGameObject.join(testPlayer);
         expect(testGameObject.findPlayerByUsername('test')).toBe(testPlayer);
     });
 
     it('should allow finding a player by socket id', () => {
-        let testGameObject = new GameObject(testGameConfig);
+        let testGameObject = new GameObject(v4(), testGameConfig);
         let testPlayer = new Player(0, 'test');
         testGameObject.join(testPlayer);
         testPlayer.setSocketId('test');

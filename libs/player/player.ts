@@ -4,8 +4,8 @@ export class Player {
     id: number;
     username: string;
     state: PlayerState;
-    private socketId: string;
-    private currentTarget: string;
+    private socketId?: string;
+    private currentTarget?: string;
 
     constructor(id: number, username: string, state: PlayerState = PlayerState.Online) {
         this.id = id;
@@ -18,7 +18,7 @@ export class Player {
     }
 
     getSocketId(): string {
-        return this.socketId;
+        return this.socketId!;
     }
 
     // only allow setting the socket id once
@@ -30,7 +30,7 @@ export class Player {
     }
 
     getCurrentTarget(): string {
-        return this.currentTarget;
+        return this.currentTarget!;
     }
 
     setCurrentTarget(target: string) {

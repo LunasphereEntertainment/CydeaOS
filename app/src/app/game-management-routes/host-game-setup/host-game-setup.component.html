@@ -7,12 +7,25 @@
       </h3>
 
       <div class="card-body">
-        <form action="" clrForm [formGroup]="hostGameForm">
+
+        <form clrForm [formGroup]="hostGameForm" (ngSubmit)="onSubmit()">
+
+          <clr-select-container>
+            <label>Game Mode</label>
+            <select clrSelect name="gameModeSelector" id="game-mode-selector" formControlName="gameMode">
+              <option [value]="gameOptions.Elimination">Elimination</option>
+              <!--<option [value]="gameOptions.TeamDM">Team Deathmatch</option>-->
+              <!--<option [value]="gameOptions.Story">Story</option>-->
+            </select>
+            <clr-control-helper>Select the game mode to host.
+              "Elimination" involes a game of survival - all players must compete to be the last computer left online.</clr-control-helper>
+          </clr-select-container>
+
           <clr-select-container>
             <label>IP Mode</label>
             <select clrSelect name="ipTypeSelector" id="ip-type-selector" formControlName="ipMode">
-              <option value="IPv4">IPv4</option>
-              <option value="IPv6">IPv6</option>
+              <option [value]="ipOptions.IPv4">IPv4</option>
+              <option [value]="ipOptions.IPv6">IPv6</option>
             </select>
             <clr-control-helper>Select the IP Mode from "IPv4" and "IPv6." If you're not sure, leave it as default.</clr-control-helper>
           </clr-select-container>
@@ -20,24 +33,24 @@
           <clr-select-container>
             <label>Music Playback</label>
             <select clrSelect name="playbackModeSelector" id="playback-mode-selector" formControlName="musicMode">
-              <option value="client">Client</option>
-              <option value="server">Host Only</option>
+              <option [value]="musicOptions.Client">Client</option>
+              <option [value]="musicOptions.Server">Host Only</option>
             </select>
             <clr-control-helper>Select the music playback mode. "Client" means all clients will play music themselves (great for remote play) - "Host Only" will play music on the host only. </clr-control-helper>
           </clr-select-container>
+
+
+          <div class="menu-button-layout">
+            <button class="btn btn-outline-danger">
+              <cds-icon shape="arrow" direction="left"></cds-icon>
+              Cancel
+            </button>
+            <button class="btn btn-primary" type="submit">
+              <cds-icon shape="play"></cds-icon>
+              Start Game
+            </button>
+          </div>
         </form>
-      </div>
-
-      <div class="card-footer menu-button-layout">
-        <button class="btn btn-outline-danger">
-          <cds-icon shape="arrow" direction="left"></cds-icon>
-          Cancel
-        </button>
-
-        <button class="btn btn-primary" routerLink="/host">
-          <cds-icon shape="play"></cds-icon>
-          Start Game
-        </button>
       </div>
     </div>
   </div>

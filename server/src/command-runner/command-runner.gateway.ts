@@ -7,7 +7,7 @@ import { NodeManagementService } from "../node-management/node-management.servic
 import { Computer } from "../../../libs/nodes/computer/computer";
 import { default as commandExecutor } from "../../../libs/command-line/cli.runner";
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
 export class CommandRunnerGateway {
 
