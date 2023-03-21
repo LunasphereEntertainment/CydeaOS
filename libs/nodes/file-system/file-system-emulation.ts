@@ -29,24 +29,29 @@ export class FileSystemEmulation {
         const parts = path.split("/")
             .filter((part) => part !== "" && part !== "." && part !== ".."); // sanitize path
 
-        let currentFile = this.entries,
-            parent: IFileEntry | null = null;
+        let currentFile: IFileEntry | undefined = this.entries,
+            parent: IFileEntry | undefined;
 
         while (parts.length > 0) {
+            if (!currentFile && mustExist) {
+                throw new FileNotFound();
+            }
+
             let currentPath = parts.shift();
 
-            if (currentFile.type !== FileType.Directory) {
+            if (currentFile!.type !== FileType.Directory) {
                 throw new FileNotDirectory();
             }
 
-            currentFile = (<IFileEntry[]>currentFile.content).find((file) => file.name === currentPath);
+            currentFile = (<IFileEntry[]>currentFile!.content).find((file) => file.name === currentPath);
 
             if (parts.length > 0) {
                 parent = currentFile;
             }
+
         }
 
-        if (currentFile == null && mustExist) {
+        if (!currentFile && mustExist) {
             throw new FileNotFound();
         }
 
@@ -54,7 +59,7 @@ export class FileSystemEmulation {
             parent = this.entries;
         }
 
-        return [parent, (<IFileEntry[]>parent.content).indexOf(currentFile)];
+        return [parent, (<IFileEntry[]>parent.content).indexOf(currentFile!)];
     }
 
     listFiles(path: string = ""): IFileEntry[] {

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ClientSettings } from "../../../libs/client-settings/client-settings";
+import { ClientSettings } from '@cydeaos/libs/client-settings/client-settings';
 
 @Injectable()
 export class GameSettingsService {

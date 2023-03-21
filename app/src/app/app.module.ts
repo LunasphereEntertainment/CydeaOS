@@ -9,8 +9,9 @@ import { HeaderComponent } from './header/header.component';
 import { GameLauncherComponent } from './game-launcher/game-launcher.component';
 import { HostGameComponent } from './game-management-routes/host-game/host-game.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HostGameSetupComponent } from './game-management-routes/host-game-setup/host-game-setup.component';
+import { GameManagementService } from "./game-management-routes/game-management.service";
+import { JoinGameComponent } from './game-management-routes/join-game/join-game.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HostGameSetupComponent } from './game-management-routes/host-game-setup
     GameLauncherComponent,
     HostGameSetupComponent,
     HostGameComponent,
+    JoinGameComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,9 @@ import { HostGameSetupComponent } from './game-management-routes/host-game-setup
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    GameManagementService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

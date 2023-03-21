@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Player } from '../../../../libs/player/player';
-import { FileType, IFileEntry } from "../../../../libs/nodes/file-system/i-file-entries";
-import { Computer } from "../../../../libs/nodes/computer/computer";
+import { Player } from '@cydeaos/libs/player/player';
+import { FileType, IFileEntry } from '@cydeaos/libs/nodes/file-system/i-file-entries';
+import { Computer } from '@cydeaos/libs/nodes/computer/computer';
 
 @Injectable()
 export class NodeGeneratorService {

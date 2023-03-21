@@ -3,14 +3,13 @@ import { MediaLibrary } from '../media-library/media-library';
 import { MusicPlaybackMode } from '../media.playback.mode';
 import { MediaQueue } from "../media-queue/media.queue";
 import { MediaUuid } from "../media.types";
-import { MediaError } from "../../../server/src/errors/media-error/media.error";
 
 export class MediaManager {
     mediaPlaybackMode: MusicPlaybackMode = MusicPlaybackMode.Client;
     private readonly library: MediaLibrary = new MediaLibrary();
 
     private moodQueues: Map<MediaMood, MediaQueue> = new Map();
-    private currentMood: MediaMood;
+    private currentMood: MediaMood = MediaMood.Chill;
     private currentTrack?: MediaUuid;
 
     constructor(library: MediaLibrary, mode?: MusicPlaybackMode) {
@@ -21,7 +20,11 @@ export class MediaManager {
     }
 
     getCurrentTrack(): MediaUuid {
-        return this.currentTrack;
+        if (this.currentTrack) {
+            return this.currentTrack;
+        }
+
+        return this.nextTrack();
     }
 
     getCurrentMode(): MediaMood {
@@ -33,15 +36,15 @@ export class MediaManager {
             this.currentMood = newMood;
         }
         try {
-            this.currentTrack = this.moodQueues.get(this.currentMood).dequeue();
+            this.currentTrack = this.moodQueues.get(this.currentMood)!.dequeue();
         } catch (e) {
             // handle queue empty
-            if (e instanceof MediaError) {
-                if (e.message.includes('empty')) {
-                    // reset the queue
-                    this.moodQueues.set(this.currentMood, this.library.newMediaQueue(this.currentMood));
-                    this.currentTrack = this.moodQueues.get(this.currentMood).dequeue();
-                }
+            if (e.message.includes('empty')) {
+                // reset the queue
+                this.moodQueues.set(this.currentMood, this.library.newMediaQueue(this.currentMood));
+                this.currentTrack = this.moodQueues.get(this.currentMood)!.dequeue();
+            } else {
+                throw e;
             }
         }
         return this.currentTrack;

@@ -14,7 +14,7 @@ import { GameSettingsService } from './game-settings/game-settings.service';
 import { GameManagementService } from './game-management/game.management.service';
 import { FileSystemGateway } from './file-system/file-system.gateway';
 import { NetworkingGateway } from './networking/networking.gateway';
-import { PlayerConnectionHandlerGateway } from "./connect-handler/player-connection-handler.gateway";
+import { NodeManagementGateway } from "./node-management/node-management.gateway";
 
 @Module({
     imports: [ GameModule, SharedModule ],
@@ -31,7 +31,7 @@ import { PlayerConnectionHandlerGateway } from "./connect-handler/player-connect
         NodeManagementService,
         FileSystemGateway,
         NetworkingGateway,
-        PlayerConnectionHandlerGateway
+        NodeManagementGateway
     ],
 })
 export class AppModule {

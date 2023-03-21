@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MediaGateway } from './media.gateway';
-import { MediaService } from "./media.service";
-import { GameManagementService } from "../game-management/game.management.service";
-import { GameResolverInterceptor } from "../game/game-resolver/game-resolver.interceptor";
+import { MediaService } from './media.service';
+import { GameManagementService } from '../game-management/game.management.service';
+import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
 
 describe('MediaGateway', () => {
   let gateway: MediaGateway;

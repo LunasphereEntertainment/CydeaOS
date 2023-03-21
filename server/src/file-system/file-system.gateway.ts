@@ -1,13 +1,12 @@
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { FileSystemEvent, FileSystemEventType } from '../../../libs/events/file-system-event/file-system-event';
+import { FileSystemEvent, FileSystemEventType } from '@cydeaos/libs/events/file-system-event/file-system-event';
 import { NodeManagementService } from '../node-management/node-management.service';
-import { Computer } from '../../../libs/nodes/computer/computer';
+import { Computer } from '@cydeaos/libs/nodes/computer/computer';
 import { GameSocket } from '../game-socket.interface';
 import { UseInterceptors } from '@nestjs/common';
 import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
-import { IFileEntry } from '../../../libs/nodes/file-system/i-file-entries';
+import { FileNotFound, FileType, IFileEntry } from '@cydeaos/libs/nodes/file-system/i-file-entries';
 import { IPNotFoundError } from '../errors/node-errors/node-errors';
-import { FileNotFound, FileType } from '../../../libs/nodes/file-system/i-file-entries';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
@@ -42,12 +41,18 @@ export class FileSystemGateway {
                 throw new Error('Cannot read a directory.');
             }
         }
+
+        throw new IPNotFoundError(targetIp);
     }
 
     @SubscribeMessage(FileSystemEventType.WriteFile)
     handleWriteFile(client: GameSocket, payload: FileSystemEvent): void {
         const { target: targetIp, file, path } = payload.data,
             node = this.resolveNode(client.game.id, targetIp);
+
+        if (!file) {
+            throw new Error('File content is missing.');
+        }
 
         if (node) {
             try {

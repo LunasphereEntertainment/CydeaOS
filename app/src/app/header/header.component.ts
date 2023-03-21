@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Account } from '../../../../libs/luna/account';
+import { Account } from '@cydeaos/libs/luna/account';
 
 @Component({
   selector: 'app-header',

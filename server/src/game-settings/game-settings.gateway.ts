@@ -1,10 +1,10 @@
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { GameSettingsEvent, GameSettingsEventType } from "../../../libs/events/game-settings-event/game-settings-event";
-import { UseInterceptors } from "@nestjs/common";
-import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
-import { GameSettingsService } from "./game-settings.service";
-import { ClientSettings } from "../../../libs/client-settings/client-settings";
-import { Socket } from "socket.io";
+import { GameSettingsEvent, GameSettingsEventType } from '@cydeaos/libs/events/game-settings-event/game-settings-event';
+import { UseInterceptors } from '@nestjs/common';
+import { JwtAuthGuard } from '../shared/jwt/guard/jwt-auth.guard';
+import { GameSettingsService } from './game-settings.service';
+import { ClientSettings } from '@cydeaos/libs/client-settings/client-settings';
+import { Socket } from 'socket.io';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(JwtAuthGuard)

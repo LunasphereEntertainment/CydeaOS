@@ -1,6 +1,6 @@
 // import { CliCommand } from '../../command-line/cli-command';
 
-export class CommandRunnerEvent {
+export interface CommandRunnerEvent {
     type: CommandRunnerEventType;
     command: string;
     targetIp?: string; // hostname or ip address
@@ -14,9 +14,9 @@ export class CommandRunnerEvent {
         return cmd;
     }*/
 
-    constructor(type: CommandRunnerEventType = CommandRunnerEventType.ExecuteCommand) {
-        this.type = type;
-    }
+    // constructor(type: CommandRunnerEventType = CommandRunnerEventType.ExecuteCommand) {
+    //     this.type = type;
+    // }
 }
 
 export enum CommandRunnerEventType {

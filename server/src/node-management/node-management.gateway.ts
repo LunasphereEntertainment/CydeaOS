@@ -7,9 +7,9 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
-export class PlayerConnectionHandlerGateway {
+export class NodeManagementGateway {
     @WebSocketServer()
-    server: Server;
+    server!: Server;
 
     constructor(private nodeManagementService: NodeManagementService) {
     }
@@ -24,7 +24,7 @@ export class PlayerConnectionHandlerGateway {
             const player = client.player;
 
             if (node.isOnline()) {
-                player.setCurrentTarget(targetIp);
+                player!.setCurrentTarget(targetIp);
 
                 // if the node is owned by someone else, alert the owner
                 if (node.owner !== 'System') {
@@ -36,7 +36,7 @@ export class PlayerConnectionHandlerGateway {
                         const ownerSocket = opponent.getSocketId();
                         if (ownerSocket) {
                             // send them an alert
-                            this.server.to(ownerSocket).emit('alert', { message: `${ player.username } is trying to connect to your node ${ node.ip }` });
+                            this.server.to(ownerSocket).emit('alert', { message: `${ player!.username } is trying to connect to your node ${ node.ip }` });
                         }
                     }
                 }

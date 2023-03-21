@@ -1,6 +1,7 @@
-import { Player } from '../player/player';
+import { Player, PlayerState } from '../player/player';
 import { IPGenerator } from '../ip-generator/ip-generator';
 import { GameConfiguration } from '../game-configuration/game-configuration';
+import { Account } from "../luna/account";
 
 export class GameObject {
     id: string;
@@ -11,20 +12,40 @@ export class GameObject {
 
     state: GameState = GameState.WaitingForPlayers;
 
+    readonly host: Account
     private hostSocketId?: string;
 
     public readonly ipGenerator: IPGenerator;
 
-    constructor(id: string, config: GameConfiguration) {
+    constructor(id: string, config: GameConfiguration, host: Account) {
         this.id = id;
 
         this.ipGenerator = new IPGenerator(config.ipType);
 
         this.config = config
+
+        this.host = host;
     }
 
     join(player: Player) {
         this.players.push(player);
+    }
+
+    leave(player: Player) {
+        const i = this.players.findIndex(p => p.username === player.username);
+        if (i < 0) {
+            console.warn(`Player ${player.username} is not in game ${this.id}.`)
+            return;
+        }
+
+        switch (this.state) {
+            case GameState.WaitingForPlayers:
+                this.players.splice(i, 1);
+                break;
+            case GameState.Running:
+                this.players[i].state = PlayerState.Disconnected;
+                break
+        }
     }
 
     findPlayerByUsername(username: string): Player | undefined {

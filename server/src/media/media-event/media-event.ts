@@ -1,4 +1,4 @@
-import { MediaMood } from "../../../../libs/media/media-mood/media-mood";
+import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
 
 export class MediaEvent {
     constructor(

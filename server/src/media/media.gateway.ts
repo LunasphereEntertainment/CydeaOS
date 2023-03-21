@@ -1,10 +1,10 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { MediaEventType } from "./media-event/media-event";
-import { ParseEnumPipe, UseInterceptors } from "@nestjs/common";
-import { GameResolverInterceptor } from "../game/game-resolver/game-resolver.interceptor";
-import { MediaService } from "./media.service";
-import { MediaUuid } from '../../../libs/media/media.types';
-import { MediaMood } from '../../../libs/media/media-mood/media-mood';
+import { MediaEventType } from './media-event/media-event';
+import { ParseEnumPipe, UseInterceptors } from '@nestjs/common';
+import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
+import { MediaService } from './media.service';
+import { MediaUuid } from '@cydeaos/libs/media/media.types';
+import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)

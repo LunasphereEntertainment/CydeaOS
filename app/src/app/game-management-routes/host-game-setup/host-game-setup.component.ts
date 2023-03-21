@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { IPType } from '../../../../../libs/ip-generator/ip-generator'
-import { MusicPlaybackMode } from '../../../../../libs/media/media.playback.mode'
-import { GameType } from '../../../../../libs/game-configuration/game-configuration'
-import { SocketService } from "../../shared/socket.service";
-import { GameManagementEvent, GameManagementEventType } from "../../../../../libs/events/game-management-event/game-management-event"
-import { GameObject } from "@cydeaos/libs/game-object/game-object";
-import { CurrentGameService } from "../../shared/current-game.service";
-import { Router } from "@angular/router";
+import { IPType } from '@cydeaos/libs/ip-generator/ip-generator'
+import { MusicPlaybackMode } from '@cydeaos/libs/media/media.playback.mode'
+import { GameConfiguration, GameType } from '@cydeaos/libs/game-configuration/game-configuration'
+import { SocketService } from '../../shared/socket.service';
+import { GameObject } from '@cydeaos/libs/game-object/game-object';
+import { CurrentGameService } from '../../shared/current-game.service';
+import { Router } from '@angular/router';
+import { GameManagementService } from "../game-management.service";
+import { GameManagementResponse } from "@cydeaos/libs/events/game-management-event/game-management-response";
 
 @Component({
   selector: 'app-host-game',
@@ -27,22 +28,20 @@ export class HostGameSetupComponent {
 
   musicOptions = MusicPlaybackMode;
 
-  constructor(private socketService: SocketService, private currentGameService: CurrentGameService, private router: Router) {
+  constructor(private gameManagementService: GameManagementService, private currentGameService: CurrentGameService, private router: Router) {
   }
 
   onSubmit() {
-    const event = <GameManagementEvent>{
-      type: GameManagementEventType.GameCreated,
-      data: {
-        type: this.hostGameForm.value.gameMode,
-        ipType: this.hostGameForm.value.ipMode,
-        musicMode: this.hostGameForm.value.musicMode
-      }
+    const config: GameConfiguration = {
+      type: this.hostGameForm.value.gameMode!,
+      ipType: this.hostGameForm.value.ipMode!,
+      musicMode: this.hostGameForm.value.musicMode!
     }
 
-    this.socketService.sendAndReceive<GameObject>(GameManagementEventType.GameCreated, event)
-      .subscribe((data: GameObject) => {
-        localStorage.setItem('hostGameCode', data.id);
+    this.gameManagementService.createGame(config)
+      .subscribe((data: GameManagementResponse) => {
+        const game = <GameObject>data.data;
+        localStorage.setItem('hostGameCode', data.data!.id);
 
         this.router.navigate(['/host']);
       });

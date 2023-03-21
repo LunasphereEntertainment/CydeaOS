@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameManagementService } from './game.management.service';
-import { IPType } from "../../../libs/ip-generator/ip-generator";
-import { GameConfiguration, GameType } from "../../../libs/game-configuration/game-configuration";
-import { GameState } from "../../../libs/game-object/game-object";
-import { MusicPlaybackMode } from "../../../libs/media/media.playback.mode";
+import { IPType } from '@cydeaos/libs/ip-generator/ip-generator';
+import { GameConfiguration, GameType } from '@cydeaos/libs/game-configuration/game-configuration';
+import { GameState } from '@cydeaos/libs/game-object/game-object';
+import { MusicPlaybackMode } from '@cydeaos/libs/media/media.playback.mode';
+import { Account } from "@cydeaos/libs/luna/account";
 
 describe('GameService', () => {
     let service: GameManagementService;
@@ -28,7 +29,7 @@ describe('GameService', () => {
     });
 
     it('should create a game', () => {
-        const game = service.newGame(testGameConfig);
+        const game = service.newGame(testGameConfig, <Account>{username: "test"});
         expect(game).toBeDefined();
         expect(game.id).toBeDefined();
         expect(game.config).toBeDefined();
@@ -37,7 +38,7 @@ describe('GameService', () => {
     });
 
     it('should register a game', () => {
-        const game = service.newGame(testGameConfig);
+        const game = service.newGame(testGameConfig, <Account>{username: "test"});
         expect(service.getGame(game.id)).toBe(game);
     });
 
@@ -46,7 +47,7 @@ describe('GameService', () => {
     });
 
     it('should allow stopping a game', () => {
-        const game = service.newGame(testGameConfig);
+        const game = service.newGame(testGameConfig, <Account>{username: "test"});
         game.start();
         expect(game.state).toBe(GameState.Running);
         game.stop();
@@ -54,7 +55,7 @@ describe('GameService', () => {
     });
 
     it('should also clean up after stopping a game', () => {
-        const game = service.newGame(testGameConfig);
+        const game = service.newGame(testGameConfig, <Account>{username: "test"});
         game.start();
         expect(game.state).toBe(GameState.Running);
         service.stopGame(game.id);

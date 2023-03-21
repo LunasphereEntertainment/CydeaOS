@@ -1,6 +1,6 @@
 import { GameResolverInterceptor } from './game-resolver.interceptor';
-import { Test, TestingModule } from "@nestjs/testing";
-import { GameManagementService } from "../../game-management/game.management.service";
+import { Test, TestingModule } from '@nestjs/testing';
+import { GameManagementService } from '../../game-management/game.management.service';
 
 describe('GameResolverInterceptor', () => {
     let gameResolverInterceptor: GameResolverInterceptor;

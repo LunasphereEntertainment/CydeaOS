@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MediaController } from './media.controller';
-import { JwtService } from "../shared/jwt/jwt.service";
-import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
-import { GameService } from "../game/game.service";
-import { MediaService } from "./media.service";
+import { JwtService } from '../shared/jwt/jwt.service';
+import { JwtAuthGuard } from '../shared/jwt/guard/jwt-auth.guard';
+import { GameService } from '../game/game.service';
+import { MediaService } from './media.service';
 
 describe('MediaController', () => {
   let controller: MediaController;

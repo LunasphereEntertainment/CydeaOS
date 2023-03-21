@@ -15,20 +15,20 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitAny": false,
-    "strictBindCallApply": false,
+    "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "strictPropertyInitialization": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "paths": {
-      "@cydeaos/game-server": [
-        "game-server"
-      ],
       "@cydeaos/libs": [
-        "libs"
+        "../libs"
       ],
       "@cydeaos/libs/*": [
-        "libs/*"
+        "../libs/*"
       ]
     }
   }

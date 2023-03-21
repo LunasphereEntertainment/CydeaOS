@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { WebSocketGateway } from '@nestjs/websockets';
-import { Account } from "../../libs/luna/account";
-import { JwtService } from "./shared/jwt/jwt.service";
+import { Account } from '@cydeaos/libs/luna/account';
+import { JwtService } from './shared/jwt/jwt.service';
 
 @Controller()
 @WebSocketGateway({ cors: process.env.CORS === 'true' })

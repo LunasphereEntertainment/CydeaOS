@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Computer } from "../../../libs/nodes/computer/computer";
+import { Computer } from "@cydeaos/libs/nodes/computer/computer";
 import { GameNotFoundError } from "../errors/game-error/game.errors";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class NodeManagementService {
             throw new GameNotFoundError(gameId);
         }
 
-        this.nodes.get(gameId).push(node);
+        this.nodes.get(gameId)!.push(node);
     }
 
     findNode(gameId: string, ipAddress: string): (Computer | undefined) {
@@ -19,7 +19,7 @@ export class NodeManagementService {
             throw new GameNotFoundError(gameId);
         }
 
-        return this.nodes.get(gameId).find(node => node.ip === ipAddress);
+        return this.nodes.get(gameId)!.find(node => node.ip === ipAddress);
     };
 
     findNodeByHostname(gameId: string, hostname: string): Computer | undefined {
@@ -27,7 +27,7 @@ export class NodeManagementService {
             throw new GameNotFoundError(gameId);
         }
 
-        return this.nodes.get(gameId).find(node => node.hostname === hostname);
+        return this.nodes.get(gameId)!.find(node => node.hostname === hostname);
     }
 
     clearNodes(gameId: string) {

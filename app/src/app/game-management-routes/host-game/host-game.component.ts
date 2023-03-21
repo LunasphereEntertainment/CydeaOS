@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { GameObject } from "@cydeaos/libs/game-object/game-object";
 import { SocketService } from "../../shared/socket.service";
-import { GameManagementEventType } from "@cydeaos/libs/events/game-management-event/game-management-event";
 import { Player } from "@cydeaos/libs/player/player";
-import { filter } from "rxjs";
+import { filter, map } from "rxjs";
+import { GameManagementService } from "../game-management.service";
+import { GameEventType } from "@cydeaos/libs/events/game-management-event/game-event-type";
+import { GameManagementRequest } from "@cydeaos/libs/events/game-management-event/game-management-request";
+import { GameJoinServerNotification } from "@cydeaos/libs/events/game-management-event/game-join-responses";
 
 @Component({
   selector: 'app-host-game',
@@ -14,26 +17,32 @@ export class HostGameComponent implements OnInit {
   currentGame: GameObject | undefined;
   gameCode: string = localStorage.getItem('hostGameCode') || '';
 
-  constructor(private socketService: SocketService) {
-  }
+  constructor(private gameManagementService: GameManagementService, private socketService: SocketService) {  }
 
   ngOnInit(): void {
     const self = this;
 
-    this.socketService.sendAndReceive<GameObject>(GameManagementEventType.GetGame, this.gameCode)
-      .subscribe((data: GameObject) => {
-        self.currentGame = data;
-      });
-
-    this.socketService.listen<Player>(GameManagementEventType.GameJoined)
-      .pipe(filter(p => !!p['username']))
+    this.socketService.listen<GameJoinServerNotification>(GameEventType.GameJoined)
+      // only listen to host "player joined" events
+      .pipe(
+        filter(p => !!p.data['username']),
+        map(p => p.data)
+      )
       .subscribe((p: Player) => {
         self.currentGame!.players.push(p);
+      });
+
+    this.gameManagementService.getGame(this.gameCode)
+      .subscribe((data: GameObject) => {
+        self.currentGame = data;
       });
   }
 
   testJoinClicked() {
-    this.socketService.blindSend(GameManagementEventType.GameJoined, this.gameCode);
+    this.socketService.blindSend(GameEventType.GameJoined, <GameManagementRequest>{
+      type: GameEventType.GameJoined,
+      gameId: this.gameCode,
+    });
   }
 
 }

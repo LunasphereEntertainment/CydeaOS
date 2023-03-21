@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameSettingsGateway } from './game-settings.gateway';
-import { GameSettingsService } from "./game-settings.service";
-import { SharedModule } from "../shared/shared.module";
+import { GameSettingsService } from './game-settings.service';
+import { SharedModule } from '../shared/shared.module';
 
 describe('GameSettingsGateway', () => {
   let gateway: GameSettingsGateway;

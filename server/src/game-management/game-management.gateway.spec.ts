@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameManagementGateway } from './game-management.gateway';
-import { GameManagementService } from "./game.management.service";
-import { JwtService } from "../shared/jwt/jwt.service";
-import { SharedModule } from "../shared/shared.module";
+import { GameManagementService } from './game.management.service';
+import { SharedModule } from '../shared/shared.module';
 
 describe('GameManagementGateway', () => {
   let gateway: GameManagementGateway;

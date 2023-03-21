@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { Observable } from "rxjs/internal/Observable";
-import { defer } from "rxjs";
-import { fromEvent } from "rxjs/internal/observable/fromEvent";
+import { defer, fromEvent, Observable } from "rxjs";
 
 @Injectable()
 export class SocketService {
@@ -12,7 +10,7 @@ export class SocketService {
     const token = localStorage.getItem('token');
 
     // this.socket = io('http://localhost:3000');
-    this.socket = io('http://localhost:3000', { extraHeaders: { Authorization: `Bearer ${token}`} });
+    this.socket = io('http://localhost:3000', {extraHeaders: {Authorization: `Bearer ${token}`}});
 
   }
 

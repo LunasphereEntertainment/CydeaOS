@@ -16,7 +16,7 @@ export class MediaLibrary {
         this.mediaById.set(mediaEntry.uuid, mediaEntry);
 
         if (this.mediaByGenre.has(mediaEntry.mood))
-            this.mediaByGenre.get(mediaEntry.mood).push(mediaEntry);
+            this.mediaByGenre.get(mediaEntry.mood)!.push(mediaEntry);
         else
             this.mediaByGenre.set(mediaEntry.mood, new Array(mediaEntry));
 
@@ -30,7 +30,7 @@ export class MediaLibrary {
         if (!this.mediaById.has(uuid)) {
             throw MediaError.entryNotFound(uuid);
         }
-        return this.mediaById.get(uuid);
+        return this.mediaById.get(uuid)!;
     }
     newMediaQueue(genre: MediaMood): MediaQueue {
         if (!this.mediaByGenre.has(genre)) {
@@ -38,7 +38,7 @@ export class MediaLibrary {
         }
 
         const mediaQueue = new MediaQueue(genre);
-        this.mediaByGenre.get(genre).forEach((mediaEntry) => mediaQueue.enqueue(mediaEntry.uuid));
+        this.mediaByGenre.get(genre)!.forEach((mediaEntry) => mediaQueue.enqueue(mediaEntry.uuid));
         return mediaQueue;
     }
 }

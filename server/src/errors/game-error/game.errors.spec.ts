@@ -1,4 +1,4 @@
-import { GameNotFoundError } from "./game.errors";
+import { GameNotFoundError } from './game.errors';
 
 describe('Game Errors', () => {
     describe('GameNotFoundError', () => {

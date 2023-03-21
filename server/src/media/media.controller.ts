@@ -1,9 +1,9 @@
 import { Controller, Get, Param, ParseUUIDPipe, Res, UseInterceptors } from '@nestjs/common';
 import { MediaService } from './media.service';
 import { createReadStream } from 'fs';
-import { JwtAuthGuard } from "../shared/jwt/guard/jwt-auth.guard";
-import { MediaError } from "../errors/media-error/media.error"
-import { MediaUuid } from "../../../libs/media/media.types"
+import { JwtAuthGuard } from '../shared/jwt/guard/jwt-auth.guard';
+import { MediaError } from '../errors/media-error/media.error'
+import { MediaUuid } from '@cydeaos/libs/media/media.types'
 
 @Controller('media')
 @UseInterceptors(JwtAuthGuard)

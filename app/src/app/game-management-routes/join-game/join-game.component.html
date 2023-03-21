@@ -1,0 +1,50 @@
+<div class="clr-row clr-justify-content-center text-center">
+  <div class="clr-col-lg-5 clr-col-m-6 clr-col-12">
+    <div class="card anim-rtl">
+      <h3 class="card-header">
+        <cds-icon shape="exclamation-circle" size="lg"></cds-icon>
+        <span>Join a Game</span>
+      </h3>
+
+      <div class="card-block" *ngIf="!joined">
+        <p>Join a game by entering the game code below.</p>
+        <form class="text-center">
+          <clr-input-container>
+            <label for="game-code-input">Game Code</label>
+            <input type="text" id="game-code-input" placeholder="my-test-code" clrInput [formControl]="gameCodeInput">
+            <clr-control-helper>The game join code displayed on the host's screen.</clr-control-helper>
+            <!--<clr-control-error>Error text</clr-control-error>-->
+          </clr-input-container>
+        </form>
+      </div>
+
+      <div class="card-block" *ngIf="!joined">
+        <button class="btn btn-outline-warning" routerLink="/">
+          Go Back
+        </button>
+
+        <button class="btn btn-primary" (click)="attemptJoinGame()">
+          <span>Join Game</span>
+          <cds-icon shape="angle" direction="right" size="md"></cds-icon>
+        </button>
+      </div>
+
+      <div class="card-block" *ngIf="joined">
+        <p>Game Joined Successfully!</p>
+        <p>
+          Game Type: {{ gameInfo?.config!.type }}
+          <br>
+          IP Mode: {{ gameInfo?.config!.ipType }}
+          <br>
+          <small>Media Playback Mode: {{ gameInfo?.config!.musicMode }}</small>
+        </p>
+
+        <h3>Waiting for game to start...</h3>
+        <br>
+        <span class="spinner spinner-md">Waiting for players...</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { arrowIcon, boltIcon, ClarityIcons, cogIcon, exclamationTriangleIcon, playIcon, plusIcon, targetIcon, timesCircleIcon, userIcon } from '@cds/core/icon'
+import {
+  angleIcon, arrowIcon, boltIcon, ClarityIcons, cogIcon, exclamationTriangleIcon, playIcon, plusIcon, targetIcon, timesCircleIcon, userIcon
+} from '@cds/core/icon'
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,7 @@ import { arrowIcon, boltIcon, ClarityIcons, cogIcon, exclamationTriangleIcon, pl
 export class AppComponent {
   title = '@cydeaos/webui';
 
-  currentUser = { username: 'leila-codes' }
+  currentUser = {username: 'leila-codes'}
 
   constructor() {
     ClarityIcons.addIcons(targetIcon);
@@ -18,6 +20,7 @@ export class AppComponent {
     ClarityIcons.addIcons(plusIcon);
     ClarityIcons.addIcons(playIcon);
     ClarityIcons.addIcons(arrowIcon);
+    ClarityIcons.addIcons(angleIcon);
     ClarityIcons.addIcons(userIcon);
     ClarityIcons.addIcons(timesCircleIcon);
     ClarityIcons.addIcons(exclamationTriangleIcon);

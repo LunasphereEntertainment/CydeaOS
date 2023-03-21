@@ -38,12 +38,13 @@ export class Player {
     }
 
     isOnline() {
-        return this.state !== PlayerState.Offline;
+        return this.state >= PlayerState.Online;
     }
 }
 
 export enum PlayerState {
     Offline,
+    Disconnected,
     Online,
     InGame
 

@@ -1,15 +1,15 @@
 const maxRetries = 3;
 
-function generateIPv4() {
-    const octets = [];
+function generateIPv4(): string {
+    const octets: string[] = [];
     for (let i = 0; i < 4; i++) {
-        octets.push(Math.floor(Math.random() * 256));
+        octets.push(Math.floor(Math.random() * 256).toString());
     }
     return octets.join('.');
 }
 
-function generateIPv6() {
-    const octets = [];
+function generateIPv6(): string {
+    const octets: string[] = [];
     for (let i = 0; i < 8; i++) {
         octets.push(Math.floor(Math.random() * 65536).toString(16));
     }

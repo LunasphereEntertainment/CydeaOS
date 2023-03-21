@@ -1,6 +1,6 @@
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { JwtService } from "../jwt.service";
-import { Test } from "@nestjs/testing";
+import { JwtService } from '../jwt.service';
+import { Test } from '@nestjs/testing';
 
 describe('JwtAuthGuard', () => {
 

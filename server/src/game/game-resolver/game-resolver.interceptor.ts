@@ -1,7 +1,7 @@
 import { BadRequestException, CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { GameManagementService } from "../../game-management/game.management.service";
-import { GameNotFoundError } from "../../errors/game-error/game.errors";
+import { GameManagementService } from '../../game-management/game.management.service';
+import { GameNotFoundError } from '../../errors/game-error/game.errors';
 
 @Injectable()
 export class GameResolverInterceptor implements NestInterceptor {
@@ -18,6 +18,8 @@ export class GameResolverInterceptor implements NestInterceptor {
         } else if (context.getType() === 'ws') {
             client = context.switchToWs().getClient();
             code = client.handshake.query.code;
+        } else {
+            throw new BadRequestException('Unrecognised client/context type');
         }
 
         if (code) {

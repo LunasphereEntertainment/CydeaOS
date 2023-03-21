@@ -1,4 +1,4 @@
-export class NetworkingEvent {
+export interface NetworkingEvent {
     type: NetworkingEventType;
     data: { target: string, serviceName: string, data: { path?: string, port?: number } };
 }

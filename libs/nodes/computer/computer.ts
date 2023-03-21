@@ -6,7 +6,7 @@ import { CliCommand } from "../../command-line/cli-command";
 export class Computer {
     hostname: string;
 
-    ip: string;
+    ip?: string;
 
     readonly fileSystem: FileSystemEmulation;
 
@@ -47,7 +47,7 @@ export class Computer {
     listPorts(): NetworkPort[] {
         this.checkStatus()
 
-        let ports = [];
+        let ports: NetworkPort[] = [];
 
         this.daemons.forEach((daemon) => ports = ports.concat(daemon.ports));
 
