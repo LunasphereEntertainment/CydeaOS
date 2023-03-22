@@ -14,7 +14,7 @@ export class GameSettingsService {
     }
 
     getAndSaveDefaults(clientId: string): ClientSettings {
-        const defaults = new ClientSettings();
+        const defaults = ClientSettings.defaults();
         this.saveClientSettings(clientId, defaults);
         return defaults;
     }

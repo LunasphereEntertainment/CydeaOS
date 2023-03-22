@@ -14,10 +14,10 @@ export class GameResolverInterceptor implements NestInterceptor {
 
         if (context.getType() === 'http') {
             client = context.switchToHttp().getRequest();
-            code = client.query.code;
+            code = client.query.gameCode;
         } else if (context.getType() === 'ws') {
             client = context.switchToWs().getClient();
-            code = client.handshake.query.code;
+            code = client.handshake.query.gameCode;
         } else {
             throw new BadRequestException('Unrecognised client/context type');
         }

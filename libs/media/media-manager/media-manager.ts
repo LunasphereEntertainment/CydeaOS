@@ -35,6 +35,11 @@ export class MediaManager {
         if (newMood) {
             this.currentMood = newMood;
         }
+
+        if (!this.moodQueues.has(this.currentMood)) {
+            this.moodQueues.set(this.currentMood, this.library.newMediaQueue(this.currentMood));
+        }
+
         try {
             this.currentTrack = this.moodQueues.get(this.currentMood)!.dequeue();
         } catch (e) {

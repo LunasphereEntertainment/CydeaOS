@@ -1,0 +1,39 @@
+<div class="clr-row">
+  <div class="clr-col-12">
+    <div class="card">
+      <h4 class="card-header">
+        <cds-icon shape="info-circle" size="md"></cds-icon>
+        Now Playing
+      </h4>
+      <div class="card-body">
+        <div class="btn-group btn-secondary">
+          <button class="btn" (click)="requiresInteraction && configureAudio() ; requestNewTrack(mediaMood.Chill)">
+            <cds-icon shape="play"></cds-icon>
+            Chill
+          </button>
+          <button class="btn" (click)="requiresInteraction && configureAudio() ; requestNewTrack(mediaMood.Dramatic)">
+            <cds-icon shape="play"></cds-icon>
+            Dramatic
+          </button>
+          <button class="btn" (click)="requiresInteraction && configureAudio() ; requestNewTrack(mediaMood.Upbeat)">
+            <cds-icon shape="play"></cds-icon>
+            Upbeat
+          </button>
+        </div>
+
+<!--        <button class="btn btn-secondary" *ngIf="requiresInteraction" (click)="configureAudio()">-->
+<!--          <cds-icon shape="play" size="md"></cds-icon>-->
+<!--          Play-->
+<!--        </button>-->
+        <div class="card-text" style="margin: 5px 10px;">
+          <p>
+            Title: {{nowPlaying?.name}}
+            <br>
+            Genre:
+            <span class="label label-light-blue"> {{ nowPlaying?.mood | titlecase }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

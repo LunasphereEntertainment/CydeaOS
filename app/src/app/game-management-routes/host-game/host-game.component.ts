@@ -38,6 +38,20 @@ export class HostGameComponent implements OnInit {
       });
   }
 
+  startGame() {
+    this.socketService.sendAndReceive<GameObject>(GameEventType.GameStarted, <GameManagementRequest>{
+      type: GameEventType.GameStarted,
+      gameId: this.gameCode,
+    }).subscribe(
+      (data: GameObject) => {
+        // verify it's the same game
+        if (this.gameCode === data.id)
+          console.log("Game Started!!! :D");
+          // this.currentGame = data;
+      }
+    );
+  }
+
   testJoinClicked() {
     this.socketService.blindSend(GameEventType.GameJoined, <GameManagementRequest>{
       type: GameEventType.GameJoined,

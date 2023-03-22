@@ -1,4 +1,4 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway, WsResponse } from '@nestjs/websockets';
 import { GameSettingsEvent, GameSettingsEventType } from '@cydeaos/libs/events/game-settings-event/game-settings-event';
 import { UseInterceptors } from '@nestjs/common';
 import { JwtAuthGuard } from '../shared/jwt/guard/jwt-auth.guard';
@@ -14,17 +14,25 @@ export class GameSettingsGateway {
   }
 
   @SubscribeMessage(GameSettingsEventType.Save)
-  handleSave(client: Socket, payload: GameSettingsEvent): void {
+  handleSave(client: Socket, payload: GameSettingsEvent): WsResponse<{ success: boolean }> {
     const { id : clientId } = client;
 
     this.settingsService.saveClientSettings(clientId, payload.data);
+
+    return {
+        event: GameSettingsEventType.Save,
+        data: { success: true }
+    }
   }
 
   @SubscribeMessage(GameSettingsEventType.Load)
-  handleLoad(client: any): ClientSettings {
+  handleLoad(client: any): WsResponse<ClientSettings> {
     const { id: clientId } = client;
 
-    return this.settingsService.loadClientSettings(clientId)
-        || this.settingsService.getAndSaveDefaults(clientId);
+    return {
+        event: GameSettingsEventType.Load,
+        data: this.settingsService.loadClientSettings(clientId)
+            || this.settingsService.getAndSaveDefaults(clientId)
+    }
   }
 }

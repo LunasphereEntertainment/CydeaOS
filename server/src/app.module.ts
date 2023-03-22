@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GameModule } from './game/game.module';
 import { MediaService } from './media/media.service';
 import { MediaController } from './media/media.controller';
 import { SharedModule } from './shared/shared.module';
@@ -14,10 +13,11 @@ import { GameSettingsService } from './game-settings/game-settings.service';
 import { GameManagementService } from './game-management/game.management.service';
 import { FileSystemGateway } from './file-system/file-system.gateway';
 import { NetworkingGateway } from './networking/networking.gateway';
-import { NodeManagementGateway } from "./node-management/node-management.gateway";
+import { NodeManagementGateway } from './node-management/node-management.gateway';
+import { GameResolverInterceptor } from './game/game-resolver/game-resolver.interceptor';
 
 @Module({
-    imports: [ GameModule, SharedModule ],
+    imports: [ SharedModule ],
     controllers: [ AppController, MediaController ],
     providers: [
         AppService,
@@ -26,6 +26,7 @@ import { NodeManagementGateway } from "./node-management/node-management.gateway
         GameSettingsGateway,
         GameManagementService,
         GameManagementGateway,
+        GameResolverInterceptor,
         MediaGateway,
         CommandRunnerGateway,
         NodeManagementService,

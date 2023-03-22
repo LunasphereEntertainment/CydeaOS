@@ -1,4 +1,4 @@
-import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
+import { MediaMood } from '../../media/media-mood/media-mood';
 
 export class MediaEvent {
     constructor(
@@ -11,7 +11,8 @@ export enum MediaEventType {
     GetCurrentTrack = "getCurrentTrack",
     GetCurrentMood = "getCurrentMood",
     SwitchMood = "switchMood",
-    NextTrack = "nextTrack"
+    NextTrack = "nextTrack",
+    PlayTrack = "playTrack"
 }
 
 
