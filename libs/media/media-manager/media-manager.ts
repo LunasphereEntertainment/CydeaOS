@@ -6,8 +6,7 @@ import { MediaUuid } from "../media.types";
 
 export class MediaManager {
     mediaPlaybackMode: MusicPlaybackMode = MusicPlaybackMode.Client;
-    private readonly library: MediaLibrary = new MediaLibrary();
-
+    private readonly library: MediaLibrary;
     private moodQueues: Map<MediaMood, MediaQueue> = new Map();
     private currentMood: MediaMood = MediaMood.Chill;
     private currentTrack?: MediaUuid;
