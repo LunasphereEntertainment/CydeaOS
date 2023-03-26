@@ -7,11 +7,31 @@ export class SocketService {
   private socket?: Socket
 
   constructor() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token'),
+      gameCode = localStorage.getItem('gameCode');
+
+    const socketOptions: any = {
+      extraHeaders: {Authorization: `Bearer ${token}`},
+    }
+
+    if (gameCode) {
+      socketOptions.query = { gameCode };
+    }
 
     // this.socket = io('http://localhost:3000');
-    this.socket = io('http://localhost:3000', {extraHeaders: {Authorization: `Bearer ${token}`}});
+    this.socket = io('http://localhost:3000', socketOptions);
+  }
 
+  reconnectWithCode() {
+    this.socket?.disconnect();
+
+    const token = localStorage.getItem('token'),
+      gameCode = localStorage.getItem('gameCode');
+
+    this.socket = io(`http://localhost:3000/${gameCode}`, {
+      extraHeaders: {Authorization: `Bearer ${token}`},
+      query: { gameCode }
+    });
   }
 
   public sendAndReceive<T>(event: string, data: any): Observable<T> {
@@ -45,11 +65,11 @@ export class SocketService {
     return fromEvent<T>(this.socket!, event);
   }
 
-  public stopListening(event: string) {
+  /*stopListening(event: string, listener?: any) {
     if (!this.socket) {
       throw new Error('Socket not connected');
     }
 
     this.socket!.off(event);
-  }
+  }*/
 }

@@ -12,6 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HostGameSetupComponent } from './game-management-routes/host-game-setup/host-game-setup.component';
 import { GameManagementService } from "./game-management-routes/game-management.service";
 import { JoinGameComponent } from './game-management-routes/join-game/join-game.component';
+import { GameDesktopContainerComponent } from './core-game/game-desktop-container/game-desktop-container.component';
+import { AudioMixerComponent } from './core-game/audio-mixer/audio-mixer.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,8 @@ import { JoinGameComponent } from './game-management-routes/join-game/join-game.
     HostGameSetupComponent,
     HostGameComponent,
     JoinGameComponent,
+    GameDesktopContainerComponent,
+    AudioMixerComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +33,8 @@ import { JoinGameComponent } from './game-management-routes/join-game/join-game.
     ClarityModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     GameManagementService

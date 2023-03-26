@@ -4,10 +4,14 @@ import { GameConfiguration } from '@cydeaos/libs/game-configuration/game-configu
 import { GameNotFoundError } from '../errors/game-error/game.errors';
 import * as randomWords from "random-words";
 import { Account } from "@cydeaos/libs/luna/account";
+import { MediaService } from '../media/media.service';
 
 @Injectable()
 export class GameManagementService {
     private activeGames: Map<string, GameObject> = new Map();
+
+    constructor(private mediaService: MediaService) {
+    }
 
     getGame(id: string): GameObject {
         if (this.activeGames.has(id)) {
@@ -21,6 +25,8 @@ export class GameManagementService {
         const game = new GameObject(randomWords.default({ exactly: 3, join: '-' }), config, host);
 
         this.activeGames.set(game.id, game);
+
+        this.mediaService.createMediaServiceForGame(game.id);
 
         return game;
     }

@@ -7,7 +7,7 @@ import { NodeManagementService } from '../node-management/node-management.servic
 import { Computer } from '@cydeaos/libs/nodes/computer/computer';
 import { default as commandExecutor } from '@cydeaos/libs/command-line/cli.runner';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 @UseInterceptors(GameResolverInterceptor)
 export class CommandRunnerGateway {
 

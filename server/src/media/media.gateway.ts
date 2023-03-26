@@ -1,10 +1,12 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { MediaEventType } from './media-event/media-event';
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WsResponse } from '@nestjs/websockets';
+import { MediaEventType } from '../../../libs/events/media-event/media-event';
 import { ParseEnumPipe, UseInterceptors } from '@nestjs/common';
 import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
 import { MediaService } from './media.service';
 import { MediaUuid } from '@cydeaos/libs/media/media.types';
 import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
+import { MediaEntry } from '@cydeaos/libs/media/media-entry/media-entry';
+import { GameSocket } from '../game-socket.interface';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 @UseInterceptors(GameResolverInterceptor)
@@ -14,18 +16,35 @@ export class MediaGateway {
     }
 
     @SubscribeMessage(MediaEventType.GetCurrentTrack)
-    handleGetCurrentTrack(client: any): MediaUuid {
-        return this.mediaService.getCurrentSong(client.game.id);
+    handleGetCurrentTrack(client: any): WsResponse<MediaEntry> {
+        const currentSong = this.mediaService.getCurrentSong(client.game.id),
+            songInfo = this.mediaService.getFromGlobalMediaLibrary(currentSong);
+        return {
+            event: MediaEventType.PlayTrack,
+            data: songInfo
+        }
     }
 
     @SubscribeMessage(MediaEventType.NextTrack)
-    handleGetNextTrack(client: any): MediaUuid {
-        return this.mediaService.nextSong(client.game.id);
+    handleGetNextTrack(@ConnectedSocket() client: GameSocket): WsResponse<MediaEntry> {
+        const uuid = this.mediaService.nextSong(client.game.id),
+            songInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
+
+        return {
+            event: MediaEventType.PlayTrack,
+            data: songInfo
+        }
     }
 
     @SubscribeMessage(MediaEventType.SwitchMood)
-    handleSwitchMood(client: any, @MessageBody('mood', new ParseEnumPipe(MediaMood)) mood: MediaMood): MediaUuid {
-        return this.mediaService.changeMood(client.game.id, mood);
+    handleSwitchMood(@ConnectedSocket() client: GameSocket, @MessageBody('mood', new ParseEnumPipe(MediaMood)) mood: MediaMood): WsResponse<MediaEntry> {
+        const uuid = this.mediaService.changeMood(client.game.id, mood),
+            songInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
+
+        return {
+            event: MediaEventType.PlayTrack,
+            data: songInfo
+        }
     }
 
     @SubscribeMessage(MediaEventType.GetCurrentMood)
