@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ClientSettingsService } from '../../client-settings.service';
 import { HttpClient } from '@angular/common/http';
 import { IMediaEntry } from '../i-media-entry';
 import { SocketService } from '../../shared/socket.service';
 import { MediaEventType } from '@cydeaos/libs/events/media-event/media-event';
 import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
+import { AutoplayService, AutoplayState } from "../../game-launcher/permissions-prompt/autoplay.service";
+import { filter } from "rxjs";
 
-const FadeTime = 5;
+const FadeTime = 3;
 
 class CrossFadeAudioSource {
   busy: boolean = false;
@@ -73,6 +75,8 @@ export class AudioMixerComponent implements OnInit {
   // @ViewChild('#mixerOut') audioMixer!: HTMLAudioElement;
   // readonly audioMixer = AudioContext.
   // private readonly audioOut: MediaStreamAudioDestinationNode;
+  @Input() currentMood: MediaMood = MediaMood.Chill;
+  @Input() showControls: boolean = true;
 
   requiresInteraction: boolean = true;
   nowPlaying?: IMediaEntry;
@@ -88,6 +92,7 @@ export class AudioMixerComponent implements OnInit {
     private clientSettingsService: ClientSettingsService,
     private http: HttpClient,
     private socketService: SocketService,
+    private autoplayService: AutoplayService,
   ) {
     // this.socketService.reconnectWithCode();
 
@@ -98,8 +103,16 @@ export class AudioMixerComponent implements OnInit {
     // }
   }
 
+  private detectAutoplay() {
+    this.context !== undefined && this.context.state === 'running' ? this.requiresInteraction = false : this.requiresInteraction = true;
+    if (this.requiresInteraction) {
+      this.autoplayService.promptUser();
+    }
+  }
+
   configureAudio() {
-    this.requiresInteraction = false;
+    setTimeout(this.detectAutoplay.bind(this), 2000);
+
     this.context = new AudioContext();
     this.musicVolumeControl = this.context.createGain();
     this.sfxVolume = this.context.createGain();
@@ -126,12 +139,25 @@ export class AudioMixerComponent implements OnInit {
         this.playTrack(mediaEntry);
       });
 
+    this.configureAudio();
+    this.requestNewTrack(this.currentMood);
+
+
+    this.autoplayService.ee.pipe(
+      filter(e => e === AutoplayState.Approved)
+    ).subscribe(() => {
+      this.context.resume();
+    })
     // setTimeout(() => {
     // }, 2000);
   }
 
+  ngOnDestroy(): void {
+    this.context.suspend();
+  }
+
   requestNewTrack(mood: MediaMood) {
-    this.socketService.blindSend(MediaEventType.SwitchMood, { mood });
+    this.socketService.blindSend(MediaEventType.SwitchMood, { mood, gameCode: localStorage.getItem('gameCode') });
   }
 
   playSfx(url: string): void {

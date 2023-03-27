@@ -14,13 +14,6 @@ export class FileSystemEmulation {
             return this.entries;
         }
 
-        const parts = path.split("/")
-            .filter((part) => part !== "" && part !== "." && part !== ".."); // sanitize path
-
-        if (path.startsWith("/")) {
-            parts.unshift('');
-        }
-
         let [parent, index] = this.getFileIndex(path);
         return (<IFileEntry[]>parent.content)[index];
     }

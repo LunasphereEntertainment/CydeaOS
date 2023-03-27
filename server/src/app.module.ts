@@ -14,7 +14,6 @@ import { GameManagementService } from './game-management/game.management.service
 import { FileSystemGateway } from './file-system/file-system.gateway';
 import { NetworkingGateway } from './networking/networking.gateway';
 import { NodeManagementGateway } from './node-management/node-management.gateway';
-import { GameResolverInterceptor } from './game/game-resolver/game-resolver.interceptor';
 
 @Module({
     imports: [ SharedModule ],
@@ -26,7 +25,6 @@ import { GameResolverInterceptor } from './game/game-resolver/game-resolver.inte
         GameSettingsGateway,
         GameManagementService,
         GameManagementGateway,
-        GameResolverInterceptor,
         MediaGateway,
         CommandRunnerGateway,
         NodeManagementService,

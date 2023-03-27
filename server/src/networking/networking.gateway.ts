@@ -2,11 +2,9 @@ import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { NodeManagementService } from '../node-management/node-management.service';
 import { NetworkingEvent, NetworkingEventType } from './networking-event';
 import { GameSocket } from '../game-socket.interface';
-import { BadRequestException, UseInterceptors } from '@nestjs/common';
-import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
+import { BadRequestException } from '@nestjs/common';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
-@UseInterceptors(GameResolverInterceptor)
 export class NetworkingGateway {
 
   constructor(private nodeManagementService: NodeManagementService) {

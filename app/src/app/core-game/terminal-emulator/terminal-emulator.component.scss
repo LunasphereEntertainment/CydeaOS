@@ -1,0 +1,52 @@
+.card {
+  &-header {
+    //margin: 0; padding: .3em .2em;
+    padding: .3em .5em;
+    font-size: 1.2em;
+  }
+
+  &-body {
+    margin: 0; padding: 0;
+    max-height: 340px;
+    overflow-y: auto;
+  }
+
+  &-footer {
+    padding: 5px 0 0 0;
+  }
+}
+
+.terminal-colour {
+  background-color: #000;
+}
+
+.terminal-input {
+  margin: 0 0 0 5px; padding: 0;
+  flex-grow: 1;
+  background-color: transparent;
+  color: inherit;
+  outline: none; border: none;
+}
+
+ul.stdout {
+  list-style: none;
+  margin: 0; padding: 5px;
+
+  min-height: 300px;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  overflow-y: auto;
+
+  > li.error {
+    color: hsl(9, 88%, 61%);
+  }
+
+  /*> li {
+    font-size: 1.2em;
+  }*/
+}

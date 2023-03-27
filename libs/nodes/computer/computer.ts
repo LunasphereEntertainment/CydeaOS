@@ -3,6 +3,8 @@ import { NetworkPort } from "../../network-port/network.port";
 import { ComputerDaemon } from "../daemons/ComputerDaemon";
 import { CliCommand } from "../../command-line/cli-command";
 
+export const DefaultSystemOwner = "System"
+
 export class Computer {
     hostname: string;
 
@@ -17,7 +19,7 @@ export class Computer {
     owner: string;
 
 
-    constructor(hostname: string, fileSystemEmulation: FileSystemEmulation = new FileSystemEmulation(), owner: string = "System") {
+    constructor(hostname: string, fileSystemEmulation: FileSystemEmulation = new FileSystemEmulation(), owner: string = DefaultSystemOwner) {
         this.hostname = hostname;
         this.fileSystem = fileSystemEmulation;
         this.owner = owner;
@@ -56,16 +58,6 @@ export class Computer {
 
     isOnline(): boolean {
         return this.online;
-    }
-
-    executeCommand(command: CliCommand): string {
-        this.checkStatus()
-
-        // const port = this.getPort(8080);
-
-        // const response = port.send(command);
-
-        return "";
     }
 }
 
