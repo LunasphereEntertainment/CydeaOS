@@ -21,7 +21,6 @@ export interface StdoutLine {
 })
 export class TerminalEmulatorComponent implements OnInit {
   status: string = 'idle';
-
   stdout: StdoutLine[] = [];
   prompt: string = '';
   input: string = '';
@@ -38,18 +37,21 @@ export class TerminalEmulatorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // listen for changes to the connected computer.
     this.gameStateService.currentTarget.subscribe((target) => {
       this.status = `connected to ${target}`;
-
+      // update the terminal prompt
       this.prompt = `root@${target}:${this.currentPath} > `;
     })
 
+    // listen for command success results
     this.socketService.listen<CommandRunnerEvent>(CommandRunnerEventType.ExecuteCommandResult)
       .subscribe((event) => {
         if (event.result)
           this.stdout.push({type: StdoutLineType.Stdout, text: event.result});
       });
 
+    // listen for command error results
     this.socketService.listen<CommandRunnerEvent>(CommandRunnerEventType.ExecuteCommandError)
       .subscribe((event) => {
         this.stdout.push({type: StdoutLineType.Stderr, text: event.error!});
@@ -70,6 +72,12 @@ export class TerminalEmulatorComponent implements OnInit {
 
   executeCommand(command: string) {
     this.stdout.push({type: StdoutLineType.Stdout, text: `${this.prompt}${this.input}`});
+
+    switch(command) {
+      case 'clear':
+        this.stdout = [];
+        return;
+    }
 
     this.socketService.blindSend(CommandRunnerEventType.ExecuteCommand, {command: command, gameCode: localStorage['gameCode']});
   }
