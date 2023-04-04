@@ -3,12 +3,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IPType } from '@cydeaos/libs/ip-generator/ip-generator'
 import { MusicPlaybackMode } from '@cydeaos/libs/media/media.playback.mode'
 import { GameConfiguration, GameType } from '@cydeaos/libs/game-configuration/game-configuration'
-import { SocketService } from '../../shared/socket.service';
 import { GameObject } from '@cydeaos/libs/game-object/game-object';
 import { CurrentGameService } from '../../shared/current-game.service';
 import { Router } from '@angular/router';
-import { GameManagementService } from "../game-management.service";
-import { GameManagementResponse } from "@cydeaos/libs/events/game-management-event/game-management-response";
+import { GameManagementService } from '../game-management.service';
+import { GameManagementResponse } from '@cydeaos/libs/events/game-management-event/game-management-response';
 
 @Component({
   selector: 'app-host-game',
@@ -40,8 +39,8 @@ export class HostGameSetupComponent {
 
     this.gameManagementService.createGame(config)
       .subscribe((data: GameManagementResponse) => {
-        const game = <GameObject>data.data;
-        localStorage.setItem('hostGameCode', data.data!.id);
+        const game = data.data!;
+        localStorage.setItem('hostGameCode', game.gameCode);
 
         this.router.navigate(['/host']);
       });

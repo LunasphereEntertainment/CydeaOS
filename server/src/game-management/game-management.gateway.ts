@@ -1,4 +1,11 @@
-import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, WsResponse } from '@nestjs/websockets';
+import {
+    ConnectedSocket,
+    MessageBody,
+    SubscribeMessage,
+    WebSocketGateway,
+    WebSocketServer,
+    WsResponse
+} from '@nestjs/websockets';
 import { GameManagementService } from './game.management.service';
 import { GameConfiguration } from '@cydeaos/libs/game-configuration/game-configuration';
 import { UseGuards } from '@nestjs/common';
@@ -9,7 +16,7 @@ import { GameObject } from '@cydeaos/libs/game-object/game-object'
 import { Server } from 'socket.io';
 import { GameEventType } from '@cydeaos/libs/events/game-management-event/game-event-type';
 import { GameManagementResponse } from '@cydeaos/libs/events/game-management-event/game-management-response';
-import { GameJoinClientResponse, GameJoinServerNotification } from '@cydeaos/libs/events/game-management-event/game-join-responses';
+import { GameJoinResponse } from '@cydeaos/libs/events/game-management-event/game-join-responses';
 
 @WebSocketGateway({ cors: true })
 @UseGuards(JwtAuthGuard)
@@ -54,8 +61,8 @@ export class GameManagementGateway {
             return {
                 event: GameEventType.GameCreation,
                 data: {
-                    type: GameEventType.GameCreation,
                     success: false,
+                    gameCode: '',
                     error: 'Invalid or missing game configuration'
                 }
             }
@@ -64,13 +71,13 @@ export class GameManagementGateway {
         const game = this.gameManagementService.newGame(config, client.user);
         game.setHostSocketId(client.id);
 
-        client.join(game.id);
+        client.join(game.gameCode);
 
         return {
             event: GameEventType.GameCreation,
             data: {
-                type: GameEventType.GameCreation,
                 success: true,
+                gameCode: game.gameCode,
                 data: game
             }
         }
@@ -80,7 +87,7 @@ export class GameManagementGateway {
     handleJoinMessage(
         @MessageBody('gameId') gameId: string,
         @ConnectedSocket() client: AuthSocket
-    ): WsResponse<GameJoinClientResponse> {
+    ): WsResponse<GameJoinResponse> {
         const game = this.gameManagementService.getGame(gameId);
 
         const player = Player.fromAccount(client.user);
@@ -89,13 +96,13 @@ export class GameManagementGateway {
 
         // inform the host.
         this.server.to(game.getHostSocketId())
-            .emit(GameEventType.GameJoined, new GameJoinServerNotification(gameId, player));
+            .emit(GameEventType.GameJoined, GameJoinResponse.serverPlayerResponse(gameId, player));
 
         client.join(gameId);
 
         return {
             event: GameEventType.GameJoined,
-            data: new GameJoinClientResponse(game)
+            data: GameJoinResponse.clientPlayerResponse(game)
         }
     }
 
@@ -103,7 +110,7 @@ export class GameManagementGateway {
     handleLeaveMessage(
         @MessageBody('gameId') gameId: string,
         @ConnectedSocket() client: AuthSocket
-    ): WsResponse<GameJoinClientResponse> {
+    ): WsResponse<GameJoinResponse> {
         const game = this.gameManagementService.getGame(gameId);
 
         const player = Player.fromAccount(client.user);
@@ -111,12 +118,12 @@ export class GameManagementGateway {
         game.leave(player);
 
         // inform the host.
-        this.server.to(game.getHostSocketId())
-            .emit(GameEventType.GameLeft, GameJoinServerNotification.gameLeftNotification(gameId, player));
+        client.to(game.getHostSocketId())
+            .emit(GameEventType.GameLeft, GameJoinResponse.serverPlayerResponse(gameId, player));
 
         return {
             event: GameEventType.GameLeft,
-            data: new GameJoinClientResponse(game)
+            data: GameJoinResponse.clientPlayerResponse(game)
         }
     }
 
@@ -133,8 +140,7 @@ export class GameManagementGateway {
         return {
             event: GameEventType.GameStarted,
             data: <GameManagementResponse>{
-                type: GameEventType.GameStarted,
-                data: game
+                gameCode: gameId,
             }
         }
     }
@@ -151,9 +157,9 @@ export class GameManagementGateway {
 
         return {
             event: GameEventType.GameFinished,
-            data: <GameManagementResponse>{
-                type: GameEventType.GameFinished,
+            data: {
                 data: game,
+                gameCode: gameId,
                 success: true,
             }
         }
@@ -171,9 +177,9 @@ export class GameManagementGateway {
 
         return {
             event: GameEventType.GameDeletion,
-            data: <GameManagementResponse>{
-                type: GameEventType.GameDeletion,
+            data: {
                 data: game,
+                gameCode: gameId,
                 success: true,
             }
         }

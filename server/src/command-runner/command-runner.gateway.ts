@@ -21,7 +21,7 @@ export class CommandRunnerGateway {
             target: Computer | undefined = undefined;
 
         if (targetIp)
-            target = this.nodeManagementService.findNode(game.id, targetIp);
+            target = this.nodeManagementService.findNode(game.gameCode, targetIp);
 
         const result = await commandExecutor(command, target);
         client.emit(CommandRunnerEventType.ExecuteCommandResult, result);

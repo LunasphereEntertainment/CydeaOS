@@ -24,9 +24,9 @@ export class GameManagementService {
     newGame(config: GameConfiguration, host: Account): GameObject {
         const game = new GameObject(randomWords.default({ exactly: 3, join: '-' }), config, host);
 
-        this.activeGames.set(game.id, game);
+        this.activeGames.set(game.gameCode, game);
 
-        this.mediaService.createMediaServiceForGame(game.id);
+        this.mediaService.createMediaServiceForGame(game.gameCode);
 
         return game;
     }

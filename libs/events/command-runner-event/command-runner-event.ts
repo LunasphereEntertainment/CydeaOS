@@ -1,6 +1,8 @@
 // import { CliCommand } from '../../command-line/cli-command';
 
-export interface CommandRunnerEvent {
+import { InGameEvent } from '../game-event-payload';
+
+export interface CommandRunnerEvent extends InGameEvent {
     type: CommandRunnerEventType;
     command: string;
     targetIp?: string; // hostname or ip address

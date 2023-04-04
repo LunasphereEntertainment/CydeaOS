@@ -19,7 +19,7 @@ export class NodeManagementGateway {
     @SubscribeMessage('player-connect')
     handlePlayerConnection(client: GameSocket, payload: { target: string }) {
         const { target: targetIp } = payload;
-        const node = this.nodeManagementService.findNode(client.game.id, targetIp);
+        const node = this.nodeManagementService.findNode(client.game.gameCode, targetIp);
         if (node) {
             const player = client.player;
 

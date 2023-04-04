@@ -38,7 +38,7 @@ export class JoinGameComponent implements OnDestroy {
   private waitForStart() {
     this.waitSubscription = this.socketService.listen<GameObject>(GameEventType.GameStarted)
       .subscribe(game => {
-        if (game.id === this.gameInfo?.id) {
+        if (game.gameCode === this.gameInfo?.gameCode) {
           this.router.navigate(['/game'], { queryParams: { as: 'client' }});
         }
       })

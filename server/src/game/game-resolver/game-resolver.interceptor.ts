@@ -9,15 +9,16 @@ export class GameResolverInterceptor implements NestInterceptor {
     constructor(private gameService: GameManagementService) {    }
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        let code: string,
+        let code: string  = '',
             client: any;
 
         if (context.getType() === 'http') {
             client = context.switchToHttp().getRequest();
             code = client.query.gameCode;
         } else if (context.getType() === 'ws') {
-            client = context.switchToWs().getClient();
-            code = client.handshake.query.gameCode;
+            let wsContext = context.switchToWs();
+            client = wsContext.getClient();
+            wsContext.getData().then(data => code = data.gameCode);
         } else {
             throw new BadRequestException('Unrecognised client/context type');
         }

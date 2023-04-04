@@ -14,9 +14,11 @@ class CrossFadeAudioSource {
 
   private bufferSourceNode?: AudioBufferSourceNode;
   private readonly context: AudioContext;
+  private readonly onEnd?: CallableFunction;
 
-  constructor(context: AudioContext, dest?: AudioNode) {
+  constructor(context: AudioContext, onEnd?: CallableFunction, dest?: AudioNode) {
     this.context = context;
+    this.onEnd = onEnd;
     // this.bufferSourceNode = context.createBufferSource();
     this.gainNode = context.createGain();
     this.gainNode.gain.value = 0;
@@ -38,6 +40,11 @@ class CrossFadeAudioSource {
     if (!this.bufferSourceNode) {
       this.bufferSourceNode = this.context.createBufferSource();
       this.bufferSourceNode.connect(this.gainNode);
+
+      this.bufferSourceNode.addEventListener('ended', () => {
+        this.busy = false;
+        this.onEnd?.();
+      });
     }
 
     if (source) {
@@ -105,8 +112,8 @@ export class AudioMixerComponent implements OnInit {
     this.sfxVolume = this.context.createGain();
 
     this.musicMixers.push(
-      new CrossFadeAudioSource(this.context, this.musicVolumeControl),
-      new CrossFadeAudioSource(this.context, this.musicVolumeControl),
+      new CrossFadeAudioSource(this.context, this.requestNewTrack, this.musicVolumeControl),
+      new CrossFadeAudioSource(this.context, this.requestNewTrack, this.musicVolumeControl),
     );
 
     this.musicVolumeControl.connect(this.context.destination);
@@ -125,13 +132,13 @@ export class AudioMixerComponent implements OnInit {
       .subscribe((mediaEntry: IMediaEntry) => {
         this.playTrack(mediaEntry);
       });
-
-    // setTimeout(() => {
-    // }, 2000);
   }
 
-  requestNewTrack(mood: MediaMood) {
-    this.socketService.blindSend(MediaEventType.SwitchMood, { mood });
+  requestNewTrack(mood?: MediaMood) {
+    if (mood)
+      this.socketService.blindSend(MediaEventType.SwitchMood, { mood });
+    else
+      this.socketService.blindSend(MediaEventType.NextTrack, { 'please': 'thank you' });
   }
 
   playSfx(url: string): void {

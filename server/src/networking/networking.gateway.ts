@@ -20,7 +20,7 @@ export class NetworkingGateway {
       throw new BadRequestException('Service name is required.');
     }
 
-    const node = this.nodeManagementService.findNode(client.game.id, targetIp);
+    const node = this.nodeManagementService.findNode(client.game.gameCode, targetIp);
     if (node) {
       const daemon = node.daemons.find(daemon => daemon.name === serviceName);
       if (!daemon) {
@@ -39,7 +39,7 @@ export class NetworkingGateway {
       throw new BadRequestException('Service name is required.');
     }
 
-    const node = this.nodeManagementService.findNode(client.game.id, targetIp);
+    const node = this.nodeManagementService.findNode(client.game.gameCode, targetIp);
     if (node) {
       const daemon = node.daemons.find(daemon => daemon.name === serviceName);
       if (!daemon) {

@@ -26,19 +26,19 @@ export class GameManagementService {
 
   joinGame(gameCode: string): Observable<GameJoinClientResponse> {
     return this.socketService.sendAndReceive<GameJoinClientResponse>(GameEventType.GameJoined, <GameManagementRequest>{
-      gameId: gameCode
+      gameCode: gameCode
     });
   }
 
   leaveGame(gameCode: string): Observable<GameJoinClientResponse> {
     return this.socketService.sendAndReceive<GameJoinClientResponse>(GameEventType.GameLeft, <GameManagementRequest>{
-      gameId: gameCode
+      gameCode: gameCode
     });
   }
 
   startGame(gameCode: string): Observable<GameManagementResponse> {
     return this.socketService.sendAndReceive<GameManagementResponse>(GameEventType.GameStarted, <GameManagementRequest>{
-      gameId: gameCode
+      gameCode: gameCode
     });
   }
 }

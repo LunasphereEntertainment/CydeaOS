@@ -20,7 +20,7 @@ describe('GameObject', () => {
     it('should be defined', () => {
         let testGameObject = new GameObject(v4(), testGameConfig);
         expect(testGameObject).toBeDefined();
-        expect(testGameObject.id).toBeDefined();
+        expect(testGameObject.gameCode).toBeDefined();
         expect(testGameObject.config).toBeDefined();
         expect(testGameObject.players).toBeDefined();
     });

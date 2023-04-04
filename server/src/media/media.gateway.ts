@@ -27,7 +27,7 @@ export class MediaGateway {
 
     @SubscribeMessage(MediaEventType.NextTrack)
     handleGetNextTrack(@ConnectedSocket() client: GameSocket): WsResponse<MediaEntry> {
-        const uuid = this.mediaService.nextSong(client.game.id),
+        const uuid = this.mediaService.nextSong(client.game.gameCode),
             songInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
 
         return {
@@ -38,7 +38,7 @@ export class MediaGateway {
 
     @SubscribeMessage(MediaEventType.SwitchMood)
     handleSwitchMood(@ConnectedSocket() client: GameSocket, @MessageBody('mood', new ParseEnumPipe(MediaMood)) mood: MediaMood): WsResponse<MediaEntry> {
-        const uuid = this.mediaService.changeMood(client.game.id, mood),
+        const uuid = this.mediaService.changeMood(client.game.gameCode, mood),
             songInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
 
         return {
