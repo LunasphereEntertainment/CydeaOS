@@ -28,7 +28,10 @@ export class GameManagementService {
 
         this.activeGames.set(game.gameCode, game);
 
-        this.gameManagementEventEmitter.emit([GameEventCategory.GameManagement, GameManagementEventType.GameCreation], game);
+        this.gameManagementEventEmitter.emit(
+            [GameEventCategory.GameManagement, GameManagementEventType.GameCreation],
+            game
+        );
 
         return game;
     }
