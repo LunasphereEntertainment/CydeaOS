@@ -1,7 +1,6 @@
 import { Player, PlayerState } from '../player/player';
-import { IPGenerator } from '../ip-generator/ip-generator';
 import { GameConfiguration } from '../game-configuration/game-configuration';
-import { Account } from "../luna/account";
+import { Account } from '../luna/account';
 
 export class GameObject {
     gameCode: string;
@@ -15,12 +14,12 @@ export class GameObject {
     readonly host: Account
     private hostSocketId?: string;
 
-    public readonly ipGenerator: IPGenerator;
+    // public readonly ipGenerator: IPGenerator;
 
     constructor(id: string, config: GameConfiguration, host: Account) {
         this.gameCode = id;
 
-        this.ipGenerator = new IPGenerator(config.ipType);
+        // this.ipGenerator = new IPGenerator(config.ipType);
 
         this.config = config
 
@@ -52,6 +51,10 @@ export class GameObject {
         return this.players.find(player => player.username === username);
     }
 
+    /** @deprecated
+     * Use findPlayerBySocketId instead
+     * @param socketId
+     */
     findPlayerBySocketId(socketId: string): Player | undefined {
         return this.players.find(player => player.getSocketId() === socketId);
     }

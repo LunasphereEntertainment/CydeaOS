@@ -1,12 +1,9 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { UseInterceptors } from '@nestjs/common';
-import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
-import { NodeManagementService } from '../node-management/node-management.service';
+import { NodeManagementService } from './node-management.service';
 import { GameSocket } from '../game-socket.interface';
 import { Server } from 'socket.io';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
-@UseInterceptors(GameResolverInterceptor)
 export class NodeManagementGateway {
     @WebSocketServer()
     server!: Server;

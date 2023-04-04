@@ -1,0 +1,31 @@
+<clr-modal [clrModalClosable]="false" [clrModalOpen]="isOpen">
+  <h3 class="modal-title">
+    <cds-icon shape="exclamation-triangle" size="md"></cds-icon>
+    Permissions Request
+  </h3>
+
+  <div class="modal-body">
+    <p>Can we have your permission to enable some things?</p>
+    <form>
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox [formControl]="musicEnabled">
+          <label>Enable background music?</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox [formControl]="soundEnabled">
+          <label>Enable sound effects?</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="close()">
+      <cds-icon shape="check"></cds-icon>
+      Confirm
+    </button>
+  </div>
+</clr-modal>

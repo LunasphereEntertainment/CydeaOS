@@ -6,7 +6,13 @@ export class NmapCommand implements CliRunner {
     static executable = "nmap";
 
     execute(command: CliCommand, target?: Computer): Promise<string> {
-        const nmapPortList = target.listPorts().map(port => `${port.port}/tcp\t\t${port.isOpen ? 'open' : 'closed'}\tunknown`); // TODO: ${port.service}
+        const nmapPortList = target.daemons.map(daemon => {
+            const portList = daemon.ports;
+            return portList.map(port => {
+                let openStr = port.isOpen() ? "open" : "closed";
+                return `${port.port}/tcp\t\t${openStr}\t${daemon.name}`;
+            })
+        });
 
         const sysTime = new Date();
         const sysTimeStr = `${sysTime.getFullYear()}-${sysTime.getMonth() + 1}-${sysTime.getDate()} ${sysTime.getHours()}:${sysTime.getMinutes()} UTC`;

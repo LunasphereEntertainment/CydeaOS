@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MediaMood } from "@cydeaos/libs/media/media-mood/media-mood";
 
 @Component({
   selector: 'app-game-launcher',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./game-launcher.component.scss']
 })
 export class GameLauncherComponent {
+  mainMood = MediaMood.MainMenu;
 
 }

@@ -1,5 +1,3 @@
-// import { CliCommand } from '../../command-line/cli-command';
-
 import { InGameEvent } from '../game-event-payload';
 
 export interface CommandRunnerEvent extends InGameEvent {

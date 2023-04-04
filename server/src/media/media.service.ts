@@ -22,6 +22,10 @@ export class MediaService {
         return this.globalMediaLibrary.getTrack(uuid);
     }
 
+    getMenuTrackFromGlobalMediaLibrary(): MediaUuid {
+        return this.globalMediaLibrary.getMenuTrack();
+    }
+
     changeMood(gameId: string, newMood: MediaMood): MediaUuid {
         if (!this.mediaServicesByGame.has(gameId)) {
             throw new GameNotFoundError(gameId);
@@ -77,12 +81,14 @@ export class MediaService {
             mediaDir = process.env.MEDIA_DIR || join(__dirname, 'media'),
             chillDir = join(mediaDir, 'chill'),
             dramaticDir = join(mediaDir, 'dramatic'),
-            upbeatDir = join(mediaDir, 'upbeat');
+            upbeatDir = join(mediaDir, 'upbeat'),
+            mainMenuDir = join(mediaDir, 'main-menu');
 
         let importCount = 0;
         importCount += this.importDirectory(chillDir, MediaMood.Chill);
         importCount += this.importDirectory(dramaticDir, MediaMood.Dramatic);
         importCount += this.importDirectory(upbeatDir, MediaMood.Upbeat);
+        importCount += this.importDirectory(mainMenuDir, MediaMood.MainMenu);
         // this.importDirectory(sadDir, MediaMood.Sad);
 
         console.log(`Imported ${importCount} tracks from ${mediaDir}`);

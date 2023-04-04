@@ -23,6 +23,12 @@ export class MediaLibrary {
         console.log(`Added ${ mediaEntry.uuid } to ${ mediaEntry.mood }`)
     }
 
+    getMenuTrack(): MediaUuid {
+        const trackList = this.mediaByGenre.get(MediaMood.MainMenu),
+            randomIdx = Math.floor(Math.random() * trackList!.length);
+        return trackList![randomIdx].uuid;
+    }
+
     getGenres(): Array<MediaMood> {
         return Array.from(this.mediaByGenre.keys());
     }

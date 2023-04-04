@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-header">
+    <cds-icon shape="terminal"></cds-icon>
+    Terminal
+  </div>
+  <div class="card-body" (click)="terminal.focus()">
+    <ul class="stdout">
+      <li *ngFor="let line of stdout" [ngClass]="line.type === lineType.Stderr ? 'error' : ''">{{ line.text }}</li>
+    </ul>
+    <div style="display: flex; flex-direction: row; margin: 0 5px">
+      <label>{{ prompt }}</label>
+      <input #terminal class="terminal-input" type="text" [(ngModel)]="input" (keydown)="onKeydown($event)">
+    </div>
+  </div>
+  <div class="card-footer">
+    <small>Status: {{ status }}</small>
+  </div>
+</div>

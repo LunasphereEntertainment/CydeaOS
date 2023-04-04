@@ -3,13 +3,10 @@ import { FileSystemEvent, FileSystemEventType } from '@cydeaos/libs/events/file-
 import { NodeManagementService } from '../node-management/node-management.service';
 import { Computer } from '@cydeaos/libs/nodes/computer/computer';
 import { GameSocket } from '../game-socket.interface';
-import { UseInterceptors } from '@nestjs/common';
-import { GameResolverInterceptor } from '../game/game-resolver/game-resolver.interceptor';
 import { FileNotFound, FileType, IFileEntry } from '@cydeaos/libs/nodes/file-system/i-file-entries';
 import { IPNotFoundError } from '../errors/node-errors/node-errors';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
-@UseInterceptors(GameResolverInterceptor)
 export class FileSystemGateway {
 
     constructor(private nodeManagementService: NodeManagementService) {    }

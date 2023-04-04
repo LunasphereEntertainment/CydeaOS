@@ -15,6 +15,9 @@ import { JoinGameComponent } from './game-management-routes/join-game/join-game.
 import { GameDesktopContainerComponent } from './core-game/game-desktop-container/game-desktop-container.component';
 import { AudioMixerComponent } from './core-game/audio-mixer/audio-mixer.component';
 import { HttpClientModule } from '@angular/common/http';
+import { PermissionsPromptComponent } from './game-launcher/permissions-prompt/permissions-prompt.component';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { TerminalEmulatorComponent } from './core-game/terminal-emulator/terminal-emulator.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +29,11 @@ import { HttpClientModule } from '@angular/common/http';
     JoinGameComponent,
     GameDesktopContainerComponent,
     AudioMixerComponent,
+    PermissionsPromptComponent,
+    TerminalEmulatorComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     ClarityModule,

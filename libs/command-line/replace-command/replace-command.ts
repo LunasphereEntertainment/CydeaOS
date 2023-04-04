@@ -12,7 +12,9 @@ export class ReplaceCommand implements CliRunner {
         // grab the file from the file system
         const file = target.fileSystem.getFile(fileName);
         // confirm it's a text file
-
+        if (file.type !== "text") {
+            return Promise.reject(`Can only replace text in text files. ${fileName} is a ${file.type} file.`);
+        }
 
         // configure the regex
         const regex = new RegExp(regexStr, "g");
@@ -21,7 +23,7 @@ export class ReplaceCommand implements CliRunner {
         const content = (<string>file.content).replace(regex, replacement);
 
         // update the file contents
-        target.fileSystem.updateFile(args[0], {name: file.name, type: file.type, content});
+        target.fileSystem.updateFile(fileName, {name: file.name, type: file.type, content});
 
         return Promise.resolve(content);
     }
