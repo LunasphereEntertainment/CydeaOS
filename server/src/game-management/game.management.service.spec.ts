@@ -31,7 +31,7 @@ describe('GameService', () => {
     it('should create a game', () => {
         const game = service.newGame(testGameConfig, <Account>{username: "test"});
         expect(game).toBeDefined();
-        expect(game.id).toBeDefined();
+        expect(game.gameCode).toBeDefined();
         expect(game.config).toBeDefined();
         expect(game.players).toBeDefined();
         expect(game.config).toBe(testGameConfig);
@@ -39,7 +39,7 @@ describe('GameService', () => {
 
     it('should register a game', () => {
         const game = service.newGame(testGameConfig, <Account>{username: "test"});
-        expect(service.getGame(game.id)).toBe(game);
+        expect(service.getGame(game.gameCode)).toBe(game);
     });
 
     it('should handle game lookup failure', () => {
@@ -58,8 +58,8 @@ describe('GameService', () => {
         const game = service.newGame(testGameConfig, <Account>{username: "test"});
         game.start();
         expect(game.state).toBe(GameState.Running);
-        service.stopGame(game.id);
+        service.stopGame(game.gameCode);
         expect(game.state).toBe(GameState.Stopped);
-        expect(() => service.getGame(game.id)).toThrowError(`Game with id ${game.id} not found`);
+        expect(() => service.getGame(game.gameCode)).toThrowError(`Game with id ${game.gameCode} not found`);
     });
 });
