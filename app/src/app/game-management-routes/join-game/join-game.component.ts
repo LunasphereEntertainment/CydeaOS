@@ -3,7 +3,7 @@ import { GameObject } from "@cydeaos/libs/game-object/game-object";
 import { FormControl } from "@angular/forms";
 import { GameManagementService } from "../game-management.service";
 import { SocketService } from '../../shared/socket.service';
-import { GameEventType } from '@cydeaos/libs/events/game-management-event/game-event-type';
+import { GameManagementEventType } from '@cydeaos/libs/events/game-management-event/game-management-event-type';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -36,7 +36,7 @@ export class JoinGameComponent implements OnDestroy {
   }
 
   private waitForStart() {
-    this.waitSubscription = this.socketService.listen<GameObject>(GameEventType.GameStarted)
+    this.waitSubscription = this.socketService.listen<GameObject>(GameManagementEventType.GameStarted)
       .subscribe(game => {
         if (game.gameCode === this.gameInfo?.gameCode) {
           this.router.navigate(['/game'], { queryParams: { as: 'client' }});

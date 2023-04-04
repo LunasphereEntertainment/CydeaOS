@@ -34,7 +34,7 @@ export class CommandRunnerGateway {
                 data: {
                     type: CommandRunnerEventType.ExecuteCommandResult,
                     command: command,
-                    gameCode: game.id,
+                    gameCode: game.gameCode,
                     result,
                 }
             }
@@ -44,7 +44,7 @@ export class CommandRunnerGateway {
                 data: {
                     type: CommandRunnerEventType.ExecuteCommandError,
                     command: command,
-                    gameCode: game.id,
+                    gameCode: game.gameCode,
                     error: e,
                 }
             };

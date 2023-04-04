@@ -1,4 +1,4 @@
-export enum GameEventType {
+export enum GameManagementEventType {
     GameGet = 'game-get',
     GameCreation = 'game-creation',
     GameJoined = 'game-joined',

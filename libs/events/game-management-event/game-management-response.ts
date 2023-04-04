@@ -1,5 +1,4 @@
-import { GameEventType } from "./game-event-type";
-import { GameObject } from "../../game-object/game-object";
+import { GameObject } from '../../game-object/game-object';
 
 export interface GameManagementResponse {
     success: boolean;

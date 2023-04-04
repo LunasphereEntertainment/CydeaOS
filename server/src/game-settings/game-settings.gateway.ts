@@ -13,24 +13,24 @@ export class GameSettingsGateway {
   constructor(private settingsService: GameSettingsService) {
   }
 
-  @SubscribeMessage(GameSettingsEventType.Save)
+  @SubscribeMessage(GameSettingsEventType.SetSettings)
   handleSave(client: Socket, payload: GameSettingsEvent): WsResponse<{ success: boolean }> {
     const { id : clientId } = client;
 
     this.settingsService.saveClientSettings(clientId, payload.data);
 
     return {
-        event: GameSettingsEventType.Save,
+        event: GameSettingsEventType.SetSettings,
         data: { success: true }
     }
   }
 
-  @SubscribeMessage(GameSettingsEventType.Load)
+  @SubscribeMessage(GameSettingsEventType.GetSettings)
   handleLoad(client: any): WsResponse<ClientSettings> {
     const { id: clientId } = client;
 
     return {
-        event: GameSettingsEventType.Load,
+        event: GameSettingsEventType.GetSettings,
         data: this.settingsService.loadClientSettings(clientId)
             || this.settingsService.getAndSaveDefaults(clientId)
     }

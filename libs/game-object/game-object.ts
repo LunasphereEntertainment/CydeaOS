@@ -16,10 +16,8 @@ export class GameObject {
 
     // public readonly ipGenerator: IPGenerator;
 
-    constructor(id: string, config: GameConfiguration, host: Account) {
-        this.gameCode = id;
-
-        // this.ipGenerator = new IPGenerator(config.ipType);
+    constructor(gameCode: string, config: GameConfiguration, host: Account) {
+        this.gameCode = gameCode;
 
         this.config = config
 
@@ -84,11 +82,12 @@ export class GameObject {
     }
 
     toJSON() {
+        const { gameCode, config, players, state } = this;
         return {
-            id: this.gameCode,
-            config: this.config,
-            players: this.players,
-            state: this.state
+            gameCode,
+            config,
+            players,
+            state
         }
     }
 }
