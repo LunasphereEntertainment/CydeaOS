@@ -1,3 +1,3 @@
 export interface InGameEvent {
-    gameCode: string;
+     gameCode: string;
 }

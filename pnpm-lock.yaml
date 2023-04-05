@@ -107,6 +107,7 @@ importers:
       '@nestjs/cli': ^9.0.0
       '@nestjs/common': ^9.0.0
       '@nestjs/core': ^9.0.0
+      '@nestjs/event-emitter': ^1.4.1
       '@nestjs/platform-express': ^9.0.0
       '@nestjs/platform-socket.io': ^9.3.9
       '@nestjs/schematics': ^9.0.0
@@ -139,6 +140,7 @@ importers:
     dependencies:
       '@nestjs/common': 9.3.9_mnr6j2del53muneqly5h4y27ai
       '@nestjs/core': 9.3.9_zcarqoeyya6mxeibfm3b6vbgcy
+      '@nestjs/event-emitter': 1.4.1_shbtxdxgogsm4p64bg2toeylku
       '@nestjs/platform-express': 9.3.9_77foi4w27ghy47yutmnzv7krjy
       '@nestjs/platform-socket.io': 9.3.9_kitvmf7t6ij7v6oz4ubkjf7ffm
       '@nestjs/websockets': 9.3.9_pet6d6lsguwx67o66bd2kyfuqa
@@ -2719,6 +2721,19 @@ packages:
       uid: 2.0.1
     transitivePeerDependencies:
       - encoding
+
+  /@nestjs/event-emitter/1.4.1_shbtxdxgogsm4p64bg2toeylku:
+    resolution: {integrity: sha512-PmLpzMYgEKJNxOUrRjb6kNSm2PC6J+BeLTuF/bkYViGM/mVGvYOgU5jq8DQnXmiSmDmyWN+tO2cHSnR7odJJRA==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
+      reflect-metadata: ^0.1.12
+    dependencies:
+      '@nestjs/common': 9.3.9_mnr6j2del53muneqly5h4y27ai
+      '@nestjs/core': 9.3.9_zcarqoeyya6mxeibfm3b6vbgcy
+      eventemitter2: 6.4.9
+      reflect-metadata: 0.1.13
+    dev: false
 
   /@nestjs/platform-express/9.3.9_77foi4w27ghy47yutmnzv7krjy:
     resolution: {integrity: sha512-f8ja2sYuDGj2QSMmjg05n3WF19wJG5yTiYxRi64nsu5GKL0qLM1LzxNemehkni/knExlvF2bDpbKKpna9nC1JA==}
@@ -5315,6 +5330,10 @@ packages:
   /eventemitter-asyncresource/1.0.0:
     resolution: {integrity: sha512-39F7TBIV0G7gTelxwbEqnwhp90eqCPON1k0NwNfwhgKn4Co4ybUbj2pECcXT0B3ztRKZ7Pw1JujUUgmQJHcVAQ==}
     dev: true
+
+  /eventemitter2/6.4.9:
+    resolution: {integrity: sha512-JEPTiaOt9f04oa6NOkc4aH+nVp5I3wEjpHbIPqfgCdD5v5bUzy7xQqwcVO2aDQgOWhI28da57HksMrzK9HlRxg==}
+    dev: false
 
   /eventemitter3/4.0.7:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}

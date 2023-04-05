@@ -1,4 +1,11 @@
-import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, WsResponse } from '@nestjs/websockets';
+import {
+    ConnectedSocket,
+    MessageBody,
+    SubscribeMessage,
+    WebSocketGateway,
+    WebSocketServer,
+    WsResponse
+} from '@nestjs/websockets';
 import { GameManagementService } from './game.management.service';
 import { GameConfiguration } from '@cydeaos/libs/game-configuration/game-configuration';
 import { UseGuards } from '@nestjs/common';
@@ -7,9 +14,9 @@ import { AuthSocket } from '../auth-socket.interface';
 import { Player } from '@cydeaos/libs/player/player';
 import { GameObject } from '@cydeaos/libs/game-object/game-object'
 import { Server } from 'socket.io';
-import { GameEventType } from '@cydeaos/libs/events/game-management-event/game-event-type';
+import { GameManagementEventType } from '@cydeaos/libs/events/game-management-event/game-management-event-type';
 import { GameManagementResponse } from '@cydeaos/libs/events/game-management-event/game-management-response';
-import { GameJoinClientResponse, GameJoinServerNotification } from '@cydeaos/libs/events/game-management-event/game-join-responses';
+import { GameJoinResponse } from '@cydeaos/libs/events/game-management-event/game-join-responses';
 
 @WebSocketGateway({ cors: true })
 @UseGuards(JwtAuthGuard)
@@ -21,7 +28,7 @@ export class GameManagementGateway {
     constructor(private gameManagementService: GameManagementService) {
     }
 
-    @SubscribeMessage(GameEventType.GameGet)
+    @SubscribeMessage(GameManagementEventType.GameGet)
     handleGetGameMessage(
         @MessageBody() gameId: string,
         @ConnectedSocket() client: AuthSocket
@@ -37,12 +44,12 @@ export class GameManagementGateway {
         }
 
         return {
-            event: GameEventType.GameGet,
+            event: GameManagementEventType.GameGet,
             data: game
         }
     }
 
-    @SubscribeMessage(GameEventType.GameCreation)
+    @SubscribeMessage(GameManagementEventType.GameCreation)
     handleCreationMessage(
         @MessageBody('config') config: GameConfiguration,
         @ConnectedSocket() client: AuthSocket
@@ -52,10 +59,10 @@ export class GameManagementGateway {
         // Validate game settings
         if (!config || !config.ipType || !config.musicMode) {
             return {
-                event: GameEventType.GameCreation,
+                event: GameManagementEventType.GameCreation,
                 data: {
-                    type: GameEventType.GameCreation,
                     success: false,
+                    gameCode: '',
                     error: 'Invalid or missing game configuration'
                 }
             }
@@ -64,23 +71,23 @@ export class GameManagementGateway {
         const game = this.gameManagementService.newGame(config, client.user);
         game.setHostSocketId(client.id);
 
-        client.join(game.id);
+        client.join(game.gameCode);
 
         return {
-            event: GameEventType.GameCreation,
+            event: GameManagementEventType.GameCreation,
             data: {
-                type: GameEventType.GameCreation,
                 success: true,
+                gameCode: game.gameCode,
                 data: game
             }
         }
     }
 
-    @SubscribeMessage(GameEventType.GameJoined)
+    @SubscribeMessage(GameManagementEventType.GameJoined)
     handleJoinMessage(
         @MessageBody('gameId') gameId: string,
         @ConnectedSocket() client: AuthSocket
-    ): WsResponse<GameJoinClientResponse> {
+    ): WsResponse<GameJoinResponse> {
         const game = this.gameManagementService.getGame(gameId);
 
         const player = Player.fromAccount(client.user);
@@ -89,21 +96,21 @@ export class GameManagementGateway {
 
         // inform the host.
         this.server.to(game.getHostSocketId())
-            .emit(GameEventType.GameJoined, new GameJoinServerNotification(gameId, player));
+            .emit(GameManagementEventType.GameJoined, GameJoinResponse.serverPlayerResponse(gameId, player));
 
         client.join(gameId);
 
         return {
-            event: GameEventType.GameJoined,
-            data: new GameJoinClientResponse(game)
+            event: GameManagementEventType.GameJoined,
+            data: GameJoinResponse.clientPlayerResponse(game)
         }
     }
 
-    @SubscribeMessage(GameEventType.GameLeft)
+    @SubscribeMessage(GameManagementEventType.GameLeft)
     handleLeaveMessage(
         @MessageBody('gameId') gameId: string,
         @ConnectedSocket() client: AuthSocket
-    ): WsResponse<GameJoinClientResponse> {
+    ): WsResponse<GameJoinResponse> {
         const game = this.gameManagementService.getGame(gameId);
 
         const player = Player.fromAccount(client.user);
@@ -111,16 +118,16 @@ export class GameManagementGateway {
         game.leave(player);
 
         // inform the host.
-        this.server.to(game.getHostSocketId())
-            .emit(GameEventType.GameLeft, GameJoinServerNotification.gameLeftNotification(gameId, player));
+        client.to(game.getHostSocketId())
+            .emit(GameManagementEventType.GameLeft, GameJoinResponse.serverPlayerResponse(gameId, player));
 
         return {
-            event: GameEventType.GameLeft,
-            data: new GameJoinClientResponse(game)
+            event: GameManagementEventType.GameLeft,
+            data: GameJoinResponse.clientPlayerResponse(game)
         }
     }
 
-    @SubscribeMessage(GameEventType.GameStarted)
+    @SubscribeMessage(GameManagementEventType.GameStarted)
     handleStartMessage(
         @MessageBody('gameId') gameId: string,
         @ConnectedSocket() client: AuthSocket
@@ -128,18 +135,17 @@ export class GameManagementGateway {
         const game = this.gameManagementService.getGame(gameId);
         game.start();
 
-        client.to(gameId).emit(GameEventType.GameStarted, game);
+        client.to(gameId).emit(GameManagementEventType.GameStarted, game);
 
         return {
-            event: GameEventType.GameStarted,
+            event: GameManagementEventType.GameStarted,
             data: <GameManagementResponse>{
-                type: GameEventType.GameStarted,
-                data: game
+                gameCode: gameId,
             }
         }
     }
 
-    @SubscribeMessage(GameEventType.GameFinished)
+    @SubscribeMessage(GameManagementEventType.GameFinished)
     handleStopMessage(
         @MessageBody('gameId') gameId: string,
         @ConnectedSocket() client: AuthSocket
@@ -147,19 +153,19 @@ export class GameManagementGateway {
         const game = this.gameManagementService.getGame(gameId);
         game.stop();
 
-        client.to(gameId).emit(GameEventType.GameFinished, game);
+        client.to(gameId).emit(GameManagementEventType.GameFinished, game);
 
         return {
-            event: GameEventType.GameFinished,
-            data: <GameManagementResponse>{
-                type: GameEventType.GameFinished,
+            event: GameManagementEventType.GameFinished,
+            data: {
                 data: game,
+                gameCode: gameId,
                 success: true,
             }
         }
     }
 
-    @SubscribeMessage(GameEventType.GameDeletion)
+    @SubscribeMessage(GameManagementEventType.GameDeletion)
     handleDeletionMessage(
         @MessageBody('gameId') gameId: string,
         @ConnectedSocket() client: AuthSocket
@@ -167,13 +173,13 @@ export class GameManagementGateway {
         const game = this.gameManagementService.getGame(gameId);
         this.gameManagementService.deleteGame(gameId);
 
-        client.to(gameId).emit(GameEventType.GameDeletion, gameId);
+        client.to(gameId).emit(GameManagementEventType.GameDeletion, gameId);
 
         return {
-            event: GameEventType.GameDeletion,
-            data: <GameManagementResponse>{
-                type: GameEventType.GameDeletion,
+            event: GameManagementEventType.GameDeletion,
+            data: {
                 data: game,
+                gameCode: gameId,
                 success: true,
             }
         }

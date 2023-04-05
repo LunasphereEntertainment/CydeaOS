@@ -1,10 +1,9 @@
 import { Player, PlayerState } from '../player/player';
-import { IPGenerator } from '../ip-generator/ip-generator';
 import { GameConfiguration } from '../game-configuration/game-configuration';
-import { Account } from "../luna/account";
+import { Account } from '../luna/account';
 
 export class GameObject {
-    id: string;
+    gameCode: string;
 
     readonly config: GameConfiguration;
 
@@ -17,10 +16,8 @@ export class GameObject {
 
     // public readonly ipGenerator: IPGenerator;
 
-    constructor(id: string, config: GameConfiguration, host: Account) {
-        this.id = id;
-
-        // this.ipGenerator = new IPGenerator(config.ipType);
+    constructor(gameCode: string, config: GameConfiguration, host: Account) {
+        this.gameCode = gameCode;
 
         this.config = config
 
@@ -34,7 +31,7 @@ export class GameObject {
     leave(player: Player) {
         const i = this.players.findIndex(p => p.username === player.username);
         if (i < 0) {
-            console.warn(`Player ${player.username} is not in game ${this.id}.`)
+            console.warn(`Player ${player.username} is not in game ${this.gameCode}.`)
             return;
         }
 
@@ -70,7 +67,7 @@ export class GameObject {
 
     start() {
         if (this.state !== GameState.WaitingForPlayers) {
-            throw new Error(`Game(id: ${this.id}) is already running/finished.`);
+            throw new Error(`Game(id: ${this.gameCode}) is already running/finished.`);
         }
 
         this.state = GameState.Running;
@@ -78,18 +75,19 @@ export class GameObject {
 
     stop() {
         if (this.state === GameState.Stopped) {
-            throw new Error(`Game(id: ${this.id}) is already stopped`);
+            throw new Error(`Game(id: ${this.gameCode}) is already stopped`);
         }
 
         this.state = GameState.Stopped;
     }
 
     toJSON() {
+        const { gameCode, config, players, state } = this;
         return {
-            id: this.id,
-            config: this.config,
-            players: this.players,
-            state: this.state
+            gameCode,
+            config,
+            players,
+            state
         }
     }
 }

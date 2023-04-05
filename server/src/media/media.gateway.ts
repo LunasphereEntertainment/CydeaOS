@@ -8,13 +8,12 @@ import { MediaEntry } from '@cydeaos/libs/media/media-entry/media-entry';
 import { GameSocket } from '../game-socket.interface';
 import { AuthSocket } from "../auth-socket.interface";
 import { GameResolverPipe } from "../game-resolver/game-resolver.pipe";
-import { GameManagementService } from "../game-management/game.management.service";
 import { GameObject } from "@cydeaos/libs/game-object/game-object";
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 export class MediaGateway {
 
-    constructor(private mediaService: MediaService, private gameService: GameManagementService) {
+    constructor(private mediaService: MediaService) {
     }
 
     @SubscribeMessage(MediaEventType.GetCurrentTrack)
@@ -22,7 +21,7 @@ export class MediaGateway {
         @MessageBody('gameCode', GameResolverPipe) game: GameObject,
         @ConnectedSocket() client: AuthSocket
     ): WsResponse<MediaEntry> {
-        const currentSong = this.mediaService.getCurrentSong(game.id),
+        const currentSong = this.mediaService.getCurrentSong(game.gameCode),
             songInfo = this.mediaService.getFromGlobalMediaLibrary(currentSong);
         return {
             event: MediaEventType.PlayTrack,
@@ -32,7 +31,7 @@ export class MediaGateway {
 
     @SubscribeMessage(MediaEventType.NextTrack)
     handleGetNextTrack(@ConnectedSocket() client: GameSocket): WsResponse<MediaEntry> {
-        const uuid = this.mediaService.nextSong(client.game.id),
+        const uuid = this.mediaService.nextSong(client.game.gameCode),
             songInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
 
         return {
@@ -52,7 +51,7 @@ export class MediaGateway {
         if (mood === MediaMood.MainMenu) {
             uuid = this.mediaService.getMenuTrackFromGlobalMediaLibrary();
         } else {
-            uuid = this.mediaService.changeMood(game.id, mood);
+            uuid = this.mediaService.changeMood(game.gameCode, mood);
         }
 
         songInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
@@ -65,7 +64,7 @@ export class MediaGateway {
 
     @SubscribeMessage(MediaEventType.GetCurrentMood)
     handleGetCurrentMood(client: any): MediaUuid {
-        return this.mediaService.getCurrentMood(client.game.id);
+        return this.mediaService.getCurrentMood(client.game.gameCode);
     }
 
 

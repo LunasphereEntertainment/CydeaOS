@@ -23,7 +23,7 @@ export class CommandRunnerGateway {
             target: Computer | undefined = undefined;
 
         if (targetIp)
-            target = this.nodeManagementService.findNode(game.id, targetIp);
+            target = this.nodeManagementService.findNode(game.gameCode, targetIp);
 
         try {
             const result = await commandExecutor(command, target);
@@ -34,7 +34,7 @@ export class CommandRunnerGateway {
                 data: {
                     type: CommandRunnerEventType.ExecuteCommandResult,
                     command: command,
-                    gameCode: game.id,
+                    gameCode: game.gameCode,
                     result,
                 }
             }
@@ -44,7 +44,7 @@ export class CommandRunnerGateway {
                 data: {
                     type: CommandRunnerEventType.ExecuteCommandError,
                     command: command,
-                    gameCode: game.id,
+                    gameCode: game.gameCode,
                     error: e,
                 }
             };

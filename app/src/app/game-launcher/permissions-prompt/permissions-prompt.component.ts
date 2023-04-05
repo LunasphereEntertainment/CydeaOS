@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AutoplayService, AutoplayState } from "./autoplay.service";
-import { filter } from "rxjs";
-import { FormControl, FormGroup } from "@angular/forms";
+import { AutoplayService, AutoplayState } from './autoplay.service';
+import { filter } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-permissions-prompt',
@@ -25,7 +25,7 @@ export class PermissionsPromptComponent {
   close() {
     this.isOpen = false;
 
-    if (this.musicEnabled.value || false) {
+    if (this.musicEnabled.value) {
       this.autoplayService.notifyApproval();
     }
   }

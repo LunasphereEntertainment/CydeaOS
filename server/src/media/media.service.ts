@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { readdirSync } from 'fs'
 import { join } from 'path';
-import { MediaLibrary } from "@cydeaos/libs/media/media-library/media-library";
-import { MediaManager } from "@cydeaos/libs/media/media-manager/media-manager";
-import { MediaMood } from "@cydeaos/libs/media/media-mood/media-mood";
-import { MediaEntry } from "@cydeaos/libs/media/media-entry/media-entry";
-import { GameNotFoundError } from "../errors/game-error/game.errors";
-import { MediaUuid } from "@cydeaos/libs/media/media.types";
+import { MediaLibrary } from '@cydeaos/libs/media/media-library/media-library';
+import { MediaManager } from '@cydeaos/libs/media/media-manager/media-manager';
+import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
+import { MediaEntry } from '@cydeaos/libs/media/media-entry/media-entry';
+import { GameNotFoundError } from '../errors/game-error/game.errors';
+import { MediaUuid } from '@cydeaos/libs/media/media.types';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { GameEventCategory } from '@cydeaos/libs/events/game-event';
+import { GameManagementEventType } from '@cydeaos/libs/events/game-management-event/game-management-event-type';
+import { GameObject } from '@cydeaos/libs/game-object/game-object';
+import * as console from 'console';
 
 @Injectable()
 export class MediaService {
@@ -14,8 +19,14 @@ export class MediaService {
 
     private mediaServicesByGame: Map<string, MediaManager> = new Map();
 
-    constructor() {
+    constructor(private eventEmitter: EventEmitter2) {
         this.initGlobalMediaLibrary()
+
+        this.eventEmitter.on(
+            [ GameEventCategory.GameManagement, GameManagementEventType.GameCreation ],
+            (game: GameObject) => {
+                this.createMediaServiceForGame(game.gameCode);
+            });
     }
 
     getFromGlobalMediaLibrary(uuid: MediaUuid): MediaEntry {
@@ -59,8 +70,9 @@ export class MediaService {
     }
 
     createMediaServiceForGame(gameId: string): MediaManager {
+        console.log(`received request to create media service for game '${ gameId }'`)
         if (this.mediaServicesByGame.has(gameId)) {
-            throw new Error(`Media service for game ${gameId} already exists`);
+            throw new Error(`Media service for game ${ gameId } already exists`);
         }
 
         const mediaService = new MediaManager(this.globalMediaLibrary);
@@ -91,7 +103,7 @@ export class MediaService {
         importCount += this.importDirectory(mainMenuDir, MediaMood.MainMenu);
         // this.importDirectory(sadDir, MediaMood.Sad);
 
-        console.log(`Imported ${importCount} tracks from ${mediaDir}`);
+        console.log(`Imported ${ importCount } tracks from ${ mediaDir }`);
     }
 
     private importDirectory(dir: string, mood: MediaMood): number {

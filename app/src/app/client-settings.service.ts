@@ -17,7 +17,7 @@ export class ClientSettingsService {
   }
 
   fetchClientSettings() {
-    this.socketService.sendAndReceive<ClientSettings>(GameSettingsEventType.Load, {test: 'test'})
+    this.socketService.sendAndReceive<ClientSettings>(GameSettingsEventType.GetSettings, {test: 'test'})
       .subscribe((settings) => {
         this.currentSettings.next(settings);
       });
@@ -28,7 +28,7 @@ export class ClientSettingsService {
   // }
 
   saveClientSettings(settings: ClientSettings) {
-    this.socketService.sendAndReceive<{ success: boolean }>(GameSettingsEventType.Save, settings)
+    this.socketService.sendAndReceive<{ success: boolean }>(GameSettingsEventType.SetSettings, settings)
       .subscribe((response) => {
         if (response.success) {
           this.currentSettings.next(settings);

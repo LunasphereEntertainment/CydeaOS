@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ClientSettingsService } from '../../client-settings.service';
 import { HttpClient } from '@angular/common/http';
 import { IMediaEntry } from '../i-media-entry';
@@ -16,9 +16,11 @@ class CrossFadeAudioSource {
 
   private bufferSourceNode?: AudioBufferSourceNode;
   private readonly context: AudioContext;
+  private readonly onEnd?: CallableFunction;
 
-  constructor(context: AudioContext, dest?: AudioNode) {
+  constructor(context: AudioContext, onEnd?: CallableFunction, dest?: AudioNode) {
     this.context = context;
+    this.onEnd = onEnd;
     // this.bufferSourceNode = context.createBufferSource();
     this.gainNode = context.createGain();
     this.gainNode.gain.value = 0;
@@ -40,6 +42,11 @@ class CrossFadeAudioSource {
     if (!this.bufferSourceNode) {
       this.bufferSourceNode = this.context.createBufferSource();
       this.bufferSourceNode.connect(this.gainNode);
+
+      this.bufferSourceNode.addEventListener('ended', () => {
+        this.busy = false;
+        this.onEnd?.();
+      });
     }
 
     if (source) {
@@ -71,10 +78,7 @@ class CrossFadeAudioSource {
   templateUrl: './audio-mixer.component.html',
   styleUrls: [ './audio-mixer.component.scss' ]
 })
-export class AudioMixerComponent implements OnInit {
-  // @ViewChild('#mixerOut') audioMixer!: HTMLAudioElement;
-  // readonly audioMixer = AudioContext.
-  // private readonly audioOut: MediaStreamAudioDestinationNode;
+export class AudioMixerComponent implements OnInit, OnDestroy {
   @Input() currentMood: MediaMood = MediaMood.Chill;
   @Input() showControls: boolean = true;
 
@@ -118,8 +122,8 @@ export class AudioMixerComponent implements OnInit {
     this.sfxVolume = this.context.createGain();
 
     this.musicMixers.push(
-      new CrossFadeAudioSource(this.context, this.musicVolumeControl),
-      new CrossFadeAudioSource(this.context, this.musicVolumeControl),
+      new CrossFadeAudioSource(this.context, this.requestNewTrack, this.musicVolumeControl),
+      new CrossFadeAudioSource(this.context, this.requestNewTrack, this.musicVolumeControl),
     );
 
     this.musicVolumeControl.connect(this.context.destination);
@@ -152,12 +156,15 @@ export class AudioMixerComponent implements OnInit {
     // }, 2000);
   }
 
-  ngOnDestroy(): void {
-    this.context.suspend();
+  requestNewTrack(mood?: MediaMood) {
+    if (mood)
+      this.socketService.blindSend(MediaEventType.SwitchMood, { mood });
+    else
+      this.socketService.blindSend(MediaEventType.NextTrack, { 'please': 'thank you' });
   }
 
-  requestNewTrack(mood: MediaMood) {
-    this.socketService.blindSend(MediaEventType.SwitchMood, { mood, gameCode: localStorage.getItem('gameCode') });
+  ngOnDestroy(): void {
+    this.context.suspend();
   }
 
   playSfx(url: string): void {

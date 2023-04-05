@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { GameStateService } from "../game-state.service";
-import { SocketService } from "../../shared/socket.service";
-import { CommandRunnerEvent, CommandRunnerEventType } from "@cydeaos/libs/events/command-runner-event/command-runner-event";
-import { CurrentGameService } from "../../shared/current-game.service";
+import { Component, OnInit } from '@angular/core';
+import { GameStateService } from '../game-state.service';
+import { SocketService } from '../../shared/socket.service';
+import {
+  CommandRunnerEvent,
+  CommandRunnerEventType
+} from '@cydeaos/libs/events/command-runner-event/command-runner-event';
 
 enum StdoutLineType {
   Stdout = 'stdout',
@@ -32,8 +34,7 @@ export class TerminalEmulatorComponent implements OnInit {
 
   constructor(
     private gameStateService: GameStateService,
-    private socketService: SocketService,
-    private currentGameService: CurrentGameService
+    private socketService: SocketService
   ) { }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { NodeManagementService } from '../node-management/node-management.service';
+import { NodeManagementService } from './node-management.service';
 import { GameSocket } from '../game-socket.interface';
 import { Server } from 'socket.io';
 
@@ -16,7 +16,7 @@ export class NodeManagementGateway {
     @SubscribeMessage('player-connect')
     handlePlayerConnection(client: GameSocket, payload: { target: string }) {
         const { target: targetIp } = payload;
-        const node = this.nodeManagementService.findNode(client.game.id, targetIp);
+        const node = this.nodeManagementService.findNode(client.game.gameCode, targetIp);
         if (node) {
             const player = client.player;
 

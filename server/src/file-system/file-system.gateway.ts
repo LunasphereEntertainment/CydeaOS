@@ -18,7 +18,7 @@ export class FileSystemGateway {
     @SubscribeMessage(FileSystemEventType.ListFiles)
     handleListFiles(client: GameSocket, payload: any): IFileEntry[] {
         const { target: targetIp, path } = payload;
-        const node = this.resolveNode(client.game.id, targetIp);
+        const node = this.resolveNode(client.game.gameCode, targetIp);
         if (node) {
             return node.fileSystem.listFiles(path);
         }
@@ -29,7 +29,7 @@ export class FileSystemGateway {
     @SubscribeMessage(FileSystemEventType.ReadFile)
     handleReadFile(client: GameSocket, payload: any): string {
         const { target: targetIp, path } = payload;
-        const node = this.resolveNode(client.game.id, targetIp);
+        const node = this.resolveNode(client.game.gameCode, targetIp);
         if (node) {
             const file = node.fileSystem.getFile(path);
             if (file.type !== FileType.Directory) {
@@ -45,7 +45,7 @@ export class FileSystemGateway {
     @SubscribeMessage(FileSystemEventType.WriteFile)
     handleWriteFile(client: GameSocket, payload: FileSystemEvent): void {
         const { target: targetIp, file, path } = payload.data,
-            node = this.resolveNode(client.game.id, targetIp);
+            node = this.resolveNode(client.game.gameCode, targetIp);
 
         if (!file) {
             throw new Error('File content is missing.');
@@ -67,7 +67,7 @@ export class FileSystemGateway {
     @SubscribeMessage(FileSystemEventType.DeleteFile)
     handleDeleteFile(client: GameSocket, payload: FileSystemEvent): void {
         const { target: targetIp, path } = payload.data,
-            node = this.resolveNode(client.game.id, targetIp);
+            node = this.resolveNode(client.game.gameCode, targetIp);
 
         if (node) {
             node.fileSystem.deleteFile(path);
