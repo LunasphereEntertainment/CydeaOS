@@ -77,6 +77,14 @@ export class TerminalEmulatorComponent implements OnInit {
       case 'clear':
         this.stdout = [];
         return;
+        case 'help':
+          this.stdout.push({type: StdoutLineType.Stdout, text: 'Available commands:'});
+          this.stdout.push({type: StdoutLineType.Stdout, text: 'help - show this help message'});
+          this.stdout.push({type: StdoutLineType.Stdout, text: 'clear - clear the terminal'});
+          this.stdout.push({type: StdoutLineType.Stdout, text: 'ls - list files in the current directory'});
+          this.stdout.push({type: StdoutLineType.Stdout, text: 'cd - change the current directory'});
+          this.stdout.push({type: StdoutLineType.Stdout, text: 'cat - print the contents of a file'});
+          return;
     }
 
     this.socketService.blindSend(CommandRunnerEventType.ExecuteCommand, {command: command, gameCode: localStorage['gameCode']});

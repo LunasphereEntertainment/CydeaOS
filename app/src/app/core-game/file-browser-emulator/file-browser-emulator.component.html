@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="card-header">
+    <cds-icon shape="folder-open"></cds-icon>
+    File Browser
+  </div>
+  <div class="card-body">
+    <ul class="fb-container">
+      <li class="fb-listing" *ngFor="let file of fileListing">
+        <cds-icon [attr.shape]="file.type === fileTypes.Directory ? 'folder' : 'file'" size="lg"></cds-icon>
+        <span>{{ file.name }}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="card-footer">
+    <small>Current Path: {{ currentPath }}</small>
+  </div>
+</div>

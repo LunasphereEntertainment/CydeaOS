@@ -8,7 +8,7 @@ import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
 import { AutoplayService, AutoplayState } from "../../game-launcher/permissions-prompt/autoplay.service";
 import { filter } from "rxjs";
 
-const FadeTime = 3;
+const FadeTime = 5;
 
 class CrossFadeAudioSource {
   busy: boolean = false;

@@ -1,0 +1,23 @@
+ul {
+  list-style: none;
+
+  //padding: 0 1rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+li.fb-listing {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.1);
+    backdrop-filter: brightness(1.1);
+  }
+}
+
+.fb-container {
+  min-height: 300px;
+
+}

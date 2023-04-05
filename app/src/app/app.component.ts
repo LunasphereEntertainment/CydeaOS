@@ -1,17 +1,7 @@
 import { Component } from '@angular/core';
 import {
-  angleIcon,
-  arrowIcon,
-  boltIcon, checkIcon,
-  ClarityIcons,
-  cogIcon,
-  exclamationTriangleIcon,
-  infoCircleIcon,
-  playIcon,
-  plusIcon,
-  targetIcon, terminalIcon,
-  timesCircleIcon,
-  userIcon
+  angleIcon, arrowIcon, boltIcon, checkIcon, ClarityIcons, cogIcon, exclamationTriangleIcon, fileIcon, folderIcon, folderOpenIcon, infoCircleIcon, playIcon,
+  plusIcon, targetIcon, terminalIcon, timesCircleIcon, userIcon
 } from '@cds/core/icon'
 
 @Component({
@@ -37,6 +27,9 @@ export class AppComponent {
     ClarityIcons.addIcons(timesCircleIcon);
     ClarityIcons.addIcons(terminalIcon);
     ClarityIcons.addIcons(infoCircleIcon);
+    ClarityIcons.addIcons(folderOpenIcon);
+    ClarityIcons.addIcons(folderIcon);
+    ClarityIcons.addIcons(fileIcon);
     ClarityIcons.addIcons(exclamationTriangleIcon);
   }
 }

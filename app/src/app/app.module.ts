@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PermissionsPromptComponent } from './game-launcher/permissions-prompt/permissions-prompt.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { TerminalEmulatorComponent } from './core-game/terminal-emulator/terminal-emulator.component';
+import { FileBrowserEmulatorComponent } from './core-game/file-browser-emulator/file-browser-emulator.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { TerminalEmulatorComponent } from './core-game/terminal-emulator/termina
     AudioMixerComponent,
     PermissionsPromptComponent,
     TerminalEmulatorComponent,
+    FileBrowserEmulatorComponent,
   ],
   imports: [
     BrowserAnimationsModule,

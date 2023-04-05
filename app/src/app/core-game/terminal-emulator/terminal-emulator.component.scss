@@ -1,21 +1,3 @@
-.card {
-  &-header {
-    //margin: 0; padding: .3em .2em;
-    padding: .3em .5em;
-    font-size: 1.2em;
-  }
-
-  &-body {
-    margin: 0; padding: 0;
-    max-height: 340px;
-    overflow-y: auto;
-  }
-
-  &-footer {
-    padding: 5px 0 0 0;
-  }
-}
-
 .terminal-colour {
   background-color: #000;
 }
