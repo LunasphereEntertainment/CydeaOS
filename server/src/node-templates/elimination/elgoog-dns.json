@@ -1,7 +1,8 @@
 {
     "hostname": "elgoog-dns.1.chronos.net",
     "daemons": [
-        {"type": "DNS", "port": 53}
+        {"type": "dns", "port": 53},
+        {"type": "ssh", "port": 22}
     ],
     "files": {
         "name": "",

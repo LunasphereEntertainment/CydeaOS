@@ -1,0 +1,26 @@
+{
+  "hostname": "sayonara.net",
+  "daemons": [
+    {
+      "type": "http",
+      "port": 80
+    }
+  ],
+  "files": {
+    "name": "",
+    "type": "directory",
+    "contents": [
+      {
+        "name": "www",
+        "type": "directory",
+        "contents": [
+          {
+            "name": "index.html",
+            "type": "file",
+            "contents": "<html><body><h1>Sayonara!</h1></body></html>"
+          }
+        ]
+      }
+    ]
+  }
+}

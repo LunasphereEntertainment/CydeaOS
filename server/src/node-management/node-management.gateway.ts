@@ -1,7 +1,19 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import {
+    ConnectedSocket,
+    MessageBody,
+    SubscribeMessage,
+    WebSocketGateway,
+    WebSocketServer,
+    WsResponse
+} from '@nestjs/websockets';
 import { NodeManagementService } from './node-management.service';
-import { GameSocket } from '../game-socket.interface';
 import { Server } from 'socket.io';
+import { GameEventCategory } from '@cydeaos/libs/events/game-event';
+import { AuthSocket } from '../auth-socket.interface';
+import { NodeManagementEvent } from '@cydeaos/libs/events/node-management-event/node-management-event';
+import { GameResolverPipe } from '../game-resolver/game-resolver.pipe';
+import { GameObject } from '@cydeaos/libs/game-object/game-object';
+import { NodeEventType } from '@cydeaos/libs/events/node-management-event/node-event-type';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 export class NodeManagementGateway {
@@ -11,37 +23,47 @@ export class NodeManagementGateway {
     constructor(private nodeManagementService: NodeManagementService) {
     }
 
-
-
-    @SubscribeMessage('player-connect')
-    handlePlayerConnection(client: GameSocket, payload: { target: string }) {
-        const { target: targetIp } = payload;
-        const node = this.nodeManagementService.findNode(client.game.gameCode, targetIp);
-        if (node) {
-            const player = client.player;
-
-            if (node.isOnline()) {
-                player!.setCurrentTarget(targetIp);
-
-                // if the node is owned by someone else, alert the owner
-                if (node.owner !== 'System') {
-                    // find the player who owns the node
-                    const opponent = client.game.players.find(p => p.username === node.owner);
-
-                    if (opponent) {
-                        // get their socket id
-                        const ownerSocket = opponent.getSocketId();
-                        if (ownerSocket) {
-                            // send them an alert
-                            this.server.to(ownerSocket).emit('alert', { message: `${ player!.username } is trying to connect to your node ${ node.ip }` });
-                        }
-                    }
-                }
-
-                client.emit('connect', { success: true, target: node });
-            } else {
-                client.emit('connect', { success: false, message: 'Node is offline' });
+    private handeNodeGet(gameCode: string, payload: NodeManagementEvent): WsResponse<NodeManagementEvent> {
+        if (!payload.ip)
+            return {
+                event: GameEventCategory.Network,
+                data: NodeManagementEvent.error(gameCode, 'No IP provided')
+            };
+        const node = this.nodeManagementService.findNode(gameCode, payload.ip);
+        // TODO: verify I am one of:
+        //  1. The owner of the node
+        //  2. Otherwise authorized to access the node (authenticating with the node)
+        if (!node)
+            return {
+                event: GameEventCategory.Network,
+                data: NodeManagementEvent.error(gameCode, 'Node not found')
             }
+
+        return {
+            event: GameEventCategory.Network,
+            data: NodeManagementEvent.nodeResponse(gameCode, NodeEventType.NodeGet, node)
         }
     }
+
+
+    @SubscribeMessage(GameEventCategory.Network)
+    handleNodeEvent(
+        @ConnectedSocket() client: AuthSocket,
+        @MessageBody('gameCode', GameResolverPipe) game: GameObject,
+        @MessageBody() payload: NodeManagementEvent,
+    ): WsResponse<NodeManagementEvent> {
+        switch (payload.type) {
+            case NodeEventType.NodeGet:
+                return this.handeNodeGet(game.gameCode, payload);
+
+            // case NodeEventType.:
+
+            default:
+                return {
+                    event: GameEventCategory.Network,
+                    data: NodeManagementEvent.error(game.gameCode, `Event type ${ payload.type } is unsupported or not implemented`)
+                }
+        }
+    }
+
 }

@@ -19,5 +19,7 @@ export class SshServer implements ComputerDaemon {
         if (this.online) {
             return CliRunner(data, this._computer);
         }
+
+        return Promise.reject("SSH Server is offline");
     }
 }

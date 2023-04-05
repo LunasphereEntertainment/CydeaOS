@@ -1,0 +1,26 @@
+{
+  "hostname": "pirates-cove.eu",
+  "daemons": [
+    {
+      "type": "http",
+      "port": 80
+    }
+  ],
+  "files": {
+    "name": "",
+    "type": "directory",
+    "contents": [
+      {
+        "name": "www",
+        "type": "directory",
+        "contents": [
+          {
+            "name": "index.html",
+            "type": "text",
+            "contents": "<!DOCTYPE>\n<html>\n  <head>\n    <title>pirates-cove.eu</title>\n  </head>\n  <body>\n    <h1>pirates-cove.eu</h1>\n    <p>Coming soon!</p>\n  </body>\n</html"
+          }
+        ]
+      }
+    ]
+  }
+}

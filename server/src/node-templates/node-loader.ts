@@ -40,6 +40,7 @@ export async function loadNode(path: string): Promise<Computer> {
                 daemon = new DnsServer(daemonDef.port);
                 break;
             case "http":
+            case "web":
                 daemon = new HttpServer(comp.fileSystem, daemonDef.port);
                 break;
             default:
@@ -61,7 +62,8 @@ export async function loadNodes(path: string): Promise<Computer[]> {
         if (entry.endsWith(".json")) {
             const node = await loadNode(path + "/" + entry);
             nodes.push(node);
-            console.debug("Loaded node: " + node.hostname + " services: " + node.daemons.length + " from " + path + "/" + entry);
+            // console.debug("Loaded node: " + node.hostname + " services: " + node.daemons.length + " from " + path + "/" + entry);
+            console.debug(`${node.hostname}\tservices: ${node.daemons.length}\n`);
         } else {
             const fileInfo = await stat(path + "/" + entry);
             if (fileInfo.isDirectory()) {

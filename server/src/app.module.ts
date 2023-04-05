@@ -19,8 +19,8 @@ import { CoreSystemGateway } from './core-system/core-system.gateway';
         CoreSystemGateway,
         GameSettingsService,
         GameManagementService,
-        MediaService,
         NodeManagementService,
+        MediaService,
     ],
 })
 export class AppModule {

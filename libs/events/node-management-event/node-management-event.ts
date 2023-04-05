@@ -7,6 +7,7 @@ export class NodeManagementEvent extends GameEvent {
     ip?: string;
     hostname?: string;
     nodeInfo?: Computer;
+    message?: string;
 
     constructor(gameCode: string, type: NodeEventType, nodeInfo?: Computer) {
         super(GameEventCategory.Network);
@@ -24,5 +25,11 @@ export class NodeManagementEvent extends GameEvent {
 
     static nodeResponse(gameCode: string, type: NodeEventType, nodeInfo: Computer) {
         return new NodeManagementEvent(gameCode, type, nodeInfo);
+    }
+
+    static error(gameCode: string, message: string) {
+        const ev = new NodeManagementEvent(gameCode, NodeEventType.Error);
+        ev.message = message;
+        return ev;
     }
 }

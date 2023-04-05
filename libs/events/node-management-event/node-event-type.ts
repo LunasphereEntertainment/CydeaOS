@@ -3,5 +3,6 @@ export enum NodeEventType {
     NodeCreation = 'node-creation',
     NodeDeletion = 'node-deletion',
     NodeOnline = 'node-online',
-    NodeOffline = 'node-offline'
+    NodeOffline = 'node-offline',
+    Error = 'error'
 }

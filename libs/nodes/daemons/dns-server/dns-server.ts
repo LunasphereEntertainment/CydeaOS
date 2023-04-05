@@ -24,7 +24,7 @@ export class DnsServer implements ComputerDaemon {
             throw new Error(`Node with hostname ${node.hostname} already registered`);
         }
 
-        this.dns.set(node.hostname, node.ip);
+        this.dns.set(node.hostname, node.ip!);
     }
 
     lookupIP(hostname: string): string {
