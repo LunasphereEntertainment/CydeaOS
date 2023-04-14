@@ -32,8 +32,6 @@ export class CoreSystemGateway {
                     event: GameEventCategory.GameManagement,
                     data: GameManagementEvent.gameResponse(game.gameCode, GameManagementEventType.GameGet, game)
                 }
-
-                break;
             }
             case GameManagementEventType.GameCreation: {
                 if (!payload.gameConfig) {
@@ -44,11 +42,11 @@ export class CoreSystemGateway {
                 }
 
                 const game = this.gameManagementService.newGame(payload.gameConfig!, client.user);
+                game.setHostSocketId(client.id);
                 return {
                     event: GameEventCategory.GameManagement,
                     data: GameManagementEvent.gameResponse(game.gameCode, GameManagementEventType.GameCreation, game)
                 }
-                break;
             }
             default: {
                 return {

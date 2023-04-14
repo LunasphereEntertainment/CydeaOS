@@ -15,6 +15,10 @@ export interface IFileEntry {
     content: string | IFileEntry[];
 }
 
+export function EmptyDir() {
+    return { name: "", type: FileType.Directory, content: [] };
+}
+
 export class FileNotFound extends Error {
     constructor() {
         super("File not found");

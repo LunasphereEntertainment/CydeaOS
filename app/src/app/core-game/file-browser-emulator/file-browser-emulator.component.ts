@@ -1,57 +1,49 @@
-import { Component } from '@angular/core';
-import { FileType, IFileEntry } from "@cydeaos/libs/nodes/file-system/i-file-entries";
+import { Component, OnInit } from '@angular/core';
+import { FileType, IFileEntry } from '@cydeaos/libs/nodes/file-system/i-file-entries';
+import { GameStateService } from '../game-state.service';
+import { SocketService } from '../../shared/socket.service';
+import { FileSystemEvent, FileSystemEventType } from '@cydeaos/libs/events/file-system-event/file-system-event';
 
 @Component({
   selector: 'app-file-browser-emulator',
   templateUrl: './file-browser-emulator.component.html',
-  styleUrls: ['./file-browser-emulator.component.scss']
+  styleUrls: [ './file-browser-emulator.component.scss' ]
 })
-export class FileBrowserEmulatorComponent {
+export class FileBrowserEmulatorComponent implements OnInit {
   fileTypes = FileType
+  fileListing: IFileEntry[] = [];
+  currentPath: string = '';
+  currentIp: string = 'localhost';
 
-  currentPath: string = '/';
-  fileListing: IFileEntry[] = [
-    {
-      name: 'home',
-      type: FileType.Directory,
-      content: [
-        {
-          name: 'test.txt',
-          type: FileType.Text,
-          content: 'This is a test file.'
-        }
-      ]
-    },
-    {
-      name: "bin",
-      type: FileType.Directory,
-      content: [
-        {
-          name: "test.exe",
-          type: FileType.Executable,
-          content: "This is a test executable."
-        }
-      ]
-    },
-    {
-      name: "etc",
-      type: FileType.Directory,
-      content: [
-        {
-          name: "test.conf",
-          type: FileType.Text,
-          content: "This is a test config file."
-        }
-      ]
-    }
-  ];
+  constructor(private gameStateService: GameStateService, private socketService: SocketService) {
+  }
 
-  constructor() {
+  ngOnInit() {
+    this.gameStateService.currentTarget.subscribe(target => {
+      this.currentIp = target;
+    })
+
+    this.gameStateService.currentPath.subscribe(path => {
+      this.currentPath = path;
+
+      this.refreshFileListing();
+    })
+  }
+
+  refreshFileListing() {
+    this.socketService.sendAndReceive<FileSystemEvent>(
+      FileSystemEventType.ListFiles,
+      <FileSystemEvent>{
+        type: FileSystemEventType.ListFiles,
+        ip: this.currentIp,
+        path: this.currentPath,
+      }).subscribe((files) => {
+        if (files.file?.type !== FileType.Directory)
+          this.fileListing = <IFileEntry[]>files.file!.content;
+      });
   }
 
   navigateTo(path: string) {
-    this.currentPath = path;
-
-    // TODO: Update file listed
+    this.gameStateService.changePath(path);
   }
 }

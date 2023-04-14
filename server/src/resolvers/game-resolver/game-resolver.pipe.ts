@@ -1,5 +1,5 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { GameManagementService } from '../game-management/game.management.service';
+import { GameManagementService } from '../../game-management/game.management.service';
 
 @Injectable()
 export class GameResolverPipe implements PipeTransform {
@@ -7,6 +7,10 @@ export class GameResolverPipe implements PipeTransform {
     }
 
     transform(gameCode: string, metadata: ArgumentMetadata) {
+        if (!gameCode) {
+            return null;
+        }
+
         try {
             return this.gameService.getGame(gameCode);
         } catch (e) {

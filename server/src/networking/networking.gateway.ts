@@ -1,10 +1,10 @@
-import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WsResponse } from '@nestjs/websockets';
 import { NodeManagementService } from '../node-management/node-management.service';
 import { NetworkingEvent, NetworkingEventType } from './networking-event';
 import { BadRequestException } from '@nestjs/common';
 import { AuthSocket } from '../auth-socket.interface';
 import { NetworkHackPacketData } from '@cydeaos/libs/nodes/networking/packet';
-import { GameResolverPipe } from '../game-resolver/game-resolver.pipe';
+import { GameResolverPipe } from '../resolvers/game-resolver/game-resolver.pipe';
 import { GameObject } from '@cydeaos/libs/game-object/game-object';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
@@ -17,17 +17,18 @@ export class NetworkingGateway {
     handleRequest(
         @MessageBody('gameId', GameResolverPipe) game: GameObject,
         @MessageBody() payload: NetworkingEvent,
-        @ConnectedSocket() client: AuthSocket): any {
-        const { destination: targetIp, type: packetType, data } = payload.data;
+        @ConnectedSocket() client: AuthSocket
+    ): WsResponse<unknown> {
+        const { destination } = payload.data;
 
-        const node = this.nodeManagementService.findNode(game.gameCode, targetIp);
-        if (node) {
-            const daemon = node.daemons.find(daemon => daemon.supportedPacketType === packetType);
-            if (!daemon) {
-                throw new BadRequestException(`No supported service for packet type ${ packetType } on ${ targetIp }.`);
-            }
+        const node = this.nodeManagementService.findNode(game.gameCode, destination);
 
-            return daemon.handleRequest(data);
+        if (!node)
+            throw new BadRequestException(`No route to host ${ destination } found.`);
+
+        return {
+            event: NetworkingEventType.Response,
+            data: node.handlePacket(payload.data)
         }
     }
 

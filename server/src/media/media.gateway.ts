@@ -7,7 +7,7 @@ import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
 import { MediaEntry } from '@cydeaos/libs/media/media-entry/media-entry';
 import { GameSocket } from '../game-socket.interface';
 import { AuthSocket } from '../auth-socket.interface';
-import { GameResolverPipe } from '../game-resolver/game-resolver.pipe';
+import { GameResolverPipe } from '../resolvers/game-resolver/game-resolver.pipe';
 import { GameObject } from '@cydeaos/libs/game-object/game-object';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })

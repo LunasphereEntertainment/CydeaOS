@@ -1,6 +1,6 @@
 import { GameResolverPipe } from './game-resolver.pipe';
 import { Test } from '@nestjs/testing';
-import { GameManagementService } from '../game-management/game.management.service';
+import { GameManagementService } from '../../game-management/game.management.service';
 
 describe('GameResolverPipe', () => {
     let testingPipe: GameResolverPipe,

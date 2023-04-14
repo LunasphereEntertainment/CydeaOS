@@ -8,7 +8,7 @@ import { Computer } from '@cydeaos/libs/nodes/computer/computer';
 import { default as commandExecutor } from '@cydeaos/libs/command-line/cli.runner';
 import { AuthSocket } from '../auth-socket.interface';
 import { GameObject } from '@cydeaos/libs/game-object/game-object';
-import { GameResolverPipe } from '../game-resolver/game-resolver.pipe';
+import { GameResolverPipe } from '../resolvers/game-resolver/game-resolver.pipe';
 
 @WebSocketGateway({ cors: true })
 export class CommandRunnerGateway {

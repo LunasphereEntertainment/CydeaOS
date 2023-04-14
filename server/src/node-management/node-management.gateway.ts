@@ -1,68 +1,64 @@
-import {
-    ConnectedSocket,
-    MessageBody,
-    SubscribeMessage,
-    WebSocketGateway,
-    WebSocketServer,
-    WsResponse
-} from '@nestjs/websockets';
-import { NodeManagementService } from './node-management.service';
-import { Server } from 'socket.io';
-import { GameEventCategory } from '@cydeaos/libs/events/game-event';
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WsResponse } from '@nestjs/websockets';
 import { AuthSocket } from '../auth-socket.interface';
 import { NodeManagementEvent } from '@cydeaos/libs/events/node-management-event/node-management-event';
-import { GameResolverPipe } from '../game-resolver/game-resolver.pipe';
+import { GameResolverPipe } from '../resolvers/game-resolver/game-resolver.pipe';
 import { GameObject } from '@cydeaos/libs/game-object/game-object';
 import { NodeEventType } from '@cydeaos/libs/events/node-management-event/node-event-type';
+import { NodeResolverPipe } from '../resolvers/node-resolver/node-resolver.pipe';
+import { Computer } from '@cydeaos/libs/nodes/computer/computer';
 
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 export class NodeManagementGateway {
-    @WebSocketServer()
-    server!: Server;
-
-    constructor(private nodeManagementService: NodeManagementService) {
-    }
-
-    @SubscribeMessage(GameEventCategory.Network)
-    handleNodeEvent(
-        @ConnectedSocket() client: AuthSocket,
+    @SubscribeMessage(NodeEventType.NodeGet)
+    handleNodeGet(
         @MessageBody('gameCode', GameResolverPipe) game: GameObject,
         @MessageBody() payload: NodeManagementEvent,
-    ): WsResponse<NodeManagementEvent> {
-        switch (payload.type) {
-            case NodeEventType.NodeGet:
-                return this.handeNodeGet(game.gameCode, payload);
-
-            // case NodeEventType.:
-
-            default:
-                return {
-                    event: GameEventCategory.Network,
-                    data: NodeManagementEvent.error(game.gameCode, `Event type ${ payload.type } is unsupported or not implemented`)
-                }
+        @MessageBody(NodeResolverPipe) node: Computer,
+        @ConnectedSocket() client: AuthSocket
+    ) {
+        return {
+            event: NodeEventType.NodeGet,
+            data: NodeManagementEvent.nodeResponse(game.gameCode, NodeEventType.NodeGet, node)
         }
     }
 
-    private handeNodeGet(gameCode: string, payload: NodeManagementEvent): WsResponse<NodeManagementEvent> {
-        if (!payload.ip)
-            return {
-                event: GameEventCategory.Network,
-                data: NodeManagementEvent.error(gameCode, 'No IP provided')
-            };
-        const node = this.nodeManagementService.findNode(gameCode, payload.ip);
-        // TODO: verify I am one of:
-        //  1. The owner of the node
-        //  2. Otherwise authorized to access the node (authenticating with the node)
-        if (!node)
-            return {
-                event: GameEventCategory.Network,
-                data: NodeManagementEvent.error(gameCode, 'Node not found')
-            }
+    @SubscribeMessage(NodeEventType.NodeOffline)
+    handleNodeOffline(
+        @MessageBody('gameCode', GameResolverPipe) game: GameObject,
+        @MessageBody(NodeResolverPipe) node: Computer,
+        @ConnectedSocket() client: AuthSocket
+    ): WsResponse<NodeManagementEvent> {
+        node.online = false;
+
+        client.to(game.gameCode)
+            .emit(
+                NodeEventType.NodeOffline,
+                NodeManagementEvent.nodeResponse(game.gameCode, NodeEventType.NodeOffline, node)
+            );
 
         return {
-            event: GameEventCategory.Network,
-            data: NodeManagementEvent.nodeResponse(gameCode, NodeEventType.NodeGet, node)
+            event: NodeEventType.NodeOffline,
+            data: NodeManagementEvent.nodeResponse(game.gameCode, NodeEventType.NodeOffline, node)
         }
     }
 
+    @SubscribeMessage(NodeEventType.NodeOnline)
+    handleNodeOnline(
+        @MessageBody('gameCode', GameResolverPipe) game: GameObject,
+        @MessageBody(NodeResolverPipe) node: Computer,
+        @ConnectedSocket() client: AuthSocket
+    ): WsResponse<NodeManagementEvent> {
+        node.online = true;
+
+        client.to(game.gameCode)
+            .emit(
+                NodeEventType.NodeOnline,
+                NodeManagementEvent.nodeResponse(game.gameCode, NodeEventType.NodeOnline, node)
+            );
+
+        return {
+            event: NodeEventType.NodeOnline,
+            data: NodeManagementEvent.nodeResponse(game.gameCode, NodeEventType.NodeOnline, node)
+        }
+    }
 }

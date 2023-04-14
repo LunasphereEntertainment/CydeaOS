@@ -1,10 +1,12 @@
 import { GameEvent, GameEventCategory } from '../game-event';
 import { Computer } from '../../nodes/computer/computer';
 import { NodeEventType } from './node-event-type';
+import { RequiresIP } from '../game-event-payload';
 
-export class NodeManagementEvent extends GameEvent {
+export class NodeManagementEvent extends GameEvent implements GameEvent, RequiresIP {
     type: NodeEventType;
-    ip?: string;
+    gameCode: string;
+    ip!: string;
     hostname?: string;
     nodeInfo?: Computer;
     message?: string;
@@ -16,7 +18,7 @@ export class NodeManagementEvent extends GameEvent {
         this.nodeInfo = nodeInfo;
     }
 
-    static nodeRequest(gameCode: string, type: NodeEventType, ip?: string, hostname?: string) {
+    static nodeRequest(gameCode: string, type: NodeEventType, ip: string, hostname?: string) {
         const ev = new NodeManagementEvent(gameCode, type);
         ev.ip = ip;
         ev.hostname = hostname;

@@ -1,8 +1,10 @@
 import { IFileEntry } from '../../nodes/file-system/i-file-entries';
+import { InGameEvent, RequiresIP } from '../game-event-payload';
 
-export interface FileSystemEvent {
+export interface FileSystemEvent extends InGameEvent, RequiresIP {
     type: FileSystemEventType;
-    data: { target: string, file?: IFileEntry, path: string};
+    path: string;
+    file?: IFileEntry;
 }
 
 export enum FileSystemEventType {

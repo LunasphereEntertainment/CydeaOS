@@ -85,10 +85,10 @@ export class GameManagementGateway {
 
     @SubscribeMessage(GameManagementEventType.GameJoined)
     handleJoinMessage(
-        @MessageBody('gameId') gameId: string,
+        @MessageBody('gameCode') gameCode: string,
         @ConnectedSocket() client: AuthSocket
     ): WsResponse<GameJoinResponse> {
-        const game = this.gameManagementService.getGame(gameId);
+        const game = this.gameManagementService.getGame(gameCode);
 
         const player = Player.fromAccount(client.user);
         player.setSocketId(client.id);
@@ -96,9 +96,9 @@ export class GameManagementGateway {
 
         // inform the host.
         this.server.to(game.getHostSocketId())
-            .emit(GameManagementEventType.GameJoined, GameJoinResponse.serverPlayerResponse(gameId, player));
+            .emit(GameManagementEventType.GameJoined, GameJoinResponse.serverPlayerResponse(gameCode, player));
 
-        client.join(gameId);
+        client.join(gameCode);
 
         return {
             event: GameManagementEventType.GameJoined,

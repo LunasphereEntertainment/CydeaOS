@@ -9,7 +9,8 @@ import { MediaUuid } from '@cydeaos/libs/media/media.types'
 @UseInterceptors(JwtAuthGuard)
 export class MediaController {
 
-    constructor(private mediaService: MediaService) {}
+    constructor(private mediaService: MediaService) {
+    }
 
     @Get('/:uuid')
     streamTrack(@Res() res, @Param('uuid', new ParseUUIDPipe({ version: '4' })) uuid: MediaUuid) {
@@ -26,7 +27,6 @@ export class MediaController {
         }
 
     }
-
 
 
 }

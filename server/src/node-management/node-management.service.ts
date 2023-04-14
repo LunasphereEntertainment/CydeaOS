@@ -53,6 +53,7 @@ export class NodeManagementService {
 
     initializeGame(gameCode: string, config: GameConfiguration) {
         console.log(`Initializing nodes for game '${ gameCode }' using '${ config.ipType }' generator.`);
+        this.nodes.set(gameCode, []);
 
         let ipGenerator = new IPGenerator(config.ipType);
 
