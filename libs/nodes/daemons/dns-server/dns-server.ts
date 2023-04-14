@@ -1,27 +1,20 @@
-import { ComputerDaemon } from "../ComputerDaemon";
-import { NetworkPort } from "../../../network-port/network.port";
-import { Computer } from "../../computer/computer";
+import { ComputerDaemon } from '../ComputerDaemon';
+import { Computer } from '../../computer/computer';
+import { DNSPacketData, NetworkPacketType } from '../../networking/packet';
 
 type HostIPMap = Map<string, string>;
 
-export class DnsServer implements ComputerDaemon {
-    name: string = "DNS";
-
-    ports: NetworkPort[] = [
-    ];
-
+export class DnsServer extends ComputerDaemon {
     dns: HostIPMap;
 
-    online: boolean = true;
-
-    constructor(overridePort: number = 53, dns?: HostIPMap) {
-        this.ports.push(new NetworkPort(overridePort, false));
+    constructor(computer: Computer, overridePort: number = 53, dns?: HostIPMap) {
+        super(computer, NetworkPacketType.DNS, overridePort);
         this.dns = dns || new Map();
     }
 
     registerNode(node: Computer) {
         if (this.dns.has(node.hostname)) {
-            throw new Error(`Node with hostname ${node.hostname} already registered`);
+            throw new Error(`Node with hostname ${ node.hostname } already registered`);
         }
 
         this.dns.set(node.hostname, node.ip!);
@@ -35,13 +28,14 @@ export class DnsServer implements ComputerDaemon {
         return ip;
     }
 
-    handleRequest(data: any): any {
-        return this.lookupIP(data);
+    handleRequest(data: DNSPacketData): any {
+        const { host } = data;
+        return this.lookupIP(host);
     }
 }
 
 export class DnsNotFoundError extends Error {
     constructor(hostname: string) {
-        super(`DNS lookup failed for hostname ${hostname}`);
+        super(`DNS lookup failed for hostname ${ hostname }`);
     }
 }

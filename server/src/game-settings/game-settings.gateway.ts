@@ -10,29 +10,29 @@ import { Socket } from 'socket.io';
 @UseInterceptors(JwtAuthGuard)
 export class GameSettingsGateway {
 
-  constructor(private settingsService: GameSettingsService) {
-  }
-
-  @SubscribeMessage(GameSettingsEventType.SetSettings)
-  handleSave(client: Socket, payload: GameSettingsEvent): WsResponse<{ success: boolean }> {
-    const { id : clientId } = client;
-
-    this.settingsService.saveClientSettings(clientId, payload.data);
-
-    return {
-        event: GameSettingsEventType.SetSettings,
-        data: { success: true }
+    constructor(private settingsService: GameSettingsService) {
     }
-  }
 
-  @SubscribeMessage(GameSettingsEventType.GetSettings)
-  handleLoad(client: any): WsResponse<ClientSettings> {
-    const { id: clientId } = client;
+    @SubscribeMessage(GameSettingsEventType.SetSettings)
+    handleSave(client: Socket, payload: GameSettingsEvent): WsResponse<{ success: boolean }> {
+        const { id: clientId } = client;
 
-    return {
-        event: GameSettingsEventType.GetSettings,
-        data: this.settingsService.loadClientSettings(clientId)
-            || this.settingsService.getAndSaveDefaults(clientId)
+        this.settingsService.saveClientSettings(clientId, payload.data);
+
+        return {
+            event: GameSettingsEventType.SetSettings,
+            data: { success: true }
+        }
     }
-  }
+
+    @SubscribeMessage(GameSettingsEventType.GetSettings)
+    handleLoad(client: any): WsResponse<ClientSettings> {
+        const { id: clientId } = client;
+
+        return {
+            event: GameSettingsEventType.GetSettings,
+            data: this.settingsService.loadClientSettings(clientId)
+                || this.settingsService.getAndSaveDefaults(clientId)
+        }
+    }
 }

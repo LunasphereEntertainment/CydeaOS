@@ -23,6 +23,26 @@ export class NodeManagementGateway {
     constructor(private nodeManagementService: NodeManagementService) {
     }
 
+    @SubscribeMessage(GameEventCategory.Network)
+    handleNodeEvent(
+        @ConnectedSocket() client: AuthSocket,
+        @MessageBody('gameCode', GameResolverPipe) game: GameObject,
+        @MessageBody() payload: NodeManagementEvent,
+    ): WsResponse<NodeManagementEvent> {
+        switch (payload.type) {
+            case NodeEventType.NodeGet:
+                return this.handeNodeGet(game.gameCode, payload);
+
+            // case NodeEventType.:
+
+            default:
+                return {
+                    event: GameEventCategory.Network,
+                    data: NodeManagementEvent.error(game.gameCode, `Event type ${ payload.type } is unsupported or not implemented`)
+                }
+        }
+    }
+
     private handeNodeGet(gameCode: string, payload: NodeManagementEvent): WsResponse<NodeManagementEvent> {
         if (!payload.ip)
             return {
@@ -42,27 +62,6 @@ export class NodeManagementGateway {
         return {
             event: GameEventCategory.Network,
             data: NodeManagementEvent.nodeResponse(gameCode, NodeEventType.NodeGet, node)
-        }
-    }
-
-
-    @SubscribeMessage(GameEventCategory.Network)
-    handleNodeEvent(
-        @ConnectedSocket() client: AuthSocket,
-        @MessageBody('gameCode', GameResolverPipe) game: GameObject,
-        @MessageBody() payload: NodeManagementEvent,
-    ): WsResponse<NodeManagementEvent> {
-        switch (payload.type) {
-            case NodeEventType.NodeGet:
-                return this.handeNodeGet(game.gameCode, payload);
-
-            // case NodeEventType.:
-
-            default:
-                return {
-                    event: GameEventCategory.Network,
-                    data: NodeManagementEvent.error(game.gameCode, `Event type ${ payload.type } is unsupported or not implemented`)
-                }
         }
     }
 

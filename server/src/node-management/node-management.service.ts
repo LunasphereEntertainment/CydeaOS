@@ -8,6 +8,7 @@ import { GameManagementEventType } from '@cydeaos/libs/events/game-management-ev
 import { GameObject } from '@cydeaos/libs/game-object/game-object';
 import { loadNodes } from '../node-templates/node-loader';
 import { IPGenerator } from '@cydeaos/libs/ip-generator/ip-generator';
+import { NodeEventType } from '@cydeaos/libs/events/node-management-event/node-event-type';
 
 const eliminationNodePath = 'C:\\Users\\admir\\CodingProjects\\Cydeaos\\server\\src\\node-templates\\elimination';
 
@@ -27,6 +28,11 @@ export class NodeManagementService {
         }
 
         this.nodes.get(gameCode)!.push(node);
+
+        this.eventEmitter.emit(
+            [ GameEventCategory.NodeManagement, NodeEventType.NodeCreation ],
+            node
+        )
     }
 
     findNode(gameCode: string, ipAddress: string): (Computer | undefined) {
@@ -45,14 +51,6 @@ export class NodeManagementService {
         return this.nodes.get(gameCode)!.find(node => node.hostname === hostname);
     }
 
-    clearNodes(gameCode: string) {
-        if (!this.nodes.has(gameCode)) {
-            throw new GameNotFoundError(gameCode);
-        }
-
-        this.nodes.set(gameCode, []);
-    }
-
     initializeGame(gameCode: string, config: GameConfiguration) {
         console.log(`Initializing nodes for game '${ gameCode }' using '${ config.ipType }' generator.`);
 
@@ -61,9 +59,20 @@ export class NodeManagementService {
         loadNodes(eliminationNodePath).then(nodeList => {
             nodeList.forEach(node => {
                 node.ip = ipGenerator.generate()
-                console.dir(node);
+                this.addNode(gameCode, node);
             });
-            this.nodes.set(gameCode, nodeList);
         });
+    }
+
+    deleteNodeById(gameCode: string, ip: string) {
+        if (!this.nodes.has(gameCode)) {
+            throw new GameNotFoundError(gameCode);
+        }
+
+        let nodeIndex = this.nodes.get(gameCode)!.findIndex(node => node.ip === ip);
+        if (nodeIndex === -1) {
+            throw new Error(`Node with IP '${ ip }' not found in game '${ gameCode }'.`);
+        }
+        this.nodes.get(gameCode)!.splice(nodeIndex, 1);
     }
 }

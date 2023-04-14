@@ -23,10 +23,6 @@ export class ClientSettingsService {
       });
   }
 
-  // getClientSettings() {
-  // return this.currentSettings.getValue();
-  // }
-
   saveClientSettings(settings: ClientSettings) {
     this.socketService.sendAndReceive<{ success: boolean }>(GameSettingsEventType.SetSettings, settings)
       .subscribe((response) => {

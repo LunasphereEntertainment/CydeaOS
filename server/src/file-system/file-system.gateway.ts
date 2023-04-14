@@ -9,10 +9,7 @@ import { IPNotFoundError } from '../errors/node-errors/node-errors';
 @WebSocketGateway({ cors: process.env.CORS === 'true' })
 export class FileSystemGateway {
 
-    constructor(private nodeManagementService: NodeManagementService) {    }
-
-    private resolveNode(gameId: string, targetIp: string): (Computer | undefined) {
-        return this.nodeManagementService.findNode(gameId, targetIp);
+    constructor(private nodeManagementService: NodeManagementService) {
     }
 
     @SubscribeMessage(FileSystemEventType.ListFiles)
@@ -72,5 +69,9 @@ export class FileSystemGateway {
         if (node) {
             node.fileSystem.deleteFile(path);
         }
+    }
+
+    private resolveNode(gameId: string, targetIp: string): (Computer | undefined) {
+        return this.nodeManagementService.findNode(gameId, targetIp);
     }
 }

@@ -1,11 +1,14 @@
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WsResponse } from '@nestjs/websockets';
-import { CommandRunnerEvent, CommandRunnerEventType } from '@cydeaos/libs/events/command-runner-event/command-runner-event';
+import {
+    CommandRunnerEvent,
+    CommandRunnerEventType
+} from '@cydeaos/libs/events/command-runner-event/command-runner-event';
 import { NodeManagementService } from '../node-management/node-management.service';
 import { Computer } from '@cydeaos/libs/nodes/computer/computer';
 import { default as commandExecutor } from '@cydeaos/libs/command-line/cli.runner';
-import { AuthSocket } from "../auth-socket.interface";
-import { GameObject } from "@cydeaos/libs/game-object/game-object";
-import { GameResolverPipe } from "../game-resolver/game-resolver.pipe";
+import { AuthSocket } from '../auth-socket.interface';
+import { GameObject } from '@cydeaos/libs/game-object/game-object';
+import { GameResolverPipe } from '../game-resolver/game-resolver.pipe';
 
 @WebSocketGateway({ cors: true })
 export class CommandRunnerGateway {
@@ -19,7 +22,7 @@ export class CommandRunnerGateway {
         @MessageBody() payload: CommandRunnerEvent,
         @ConnectedSocket() client: AuthSocket
     ): Promise<WsResponse<CommandRunnerEvent>> {
-        let {command, targetIp} = payload,
+        let { command, targetIp } = payload,
             target: Computer | undefined = undefined;
 
         if (targetIp)

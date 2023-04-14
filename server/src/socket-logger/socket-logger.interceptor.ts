@@ -3,12 +3,12 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class SocketLoggerInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const client = context.switchToWs().getClient(),
-        { data } = client;
+    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+        const client = context.switchToWs().getClient(),
+            { data } = client;
 
-    console.log('SocketLoggerInterceptor', data);
+        console.log('SocketLoggerInterceptor', data);
 
-    return next.handle();
-  }
+        return next.handle();
+    }
 }

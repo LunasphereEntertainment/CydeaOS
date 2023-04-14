@@ -12,7 +12,7 @@ export class MediaController {
     constructor(private mediaService: MediaService) {}
 
     @Get('/:uuid')
-    streamTrack(@Res() res, @Param('uuid', new ParseUUIDPipe({version: "4"})) uuid: MediaUuid) {
+    streamTrack(@Res() res, @Param('uuid', new ParseUUIDPipe({ version: '4' })) uuid: MediaUuid) {
         try {
             const trackInfo = this.mediaService.getFromGlobalMediaLibrary(uuid);
 

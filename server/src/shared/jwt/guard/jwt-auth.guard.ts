@@ -13,7 +13,7 @@ export class JwtAuthGuard implements CanActivate {
         let client,
             token;
 
-        switch(context.getType()) {
+        switch (context.getType()) {
             case 'http':
                 client = context.switchToHttp().getRequest();
                 token = client.headers.authorization;

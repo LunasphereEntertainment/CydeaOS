@@ -1,10 +1,21 @@
 import { NetworkPort } from "../../network-port/network.port";
+import { NetworkPacketType } from '../networking/packet';
+import { Computer } from '../computer/computer';
 
-export interface ComputerDaemon {
-    name: string;
+export abstract class ComputerDaemon {
+    supportedPacketType: NetworkPacketType;
+    online: boolean = true;
     ports: NetworkPort[];
+    protected _computer: Computer;
 
-    online: boolean;
+    protected constructor(computer: Computer, supportedPacketType: NetworkPacketType, overridePort: number = 0) {
+        this._computer = computer;
+        this.supportedPacketType = supportedPacketType;
 
-    handleRequest(data: any): any;
+        this.ports = [
+            new NetworkPort(overridePort, false)
+        ]
+    }
+
+    abstract handleRequest(data: any): any;
 }

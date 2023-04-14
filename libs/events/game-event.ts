@@ -9,6 +9,7 @@ export abstract class GameEvent {
 
 export enum GameEventCategory {
     GameManagement= "game-management",
+    NodeManagement = "node-management",
     Network = "network",
     File = "file",
     Command = "command",

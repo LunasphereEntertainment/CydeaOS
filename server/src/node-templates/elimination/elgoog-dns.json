@@ -1,31 +1,37 @@
 {
-    "hostname": "elgoog-dns.1.chronos.net",
-    "daemons": [
-        {"type": "dns", "port": 53},
-        {"type": "ssh", "port": 22}
-    ],
-    "files": {
-        "name": "",
+  "hostname": "elgoog-dns.1.chronos.net",
+  "daemons": [
+    {
+      "type": "dns",
+      "port": 53
+    },
+    {
+      "type": "ssh",
+      "port": 22
+    }
+  ],
+  "files": {
+    "name": "",
+    "type": "directory",
+    "contents": [
+      {
+        "name": "home",
         "type": "directory",
         "contents": [
-            {
-                "name": "home",
-                "type": "directory",
-                "contents": [
-                    {
-                        "name": "#244321.log",
-                        "contents": "\n#244321 +(41092)- [X]\n\n<Cthon98> hey, if you type in your pw, it will show as stars\n<Cthon98> ********* see!\n<AzureDiamond> hunter2\n<AzureDiamond> doesnt look like stars to me\n<Cthon98> <AzureDiamond> *******\n<Cthon98> thats what I see\n<AzureDiamond> oh, really?\n<Cthon98> Absolutely\n<AzureDiamond> you can go hunter2 my hunter2-ing hunter2\n<AzureDiamond> haha, does that look funny to you?\n<Cthon98> lol, yes. See, when YOU type hunter2, it shows to us as *******\n<AzureDiamond> thats neat, I didnt know IRC did that\n<Cthon98> yep, no matter how many times you type hunter2, it will show to us as *******\n<AzureDiamond> awesome!\n<AzureDiamond> wait, how do you know my pw?\n<Cthon98> er, I just copy pasted YOUR ******'s and it appears to YOU as hunter2 cause its your pw\n<AzureDiamond> oh, ok."
-                    },
-                    {
-                        "name": "#23396.log",
-                        "contents":  "<Donut[AFK]> HEY EURAKARTE\n<Donut[AFK]> INSULT\n<Eurakarte> RETORT\n<Donut[AFK]> COUNTER-RETORT\n<Eurakarte> QUESTIONING OF SEXUAL PREFERENCE\n<Donut[AFK]> SUGGESTION TO SHUT THE FUCK UP\n<Eurakarte> NOTATION THAT YOU CREATE A VACUUM\n<Donut[AFK]> RIPOSTE\n<Donut[AFK]> ADDON RIPOSTE\n<Eurakarte> COUNTER-RIPOSTE\n<Donut[AFK]> COUNTER-COUNTER RIPOSTE\n<Eurakarte> NONSENSICAL STATEMENT INVOLVING PLANKTON\n<Miles_Prower> RESPONSE TO RANDOM STATEMENT AND THREAT TO BAN OPPOSING SIDES\n<Eurakarte> WORDS OF PRAISE FOR FISHFOOD\n<Miles_Prower> ACKNOWLEDGEMENT AND ACCEPTENCE OF TERMS"
-                    },
-                    {
-                        "name": "#4281.log",
-                        "contents": "<erno> hm. I've lost a machine.. literally _lost_. it responds to ping, it works completely, I just can't figure out where in my apartment it is."
-                    }
-                ]
-            }
+          {
+            "name": "#244321.log",
+            "contents": "\n#244321 +(41092)- [X]\n\n<Cthon98> hey, if you type in your pw, it will show as stars\n<Cthon98> ********* see!\n<AzureDiamond> hunter2\n<AzureDiamond> doesnt look like stars to me\n<Cthon98> <AzureDiamond> *******\n<Cthon98> thats what I see\n<AzureDiamond> oh, really?\n<Cthon98> Absolutely\n<AzureDiamond> you can go hunter2 my hunter2-ing hunter2\n<AzureDiamond> haha, does that look funny to you?\n<Cthon98> lol, yes. See, when YOU type hunter2, it shows to us as *******\n<AzureDiamond> thats neat, I didnt know IRC did that\n<Cthon98> yep, no matter how many times you type hunter2, it will show to us as *******\n<AzureDiamond> awesome!\n<AzureDiamond> wait, how do you know my pw?\n<Cthon98> er, I just copy pasted YOUR ******'s and it appears to YOU as hunter2 cause its your pw\n<AzureDiamond> oh, ok."
+          },
+          {
+            "name": "#23396.log",
+            "contents": "<Donut[AFK]> HEY EURAKARTE\n<Donut[AFK]> INSULT\n<Eurakarte> RETORT\n<Donut[AFK]> COUNTER-RETORT\n<Eurakarte> QUESTIONING OF SEXUAL PREFERENCE\n<Donut[AFK]> SUGGESTION TO SHUT THE FUCK UP\n<Eurakarte> NOTATION THAT YOU CREATE A VACUUM\n<Donut[AFK]> RIPOSTE\n<Donut[AFK]> ADDON RIPOSTE\n<Eurakarte> COUNTER-RIPOSTE\n<Donut[AFK]> COUNTER-COUNTER RIPOSTE\n<Eurakarte> NONSENSICAL STATEMENT INVOLVING PLANKTON\n<Miles_Prower> RESPONSE TO RANDOM STATEMENT AND THREAT TO BAN OPPOSING SIDES\n<Eurakarte> WORDS OF PRAISE FOR FISHFOOD\n<Miles_Prower> ACKNOWLEDGEMENT AND ACCEPTENCE OF TERMS"
+          },
+          {
+            "name": "#4281.log",
+            "contents": "<erno> hm. I've lost a machine.. literally _lost_. it responds to ping, it works completely, I just can't figure out where in my apartment it is."
+          }
         ]
-    }
+      }
+    ]
+  }
 }

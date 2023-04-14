@@ -1,19 +1,17 @@
-import { ComputerDaemon } from "../ComputerDaemon";
-import { NetworkPort } from "../../../network-port/network.port";
-import { FileType } from "../../file-system/i-file-entries";
-import { FileSystemEmulation } from "../../file-system/file-system-emulation";
+import { ComputerDaemon } from '../ComputerDaemon';
+import { FileType } from '../../file-system/i-file-entries';
+import { Computer } from '../../computer/computer';
+import { HTTPPacketData, NetworkPacketType } from '../../networking/packet';
 
-export class HttpServer implements ComputerDaemon {
-    name: string = "HTTP";
-    ports: NetworkPort[] = [];
-
-    online: boolean = true;
-    constructor(private fs: FileSystemEmulation, overridePort: number = 80) {
-        this.ports.push(new NetworkPort(overridePort, false));
+export class HttpServer extends ComputerDaemon {
+    constructor(private computer: Computer, overridePort: number = 80) {
+        super(computer, NetworkPacketType.HTTP, overridePort);
     }
 
-    public handleRequest(path: string): string {
-        const file = this.fs.getFile(path);
+    public handleRequest(packet: HTTPPacketData): string {
+        const { path } = packet;
+
+        const file = this._computer.fileSystem.getFile(path);
         if (file.type === FileType.Text) {
             return <string>file.content;
         } else {

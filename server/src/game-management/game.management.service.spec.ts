@@ -4,7 +4,7 @@ import { IPType } from '@cydeaos/libs/ip-generator/ip-generator';
 import { GameConfiguration, GameType } from '@cydeaos/libs/game-configuration/game-configuration';
 import { GameState } from '@cydeaos/libs/game-object/game-object';
 import { MusicPlaybackMode } from '@cydeaos/libs/media/media.playback.mode';
-import { Account } from "@cydeaos/libs/luna/account";
+import { Account } from '@cydeaos/libs/luna/account';
 
 describe('GameService', () => {
     let service: GameManagementService;
@@ -12,7 +12,7 @@ describe('GameService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [GameManagementService],
+            providers: [ GameManagementService ],
         }).compile();
 
         service = module.get<GameManagementService>(GameManagementService);
@@ -29,7 +29,7 @@ describe('GameService', () => {
     });
 
     it('should create a game', () => {
-        const game = service.newGame(testGameConfig, <Account>{username: "test"});
+        const game = service.newGame(testGameConfig, <Account>{ username: 'test' });
         expect(game).toBeDefined();
         expect(game.gameCode).toBeDefined();
         expect(game.config).toBeDefined();
@@ -38,7 +38,7 @@ describe('GameService', () => {
     });
 
     it('should register a game', () => {
-        const game = service.newGame(testGameConfig, <Account>{username: "test"});
+        const game = service.newGame(testGameConfig, <Account>{ username: 'test' });
         expect(service.getGame(game.gameCode)).toBe(game);
     });
 
@@ -47,7 +47,7 @@ describe('GameService', () => {
     });
 
     it('should allow stopping a game', () => {
-        const game = service.newGame(testGameConfig, <Account>{username: "test"});
+        const game = service.newGame(testGameConfig, <Account>{ username: 'test' });
         game.start();
         expect(game.state).toBe(GameState.Running);
         game.stop();
@@ -55,11 +55,11 @@ describe('GameService', () => {
     });
 
     it('should also clean up after stopping a game', () => {
-        const game = service.newGame(testGameConfig, <Account>{username: "test"});
+        const game = service.newGame(testGameConfig, <Account>{ username: 'test' });
         game.start();
         expect(game.state).toBe(GameState.Running);
         service.stopGame(game.gameCode);
         expect(game.state).toBe(GameState.Stopped);
-        expect(() => service.getGame(game.gameCode)).toThrowError(`Game with id ${game.gameCode} not found`);
+        expect(() => service.getGame(game.gameCode)).toThrowError(`Game with id ${ game.gameCode } not found`);
     });
 });

@@ -13,14 +13,14 @@ export class JwtService {
         return sign({
             id: account.id,
             username: account.username,
-        }, JwtSecret, {algorithm: 'HS512', expiresIn: '2 days'})
+        }, JwtSecret, { algorithm: 'HS512', expiresIn: '2 days' })
     }
 
     decodeToken(authHeader: string): Account | null {
         const token = authHeader.split(' ')[1];
 
         try {
-            const decoded = verify(token, JwtSecret, {algorithms: ['HS512']});
+            const decoded = verify(token, JwtSecret, { algorithms: [ 'HS512' ] });
             return {
                 id: decoded['id'],
                 username: decoded['username']

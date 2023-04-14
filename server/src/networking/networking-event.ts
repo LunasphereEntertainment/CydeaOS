@@ -1,6 +1,9 @@
-export interface NetworkingEvent {
+import { NetworkPacket } from '@cydeaos/libs/nodes/networking/packet';
+import { InGameEvent } from '@cydeaos/libs/events/game-event-payload';
+
+export interface NetworkingEvent extends InGameEvent {
     type: NetworkingEventType;
-    data: { target: string, serviceName: string, data: { path?: string, port?: number } };
+    data: NetworkPacket;
 }
 
 export enum NetworkingEventType {

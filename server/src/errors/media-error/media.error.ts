@@ -1,4 +1,4 @@
-import { MediaMood } from "@cydeaos/libs/media/media-mood/media-mood";
+import { MediaMood } from '@cydeaos/libs/media/media-mood/media-mood';
 import { InternalServerErrorException } from '@nestjs/common';
 
 export class MediaError extends InternalServerErrorException {
@@ -7,18 +7,18 @@ export class MediaError extends InternalServerErrorException {
     }
 
     static entryNotFound(uuid: string): MediaError {
-        return new MediaError(`MediaEntry with ${uuid} not found`);
+        return new MediaError(`MediaEntry with ${ uuid } not found`);
     }
 
     static moodNotFound(mood: MediaMood): MediaError {
-        return new MediaError(`MediaMood ${mood} not found`);
+        return new MediaError(`MediaMood ${ mood } not found`);
     }
 
     static queueEmpty(mood: MediaMood): MediaError {
-        return new MediaError(`MediaQueue for mood ${mood} is empty`);
+        return new MediaError(`MediaQueue for mood ${ mood } is empty`);
     }
 
     static duplicateEntry(uuid: string): MediaError {
-        return new MediaError(`MediaEntry with uuid ${uuid} already exists`);
+        return new MediaError(`MediaEntry with uuid ${ uuid } already exists`);
     }
 }

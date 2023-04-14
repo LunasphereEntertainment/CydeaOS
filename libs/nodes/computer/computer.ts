@@ -1,8 +1,9 @@
 import { FileSystemEmulation } from '../file-system/file-system-emulation';
 import { NetworkPort } from '../../network-port/network.port';
 import { ComputerDaemon } from '../daemons/ComputerDaemon';
+import { NetworkPacket } from '../networking/packet';
 
-export const DefaultSystemOwner = "System"
+export const DefaultSystemOwner = 'System'
 
 export class Computer {
     hostname: string;
@@ -25,12 +26,6 @@ export class Computer {
         this.online = true;
     }
 
-    checkStatus() {
-        if (!this.isOnline()) {
-            throw new ComputerOfflineError();
-        }
-    }
-
     getPort(port: number): NetworkPort {
         this.checkStatus()
 
@@ -39,7 +34,7 @@ export class Computer {
         const foundPort = ports.find((p) => p.port === port);
 
         if (!foundPort) {
-            throw new Error(`Port ${port} not found`);
+            throw new Error(`Port ${ port } not found`);
         }
 
         return foundPort;
@@ -58,9 +53,23 @@ export class Computer {
     isOnline(): boolean {
         return this.online;
     }
+
+    handlePacket(packet: NetworkPacket): any[] {
+        this.checkStatus();
+
+        return this.daemons
+            .filter((daemon) => daemon.supportedPacketType === packet.type)
+            .map((daemon) => daemon.handleRequest(packet));
+    }
+
+    private checkStatus() {
+        if (!this.isOnline()) {
+            throw new ComputerOfflineError();
+        }
+    }
 }
 
-const ComputerOfflineMessage = "Computer is offline";
+const ComputerOfflineMessage = 'Computer is offline';
 
 export class ComputerOfflineError extends Error {
     constructor() {
